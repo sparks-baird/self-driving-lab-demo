@@ -17,6 +17,8 @@ Self-driving labs are the future; however, the capital and expertise required ca
 
 <img src="reports/figures/abstract.png" width=750>
 
+See also [Adafruit Forum: Developing a closed-loop feedback system via DotStar LEDs](https://forums.adafruit.com/viewtopic.php?f=8&t=192420&p=930915)
+
 ## Installation
 
 In order to set up the necessary environment:
