@@ -81,16 +81,9 @@ python3 -m http.server --directory 'docs/_build/html'
 
 ## Code Contributions
 
-```{todo} Please include a reference or explanation about the internals of the project.
-
-   An architecture description, design principles or at least a summary of the
-   main concepts will make it easy for potential contributors to get started
-   quickly.
-```
-
-`self-driving-lab-demo` has four core components: LED commands, reading spectrometer
-values, adaptive design, and cloud-based simulations. A top-level class is (will be)
-exposed to interact with each of the four core components.
+`self-driving-lab-demo` has five core components: LED commands, reading spectrometer
+values, adaptive design, cloud-based simulations, and benchmarks. A top-level class is
+(will be) exposed to interact with each of the core components.
 
 ### Submit an issue
 
@@ -213,13 +206,9 @@ source <PATH TO VENV>/bin/activate
 2. Go to the web page of your fork and click "Create pull request"
    to send your changes for review.
 
-   ```{todo} if you are using GitHub, you can uncomment the following paragraph
-
-      Find more detailed information in [creating a PR]. You might also want to open
-      the PR as a draft first and mark it as ready for review after the feedbacks
-      from the continuous integration (CI) system or any required fixes.
-
-   ```
+   Find more detailed information in [creating a PR]. You might also want to open
+   the PR as a draft first and mark it as ready for review after the feedbacks
+   from the continuous integration (CI) system or any required fixes.
 
 ### Troubleshooting
 
@@ -278,11 +267,11 @@ package:
 
 ### Releases
 
-```{todo} This section assumes you are using PyPI to publicly release your package.
+<!-- ```{todo} This section assumes you are using PyPI to publicly release your package.
 
    If instead you are using a different/private package index, please update
    the instructions accordingly.
-```
+``` -->
 
 If you are part of the group of maintainers and have correct user permissions
 on [PyPI], the following steps can be used to release a new version for
