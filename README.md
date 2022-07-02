@@ -17,7 +17,20 @@ Self-driving labs are the future; however, the capital and expertise required ca
 
 <img src="reports/figures/abstract.png" width=750>
 
-See also [Adafruit Forum: Developing a closed-loop feedback system via DotStar LEDs](https://forums.adafruit.com/viewtopic.php?f=8&t=192420&p=930915)
+## See Also
+
+- [Adafruit Forum: Developing a closed-loop feedback system via DotStar
+LEDs](https://forums.adafruit.com/viewtopic.php?f=8&t=192420&p=930915)
+- [Adafruit bill of materials](https://www.adafruit.com/wishlists/551334)
+
+The BOM uses Raspberry Pi (RPi) in favor of Arduino to support running complex adaptive
+design algorithms locally using the higher-end RPi models such as 4B with 8 GB RAM. RPi
+is a standalone computer, whereas Arduino is a microcontroller.
+
+Additionally, due to the chip shortage, the current setup (2022-07-02) is designed for
+RPi 400 (which bumps the current design past $100), but can easily be adapted to RPi 4B
+and other models with only slight modifications. As the state of the chip shortage
+changes, the base design will accomodate lower cost RPi's (e.g. RPi 4B and RPi Zero 2 W).
 
 ## Installation
 
