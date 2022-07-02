@@ -1,29 +1,10 @@
-```{todo} THIS IS SUPPOSED TO BE AN EXAMPLE. MODIFY IT ACCORDING TO YOUR NEEDS!
-
-   The document assumes you are using a source repository service that promotes a
-   contribution model similar to [GitHub's fork and pull request workflow].
-   While this is true for the majority of services (like GitHub, GitLab,
-   BitBucket), it might not be the case for private repositories (e.g., when
-   using Gerrit).
-
-   Also notice that the code examples might refer to GitHub URLs or the text
-   might use GitHub specific terminology (e.g., *Pull Request* instead of *Merge
-   Request*).
-
-   Please make sure to check the document having these assumptions in mind
-   and update things accordingly.
-```
-
-```{todo} Provide the correct links/replacements at the bottom of the document.
-```
-
-```{todo} You might want to have a look on [PyScaffold's contributor's guide],
+<!-- ```{todo} You might want to have a look on [PyScaffold's contributor's guide],
 
    especially if your project is open source. The text should be very similar to
    this template, but there are a few extra contents that you might decide to
    also include, like mentioning labels of your issue tracker or automated
    releases.
-```
+``` -->
 
 # Contributing
 
@@ -66,30 +47,23 @@ by adding missing information and correcting mistakes.
 
 `self-driving-lab-demo` documentation uses [Sphinx] as its main documentation compiler.
 This means that the docs are kept in the same repository as the project code, and
-that any documentation update is done in the same way was a code contribution.
+that any documentation update is done in the same way was a code contribution. We use
+[CommonMark] with [MyST] extensions.
 
-```{todo} Don't forget to mention which markup language you are using.
+:::{tip}
+   Please notice that the [GitHub web interface] provides a quick way of
+   propose changes in `self-driving-lab-demo`'s files. While this mechanism can
+   be tricky for normal code contributions, it works perfectly fine for
+   contributing to the docs, and can be quite handy.
 
-    e.g.,  [reStructuredText] or [CommonMark] with [MyST] extensions.
-```
-
-```{todo} If your project is hosted on GitHub, you can also mention the following tip:
-
-   :::{tip}
-      Please notice that the [GitHub web interface] provides a quick way of
-      propose changes in `self-driving-lab-demo`'s files. While this mechanism can
-      be tricky for normal code contributions, it works perfectly fine for
-      contributing to the docs, and can be quite handy.
-
-      If you are interested in trying this method out, please navigate to
-      the `docs` folder in the source [repository], find which file you
-      would like to propose changes and click in the little pencil icon at the
-      top, to open [GitHub's code editor]. Once you finish editing the file,
-      please write a message in the form at the bottom of the page describing
-      which changes have you made and what are the motivations behind them and
-      submit your proposal.
-   :::
-```
+   If you are interested in trying this method out, please navigate to
+   the `docs` folder in the source [repository], find which file you
+   would like to propose changes and click in the little pencil icon at the
+   top, to open [GitHub's code editor]. Once you finish editing the file,
+   please write a message in the form at the bottom of the page describing
+   which changes have you made and what are the motivations behind them and
+   submit your proposal.
+:::
 
 When working on documentation changes in your local machine, you can
 compile them using [tox] :
@@ -114,6 +88,10 @@ python3 -m http.server --directory 'docs/_build/html'
    quickly.
 ```
 
+`self-driving-lab-demo` has four core components: LED commands, reading spectrometer
+values, adaptive design, and cloud-based simulations. A top-level class is (will be)
+exposed to interact with each of the four core components.
+
 ### Submit an issue
 
 Before you work on any non-trivial code contribution it's best to first create
@@ -124,18 +102,18 @@ This often provides additional considerations and avoids unnecessary work.
 
 Before you start coding, we recommend creating an isolated [virtual environment]
 to avoid any problems with your installed Python packages.
-This can easily be done via either [virtualenv]:
-
-```
-virtualenv <PATH TO VENV>
-source <PATH TO VENV>/bin/activate
-```
-
-or [Miniconda]:
+This can easily be done via [Miniconda]:
 
 ```
 conda create -n self-driving-lab-demo python=3 six virtualenv pytest pytest-cov
 conda activate self-driving-lab-demo
+```
+
+or [virtualenv]:
+
+```
+virtualenv <PATH TO VENV>
+source <PATH TO VENV>/bin/activate
 ```
 
 ### Clone the repository
@@ -159,9 +137,6 @@ conda activate self-driving-lab-demo
    ```
 
    to be able to import the package under development in the Python REPL.
-
-   ```{todo} if you are not using pre-commit, please remove the following item:
-   ```
 
 5. Install [pre-commit]:
 
@@ -196,9 +171,6 @@ conda activate self-driving-lab-demo
    ```
 
    to record your changes in [git].
-
-   ```{todo} if you are not using pre-commit, please remove the following item:
-   ```
 
    Please make sure to see the validation messages from [pre-commit] and fix
    any eventual issues.
@@ -363,9 +335,5 @@ on [PyPI], the following steps can be used to release a new version for
 [virtual environment]: https://realpython.com/python-virtual-environments-a-primer/
 [virtualenv]: https://virtualenv.pypa.io/en/stable/
 
-
-```{todo} Please review and change the following definitions:
-```
-
-[repository]: https://github.com/<USERNAME>/self-driving-lab-demo
-[issue tracker]: https://github.com/<USERNAME>/self-driving-lab-demo/issues
+[repository]: https://github.com/sparks-baird/self-driving-lab-demo
+[issue tracker]: https://github.com/sparks-baird/self-driving-lab-demo/issues
