@@ -9,7 +9,7 @@
 [![Twitter](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&label=Twitter)](https://twitter.com/self-driving-lab-demo)
 -->
 
-# self-driving-lab-demo
+# self-driving-lab-demo (WIP)
 
 > Software and instructions for setting up and running an autonomous (self-driving) laboratory optics demo using dimmable RGB LEDs, a 10-channel spectrometer, a microcontroller, and an adaptive design algorithm.
 
