@@ -32,6 +32,14 @@ RPi 400 (which bumps the current design past $100), but can easily be adapted to
 and other models with only slight modifications. As the state of the chip shortage
 changes, the base design will accomodate lower cost RPi's (e.g. RPi 4B and RPi Zero 2 W).
 
+## ToDo:
+
+- [x] order parts for initial prototype
+- [ ] assemble hardware
+- [ ] set up RPi
+- [ ] write unit tests for Blinkt! and 10-channel sensor
+- [ ] "first drive" using random search
+
 ## Installation
 
 In order to set up the necessary environment:
