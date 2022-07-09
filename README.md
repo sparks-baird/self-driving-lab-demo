@@ -9,6 +9,8 @@
 [![Twitter](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&label=Twitter)](https://twitter.com/self-driving-lab-demo)
 -->
 
+[![](https://hackaday-io-badges.herokuapp.com/186289.svg)](https://hackaday.io/project/186289-self-driving-optics-demo)
+
 # self-driving-lab-demo (WIP)
 
 > Software and instructions for setting up and running an autonomous (self-driving) laboratory optics demo using dimmable RGB LEDs, a 10-channel spectrometer, a microcontroller, and an adaptive design algorithm.
@@ -19,9 +21,12 @@ Self-driving labs are the future; however, the capital and expertise required ca
 
 ## See Also
 
+- [Hackaday project page](https://hackaday.io/project/186289-self-driving-optics-demo)
 - [Adafruit Forum: Developing a closed-loop feedback system via DotStar
 LEDs](https://forums.adafruit.com/viewtopic.php?f=8&t=192420&p=930915)
 - [Adafruit bill of materials](https://www.adafruit.com/wishlists/551334)
+
+Most of the build instructions will go into the Hackaday project page, probably with periodic updates to the GitHub from a hardware side. GitHub will host the software.
 
 The BOM uses Raspberry Pi (RPi) in favor of Arduino to support running complex adaptive
 design algorithms locally using the higher-end RPi models such as 4B with 8 GB RAM. RPi
