@@ -25,19 +25,22 @@ Self-driving labs are the future; however, the capital and expertise required ca
 - [Adafruit Forum: Developing a closed-loop feedback system via DotStar
 LEDs](https://forums.adafruit.com/viewtopic.php?f=8&t=192420&p=930915)
 - [Adafruit required bill of materials (RPi Zero 2 W build)](http://www.adafruit.com/wishlists/551817)
-- [Adafruit optional bill of materials (RPi Zero 2 W build)](http://www.adafruit.com/wishlists/551821)
-- [Adafruit bill of materials](https://www.adafruit.com/wishlists/551334) (my original one that I ordered and am prototyping with)
 
-Most of the build instructions will go into the Hackaday project page, probably with periodic updates to the GitHub from a hardware side. GitHub will host the software.
+  <img src="reports/figures/required-wishlist.png" width=500>
+- [Adafruit optional bill of materials (RPi Zero 2 W build)](http://www.adafruit.com/wishlists/551821)
+
+  <img src="reports/figures/optional-wishlist.png" width=500>
+- [Adafruit bill of materials](https://www.adafruit.com/wishlists/551334) (my original one that I ordered and am planning to prototype with)
+
+Most of the build instructions will go into the Hackaday project page, probably with periodic updates to GitHub. GitHub will host the software that I develop.
 
 The BOM uses Raspberry Pi (RPi) in favor of Arduino to support running complex adaptive
 design algorithms locally using the higher-end RPi models such as 4B with 8 GB RAM. RPi
 is a standalone computer, whereas Arduino is a microcontroller.
 
 Additionally, due to the chip shortage, the current setup (2022-07-02) is designed for
-RPi 400 (which bumps the current design past $100), but can easily be adapted to RPi 4B
-and other models with only slight modifications. As the state of the chip shortage
-changes, the base design will accomodate lower cost RPi's (e.g. RPi 4B and RPi Zero 2 W).
+RPi Zero 2 W (which bumps the current design past $100), but can be adapted to other
+models.
 
 ## ToDo:
 
@@ -45,6 +48,7 @@ changes, the base design will accomodate lower cost RPi's (e.g. RPi 4B and RPi Z
 - [ ] assemble hardware
 - [ ] set up RPi
 - [ ] write unit tests for Blinkt! and 10-channel sensor
+- [ ] write script/library to integrate components
 - [ ] "first drive" using random search
 
 ## Installation
