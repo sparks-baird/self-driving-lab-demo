@@ -24,7 +24,9 @@ Self-driving labs are the future; however, the capital and expertise required ca
 - [Hackaday project page](https://hackaday.io/project/186289-self-driving-optics-demo)
 - [Adafruit Forum: Developing a closed-loop feedback system via DotStar
 LEDs](https://forums.adafruit.com/viewtopic.php?f=8&t=192420&p=930915)
-- [Adafruit bill of materials](https://www.adafruit.com/wishlists/551334)
+- [Adafruit required bill of materials (RPi Zero 2 W build)](http://www.adafruit.com/wishlists/551817)
+- [Adafruit optional bill of materials (RPi Zero 2 W build)](http://www.adafruit.com/wishlists/551821)
+- [Adafruit bill of materials](https://www.adafruit.com/wishlists/551334) (my original one that I ordered and am prototyping with)
 
 Most of the build instructions will go into the Hackaday project page, probably with periodic updates to the GitHub from a hardware side. GitHub will host the software.
 
