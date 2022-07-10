@@ -17,7 +17,7 @@
 
 Self-driving labs are the future; however, the capital and expertise required can be daunting. We introduce the idea of a constrained, high-dimensional, multi-objective optimization task for less than $100, a square foot of desk space, and an hour of total setup time from the shopping cart to the first "autonomous drive." We use optics rather than chemistry for our demo; after all, light is easier to move than matter. While not strictly materials-based, importantly, several core principles of a self-driving materials discovery lab are retained in this cross-domain example: sending commands to hardware to adjust physical parameters, receiving measured objective properties, decision-making via active learning, and utilizing cloud-based simulations. The demo is accessible, extensible, modular, and repeatable, making it an ideal candidate for both low-cost experimental adaptive design prototyping and learning the principles of self-driving laboratories in a low-risk setting.
 
-<img src="reports/figures/abstract.png" width=750>
+<p align="center"><img src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/abstract.png?a" width=750></p>
 
 ## See Also
 
