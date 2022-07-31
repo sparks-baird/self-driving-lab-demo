@@ -46,7 +46,8 @@ models.
 
 - [x] order parts for initial prototype
 - [ ] assemble hardware
-- [ ] set up RPi
+- [x] [set up RPi](https://learn.adafruit.com/raspberry-pi-zero-creation/overview)
+- [x] [simple Blinkt! test](https://learn.pimoroni.com/article/getting-started-with-blinkt)
 - [ ] write unit tests for Blinkt! and 10-channel sensor
 - [ ] write script/library to integrate components
 - [ ] "first drive" using random search
