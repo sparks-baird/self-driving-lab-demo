@@ -40,15 +40,17 @@ design algorithms locally using the higher-end RPi models such as 4B with 8 GB R
 is a standalone computer, whereas Arduino is a microcontroller.
 
 Additionally, due to the chip shortage, the current setup (2022-07-02) is designed for
-RPi Zero 2 W (which bumps the current design past $100), but can be adapted to other
-models.
+RPi Zero 2 W (EDIT: 2022-08-12, unfortunately also suffering from the chip shortage, see https://github.com/sparks-baird/self-driving-lab-demo/issues/8), but can be adapted to other models.
 
 ## ToDo:
 
 - [x] order parts for initial prototype
-- [ ] assemble hardware
+- [x] assemble hardware
 - [x] [set up RPi](https://learn.adafruit.com/raspberry-pi-zero-creation/overview)
 - [x] [simple Blinkt! test](https://learn.pimoroni.com/article/getting-started-with-blinkt)
+- [x] [simple 10-channel sensor test](https://learn.pimoroni.com/article/getting-started-with-blinkt)
+- [x] [simple Blinkt! + 10-channel sensor test](https://learn.pimoroni.com/article/getting-started-with-blinkt)
+- [ ] fixture to mount sensor perpendicular to LED Blinkt!
 - [ ] write unit tests for Blinkt! and 10-channel sensor
 - [ ] write script/library to integrate components
 - [ ] "first drive" using random search
