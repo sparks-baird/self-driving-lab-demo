@@ -48,8 +48,8 @@ RPi Zero 2 W (EDIT: 2022-08-12, unfortunately also suffering from the chip short
 - [x] assemble hardware
 - [x] [set up RPi](https://learn.adafruit.com/raspberry-pi-zero-creation/overview)
 - [x] [simple Blinkt! test](https://learn.pimoroni.com/article/getting-started-with-blinkt)
-- [x] [simple 10-channel sensor test](https://learn.pimoroni.com/article/getting-started-with-blinkt)
-- [x] [simple Blinkt! + 10-channel sensor test](https://learn.pimoroni.com/article/getting-started-with-blinkt)
+- [x] [simple 10-channel sensor test](https://github.com/adafruit/Adafruit_CircuitPython_AS7341)
+- [x] [simple Blinkt! + 10-channel sensor test](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/scripts/blinkt_as7341_basic.py)
 - [ ] fixture to mount sensor perpendicular to LED Blinkt!
 - [ ] write unit tests for Blinkt! and 10-channel sensor
 - [ ] write script/library to integrate components
