@@ -13,7 +13,7 @@
 
 # self-driving-lab-demo (WIP)
 
-> Software and instructions for setting up and running an autonomous (self-driving) laboratory optics demo using dimmable RGB LEDs, a 10-channel spectrometer, a microcontroller, and an adaptive design algorithm.
+> Software and instructions for setting up and running an autonomous (self-driving) laboratory optics demo using dimmable RGB LEDs, a 10-channel spectrophotometer, a microcontroller, and an adaptive design algorithm.
 
 Self-driving labs are the future; however, the capital and expertise required can be daunting. We introduce the idea of a constrained, high-dimensional, multi-objective optimization task for less than $100, a square foot of desk space, and an hour of total setup time from the shopping cart to the first "autonomous drive." We use optics rather than chemistry for our demo; after all, light is easier to move than matter. While not strictly materials-based, importantly, several core principles of a self-driving materials discovery lab are retained in this cross-domain example: sending commands to hardware to adjust physical parameters, receiving measured objective properties, decision-making via active learning, and utilizing cloud-based simulations. The demo is accessible, extensible, modular, and repeatable, making it an ideal candidate for both low-cost experimental adaptive design prototyping and learning the principles of self-driving laboratories in a low-risk setting.
 
@@ -21,7 +21,7 @@ Self-driving labs are the future; however, the capital and expertise required ca
 
 ## See Also
 
-- [Journal of Brief Ideas submission](https://doi.org/10.5281/zenodo.6970227)
+- [Journal of Brief Ideas submission](https://beta.briefideas.org/ideas/12372397dbaf594ca372f17ebbb8c2a3)
 - [Hackaday project page](https://hackaday.io/project/186289-self-driving-optics-demo)
 - [Adafruit Forum: Developing a closed-loop feedback system via DotStar
 LEDs](https://forums.adafruit.com/viewtopic.php?f=8&t=192420&p=930915)
@@ -40,15 +40,17 @@ design algorithms locally using the higher-end RPi models such as 4B with 8 GB R
 is a standalone computer, whereas Arduino is a microcontroller.
 
 Additionally, due to the chip shortage, the current setup (2022-07-02) is designed for
-RPi Zero 2 W (which bumps the current design past $100), but can be adapted to other
-models.
+RPi Zero 2 W (EDIT: 2022-08-12, unfortunately also suffering from the chip shortage, see https://github.com/sparks-baird/self-driving-lab-demo/issues/8), but can be adapted to other models.
 
 ## ToDo:
 
 - [x] order parts for initial prototype
-- [ ] assemble hardware
+- [x] assemble hardware
 - [x] [set up RPi](https://learn.adafruit.com/raspberry-pi-zero-creation/overview)
 - [x] [simple Blinkt! test](https://learn.pimoroni.com/article/getting-started-with-blinkt)
+- [x] [simple 10-channel sensor test](https://github.com/adafruit/Adafruit_CircuitPython_AS7341)
+- [x] [simple Blinkt! + 10-channel sensor test](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/scripts/blinkt_as7341_basic.py)
+- [ ] fixture to mount sensor perpendicular to LED Blinkt!
 - [ ] write unit tests for Blinkt! and 10-channel sensor
 - [ ] write script/library to integrate components
 - [ ] "first drive" using random search
