@@ -21,7 +21,7 @@ Self-driving labs are the future; however, the capital and expertise required ca
 
 ## See Also
 
-- [Journal of Brief Ideas submission](https://doi.org/10.5281/zenodo.6970227)
+- [Journal of Brief Ideas submission](https://beta.briefideas.org/ideas/12372397dbaf594ca372f17ebbb8c2a3)
 - [Hackaday project page](https://hackaday.io/project/186289-self-driving-optics-demo)
 - [Adafruit Forum: Developing a closed-loop feedback system via DotStar
 LEDs](https://forums.adafruit.com/viewtopic.php?f=8&t=192420&p=930915)
