@@ -39,8 +39,8 @@ The BOM uses Raspberry Pi (RPi) in favor of Arduino to support running complex a
 design algorithms locally using the higher-end RPi models such as 4B with 8 GB RAM. RPi
 is a standalone computer, whereas Arduino is a microcontroller.
 
-Additionally, due to the chip shortage, the current setup (2022-07-02) is designed for
-RPi Zero 2 W (EDIT: 2022-08-12, unfortunately also suffering from the chip shortage, see https://github.com/sparks-baird/self-driving-lab-demo/issues/8), but can be adapted to other models.
+Additionally, due to the chip shortage, the current setup (2022-08-16) is designed for
+RPi Pico W (see https://github.com/sparks-baird/self-driving-lab-demo/issues/8), but can be adapted to other models.
 
 ## ToDo:
 
@@ -50,10 +50,10 @@ RPi Zero 2 W (EDIT: 2022-08-12, unfortunately also suffering from the chip short
 - [x] [simple Blinkt! test](https://learn.pimoroni.com/article/getting-started-with-blinkt)
 - [x] [simple 10-channel sensor test](https://github.com/adafruit/Adafruit_CircuitPython_AS7341)
 - [x] [simple Blinkt! + 10-channel sensor test](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/scripts/blinkt_as7341_basic.py)
-- [ ] fixture to mount sensor perpendicular to LED Blinkt!
+- [x] fixture to mount sensor perpendicular to LED Blinkt!
 - [ ] write unit tests for Blinkt! and 10-channel sensor
 - [ ] write script/library to integrate components
-- [ ] "first drive" using random search
+- [x] "first drive" using random search
 
 ## Installation
 
