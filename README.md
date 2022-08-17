@@ -9,7 +9,7 @@
 [![Twitter](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&label=Twitter)](https://twitter.com/self-driving-lab-demo)
 -->
 
-[![](https://hackaday-io-badges.herokuapp.com/186289.svg)](https://hackaday.io/project/186289-self-driving-optics-demo)
+[![](https://hackaday-io-badges.herokuapp.com/186289.svg?)](https://hackaday.io/project/186289-self-driving-optics-demo)
 
 # self-driving-lab-demo (WIP)
 
