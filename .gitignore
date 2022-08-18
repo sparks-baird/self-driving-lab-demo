@@ -52,3 +52,6 @@ MANIFEST
 .venv*/
 .conda*/
 .python-version
+reports/figures/adafruit/README.txt
+reports/figures/adafruit/adafruit_products_e_downloads_fab_print.png
+*.mp4
