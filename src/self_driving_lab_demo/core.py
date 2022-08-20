@@ -21,6 +21,7 @@ References:
 """
 
 import logging
+import sys
 from importlib.resources import open_text
 from time import sleep
 
@@ -132,8 +133,8 @@ class SelfDrivingLabDemo(object):
         self.simulator = SensorSimulator()
 
         # uses board.SCL and board.SDA
-        self.i2c = None if simulation else board.I2C()
-        self.sensor = None if simulation else AS7341(self.i2c)
+        self.i2c = None if "board" not in sys.modules else board.I2C()
+        self.sensor = None if "AS7341" not in sys.modules else AS7341(self.i2c)
 
         if autoload:
             # must come after creating sensor attribute
@@ -167,7 +168,7 @@ class SelfDrivingLabDemo(object):
         # 1.0 is really bright, so no more than `max_brightness`
         brightness = self.max_brightness * rng.random()
         RGB = 255 * rng.random(3)
-        R, G, B = RGB.astype(int)
+        R, G, B = np.round(RGB).astype(int)
         return brightness, R, G, B
 
     @property
@@ -338,3 +339,6 @@ def fib(n):
 
 # https://docs.circuitpython.org/projects/as7341/en/latest/examples.html#flicker-detection
 # self.sensor.flicker_detection_enabled = True
+
+# board_name = board.__name__
+# sensor_name = AS7341.__name__
