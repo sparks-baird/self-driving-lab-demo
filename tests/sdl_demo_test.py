@@ -1,4 +1,4 @@
-from numpy.testing import assert_allclose
+from numpy.testing import assert_allclose, assert_almost_equal
 
 from self_driving_lab_demo.core import SelfDrivingLabDemo, SensorSimulator
 
@@ -8,7 +8,7 @@ def test_simulator():
     channel_data = sim.simulate_sensor_data(0.5, 12, 24, 48)
 
     check_channel_data = (
-        -5.034047338661404e-06,
+        3.6003093860216055e-05,
         0.005718901898901329,
         0.005328294858512386,
         0.0040458290797878394,
@@ -26,7 +26,7 @@ def test_sdl_demo_simulation():
     channel_data = sdl.observe_sensor_data(0.5, 255, 255, 255)
 
     check_channel_data = (
-        -2.674337648663871e-05,
+        0.0001912664361323978,
         0.030381666337913314,
         0.03527681080335163,
         0.04298693397274579,
@@ -43,7 +43,6 @@ def test_sdl_demo_target():
     sdl = SelfDrivingLabDemo(autoload=True, simulation=True, target_seed=15)
     data = sdl.evaluate(0.25, 50, 150, 250)
 
-    check_mae = 0.006910933400822429
+    check_mae = 0.0069205842812467815
 
-    if data["mae"] != check_mae:
-        raise ValueError(f"MAE is not correct: {data['mae']}")
+    assert_almost_equal(data["mae"], check_mae)
