@@ -26,7 +26,6 @@ from time import sleep
 
 import numpy as np
 import pandas as pd
-from blinkt import clear, set_brightness, set_pixel, show
 from scipy.interpolate import interp1d
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 
@@ -40,6 +39,7 @@ _logger = logging.getLogger(__name__)
 
 try:
     import board
+    from blinkt import clear, set_brightness, set_pixel, show
     from adafruit_as7341 import AS7341
 except NotImplementedError as e:
     print(e)
