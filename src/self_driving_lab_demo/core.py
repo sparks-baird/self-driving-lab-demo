@@ -82,6 +82,8 @@ class SensorSimulator(object):
             names=["wavelength", "relative_intensity"],
         )
 
+        df["relative_intensity"].clip(lower=0.0, inplace=True)
+
         # average y-values for repeat x-values
         # see also https://stackoverflow.com/a/51258988/13697228
         df = df.groupby("wavelength", as_index=False).mean()
