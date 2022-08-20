@@ -25,10 +25,9 @@ from time import sleep
 from importlib.resources import open_text
 from self_driving_lab_demo import data as data_module
 
-import board
 import numpy as np
 import pandas as pd
-from adafruit_as7341 import AS7341
+
 from blinkt import clear, set_brightness, set_pixel, show
 from scipy.interpolate import interp1d
 from sklearn.metrics import mean_absolute_error, mean_squared_error
@@ -38,6 +37,16 @@ __copyright__ = "sgbaird"
 __license__ = "MIT"
 
 _logger = logging.getLogger(__name__)
+
+try:
+    import board
+    from adafruit_as7341 import AS7341
+except NotImplementedError as e:
+    print(e)
+    _logger.warning(
+        "Safe to ignore if this is CI or not on a Raspberry Pi. However, only the simulator will be available."
+    )
+    pass
 
 # ---- Python API ----
 # The functions defined in this section can be imported by users in their
@@ -121,10 +130,9 @@ class SelfDrivingLabDemo(object):
 
         self.simulator = SensorSimulator()
 
-        self.i2c = board.I2C()  # uses board.SCL and board.SDA
-        self.sensor = AS7341(self.i2c)
-        # https://docs.circuitpython.org/projects/as7341/en/latest/examples.html#flicker-detection
-        self.sensor.flicker_detection_enabled = True
+        # uses board.SCL and board.SDA
+        self.i2c = None if simulation else board.I2C()
+        self.sensor = None if simulation else AS7341(self.i2c)
 
         if autoload:
             # must come after creating sensor attribute
@@ -316,9 +324,12 @@ def fib(n):
 
 # channel_names = self.channel_names.pop("ch_clear").pop("ch_nir")
 
-            # nir: near infrared
-            # extra_channels = (self.sensor.channel_clear, self.sensor.channel_nir)
-            # channel_data = (self.sensor.all_channels + extra_channels)
+# nir: near infrared
+# extra_channels = (self.sensor.channel_clear, self.sensor.channel_nir)
+# channel_data = (self.sensor.all_channels + extra_channels)
 
-            # "ch_clear",
-            # "ch_nir",
+# "ch_clear",
+# "ch_nir",
+
+        # https://docs.circuitpython.org/projects/as7341/en/latest/examples.html#flicker-detection
+        # self.sensor.flicker_detection_enabled = True
