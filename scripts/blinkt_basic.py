@@ -1,6 +1,7 @@
 """https://learn.pimoroni.com/article/getting-started-with-blinkt"""
 import time
-from blinkt import set_pixel, set_brightness, show, clear
+
+from blinkt import clear, set_brightness, set_pixel, show
 
 set_brightness(0.05)
 

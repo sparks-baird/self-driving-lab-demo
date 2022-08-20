@@ -21,9 +21,8 @@ References:
 """
 
 import logging
-from time import sleep
 from importlib.resources import open_text
-from self_driving_lab_demo import data as data_module
+from time import sleep
 
 import numpy as np
 import pandas as pd
@@ -31,6 +30,8 @@ import pandas as pd
 from blinkt import clear, set_brightness, set_pixel, show
 from scipy.interpolate import interp1d
 from sklearn.metrics import mean_absolute_error, mean_squared_error
+
+from self_driving_lab_demo import data as data_module
 
 __author__ = "sgbaird"
 __copyright__ = "sgbaird"
@@ -239,10 +240,10 @@ def fib(n):
     return a
 
 
-## Code Graveyard
+# %% Code Graveyard
 
-# _logger.debug(
-#     f"Choosing random inputs. brightness: {brightness}, red: {R}, green: {G}, blue: {B}"  # noqa: E501
+# _logger.debug( f"Choosing random inputs. brightness: {brightness}, red: {R}, green:
+#     {G}, blue: {B}"  # noqa: E501
 # )
 # _logger.debug(
 #     f"Setting brightness: {brightness}, red: {R}, green: {G}, blue: {B}"
@@ -265,7 +266,9 @@ def fib(n):
 # @contextmanager
 # def observe_sensor_data(sensor: AS7341, brightness, R, G, B, rest_seconds=0.5):
 #     # ExitStack with @stack.callback would be an alternative to try, except, finally
-#     # https://docs.python.org/3/library/contextlib.html#replacing-any-use-of-try-finally-and-flag-variables
+#     #
+#     https://docs.python.org/3/library/contextlib.
+# html#replacing-any-use-of-try-finally-and-flag-variables
 #     try:
 #         set_brightness(brightness)
 #         clear()
@@ -282,8 +285,10 @@ def fib(n):
 #         clear()
 #         show()
 
-# red_interp = interp1d(red_df["wavelength"], red_df["relative_intensity"], kind="cubic", fill_value=0.0)
-# green_interp = interp1d(green_df["wavelength"], green_df["relative_intensity"], kind="cubic", fill_value=0.0)
+# red_interp = interp1d(red_df["wavelength"], red_df["relative_intensity"],
+# kind="cubic", fill_value=0.0)
+# green_interp = interp1d(green_df["wavelength"], green_df["relative_intensity"],
+# kind="cubic", fill_value=0.0)
 # blue_interp = interp1d(blue_df["wavelength"], blue_df["relative_intensity"],
 # kind="cubic", fill_value=0.0)
 
@@ -331,5 +336,5 @@ def fib(n):
 # "ch_clear",
 # "ch_nir",
 
-        # https://docs.circuitpython.org/projects/as7341/en/latest/examples.html#flicker-detection
-        # self.sensor.flicker_detection_enabled = True
+# https://docs.circuitpython.org/projects/as7341/en/latest/examples.html#flicker-detection
+# self.sensor.flicker_detection_enabled = True
