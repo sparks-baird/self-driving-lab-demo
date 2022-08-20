@@ -132,9 +132,13 @@ class SelfDrivingLabDemo(object):
 
         self.simulator = SensorSimulator()
 
-        # uses board.SCL and board.SDA
-        self.i2c = None if "board" not in sys.modules else board.I2C()
-        self.sensor = None if "AS7341" not in sys.modules else AS7341(self.i2c)
+        if "adafruit_as7341" in sys.modules:
+            # uses board.SCL and board.SDA
+            self.i2c = board.I2C()
+            self.sensor = AS7341(self.i2c)
+        else:
+            self.i2c = None
+            self.sensor = None
 
         if autoload:
             # must come after creating sensor attribute
