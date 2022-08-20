@@ -3,10 +3,11 @@
 https://learn.pimoroni.com/article/getting-started-with-blinkt
 https://github.com/adafruit/Adafruit_CircuitPython_AS7341
 """
-from blinkt import set_pixel, set_brightness, show, clear
 from time import sleep
+
 import board
 from adafruit_as7341 import AS7341
+from blinkt import clear, set_brightness, set_pixel, show
 
 set_brightness(0.05)
 

@@ -1,5 +1,6 @@
 """https://github.com/adafruit/Adafruit_CircuitPython_AS7341"""
 from time import sleep
+
 import board
 from adafruit_as7341 import AS7341
 
