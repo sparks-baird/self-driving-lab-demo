@@ -26,7 +26,6 @@ from time import sleep
 
 import numpy as np
 import pandas as pd
-
 from blinkt import clear, set_brightness, set_pixel, show
 from scipy.interpolate import interp1d
 from sklearn.metrics import mean_absolute_error, mean_squared_error
@@ -47,7 +46,6 @@ except NotImplementedError as e:
     _logger.warning(
         "Safe to ignore if this is CI or not on a Raspberry Pi. However, only the simulator will be available."  # noqa: E501
     )
-    pass
 
 # ---- Python API ----
 # The functions defined in this section can be imported by users in their
