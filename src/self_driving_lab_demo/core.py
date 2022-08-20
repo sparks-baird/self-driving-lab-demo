@@ -23,12 +23,14 @@ References:
 import logging
 from time import sleep
 from importlib.resources import open_text
-from self_driving_lab_demo import data
+from self_driving_lab_demo import data as data_module
 
 import board
 import numpy as np
+import pandas as pd
 from adafruit_as7341 import AS7341
 from blinkt import clear, set_brightness, set_pixel, show
+from scipy.interpolate import interp1d
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 
 __author__ = "sgbaird"
@@ -37,12 +39,67 @@ __license__ = "MIT"
 
 _logger = logging.getLogger(__name__)
 
-
 # ---- Python API ----
 # The functions defined in this section can be imported by users in their
 # Python scripts/interactive interpreter, e.g. via
 # `from self_driving_lab_demo.skeleton import fib`,
 # when using this Python module as a library.
+
+CHANNEL_WAVELENGTHS = [
+    415,
+    445,
+    480,
+    515,
+    560,
+    615,
+    670,
+    720,
+]
+
+
+class SensorSimulator(object):
+    def __init__(self):
+        self.red_interp = self.create_interpolator("red.csv")
+        self.green_interp = self.create_interpolator("green.csv")
+        self.blue_interp = self.create_interpolator("blue.csv")
+
+    @property
+    def channel_wavelengths(self):
+        return CHANNEL_WAVELENGTHS
+
+    def create_interpolator(self, fname):
+        df = pd.read_csv(
+            open_text(data_module, fname),
+            header=None,
+            names=["wavelength", "relative_intensity"],
+        )
+
+        # average y-values for repeat x-values
+        # see also https://stackoverflow.com/a/51258988/13697228
+        df = df.groupby("wavelength", as_index=False).mean()
+
+        return interp1d(
+            df["wavelength"],
+            df["relative_intensity"],
+            kind="linear",
+            bounds_error=False,
+            fill_value=0.0,
+        )
+
+    def _simulate_sensor_data(self, wavelengths, brightness, R, G, B):
+        rI, gI, bI = brightness * np.array([R, G, B]) / 255
+        channel_data = np.sum(
+            [
+                self.red_interp(wavelengths) * rI,
+                self.green_interp(wavelengths) * gI,
+                self.blue_interp(wavelengths) * bI,
+            ],
+            axis=0,
+        )
+        return tuple(channel_data)
+
+    def simulate_sensor_data(self, brightness, R, G, B):
+        return self._simulate_sensor_data(self.channel_wavelengths, brightness, R, G, B)
 
 
 class SelfDrivingLabDemo(object):
@@ -51,7 +108,7 @@ class SelfDrivingLabDemo(object):
         random_rng=np.random.default_rng(42),
         target_seed=604523,
         rest_seconds=0.1,
-        max_brightness=0.5,
+        max_brightness=0.35,
         autoload=False,
         simulation=False,
     ):
@@ -61,6 +118,8 @@ class SelfDrivingLabDemo(object):
         self.max_brightness = max_brightness
         self.autoload = autoload
         self.simulation = simulation
+
+        self.simulator = SensorSimulator()
 
         self.i2c = board.I2C()  # uses board.SCL and board.SDA
         self.sensor = AS7341(self.i2c)
@@ -80,10 +139,7 @@ class SelfDrivingLabDemo(object):
             # hardcoded to the pixel in the 3-position (0-indexing)
             set_pixel(3, R, G, B)
             show()
-            # nir: near infrared
-            # extra_channels = (self.sensor.channel_clear, self.sensor.channel_nir)
-            # list of 10 values
-            # channel_data = (self.sensor.all_channels + extra_channels)  
+            # list of 8 values
             channel_data = self.sensor.all_channels
             sleep(self.rest_seconds)
             return channel_data
@@ -95,17 +151,11 @@ class SelfDrivingLabDemo(object):
             show()
 
     def simulate_sensor_data(self, brightness, R, G, B):
-        rI, gI, bI = brightness * np.array([R, G, B]) / 255
-        red, green, blue = [open_text(module, fname) for fname in ["red.csv", "green.csv", "blue.csv"]]
-        return np.array([rI, gI, bI, red, green, blue])
-
-    def get_random_inputs(self, rng):
-    df = pd.read_csv(train_csv)
-        return channel_data
+        return self.simulator.simulate_sensor_data(brightness, R, G, B)
 
     def get_random_inputs(self, rng=None):
         rng = self.random_rng if rng is None else rng
-        # 1.0 is really bright, so no more than 0.5
+        # 1.0 is really bright, so no more than `max_brightness`
         brightness = self.max_brightness * rng.random()
         RGB = 255 * rng.random(3)
         R, G, B = RGB.astype(int)
@@ -134,24 +184,11 @@ class SelfDrivingLabDemo(object):
             "ch615_yellow",
             "ch670_orange",
             "ch720_red",
-            # "ch_clear",
-            # "ch_nir",
         ]
 
     @property
     def channel_wavelengths(self):
-        return [
-            415,
-            445,
-            480,
-            515,
-            560,
-            615,
-            670,
-            720,
-            # None,
-            # None,
-        ]
+        return CHANNEL_WAVELENGTHS
 
     def get_target_inputs(self):
         return self.get_random_inputs(np.random.default_rng(self.target_seed))
@@ -163,9 +200,7 @@ class SelfDrivingLabDemo(object):
     def evaluate(self, brightness, R, G, B):
         data = self.observe_sensor_data(brightness, R, G, B)
         results = {name: datum for name, datum in zip(self.channel_names, data)}
-        channel_names = self.channel_names.pop("ch_clear").pop("ch_nir")
 
-        
         results["mae"] = mean_absolute_error(self.target_data, data)
         results["rmse"] = mean_squared_error(self.target_data, data, squared=False)
         return results
@@ -176,9 +211,9 @@ class SDLSimulation(SelfDrivingLabDemo):
         super().__init__(*args, **kwargs)
         self.target_data = self.load_target_data()
 
-    @override
     def observe_sensor_data(self, brightness, R, G, B):
         return super().observe_sensor_data(brightness, R, G, B)
+
 
 def fib(n):
     """Fibonacci example function
@@ -238,3 +273,52 @@ def fib(n):
 #         # turn off the LED at the end no matter what
 #         clear()
 #         show()
+
+# red_interp = interp1d(red_df["wavelength"], red_df["relative_intensity"], kind="cubic", fill_value=0.0)
+# green_interp = interp1d(green_df["wavelength"], green_df["relative_intensity"], kind="cubic", fill_value=0.0)
+# blue_interp = interp1d(blue_df["wavelength"], blue_df["relative_intensity"],
+# kind="cubic", fill_value=0.0)
+
+
+# red_df.loc[:, "relative_intensity"] = red_df["relative_intensity"] * rI
+# green_df.loc[:, "relative_intensity"] = green_df["relative_intensity"] * gI
+# blue_df.loc[:, "relative_intensity"] = blue_df["relative_intensity"] * bI
+
+# red_interp, green_interp, blue_interp = [
+#     interp_color(df) for df in [red_df, green_df, blue_df]
+# ]
+
+# def _scale_by_brightness(df, scale):
+#     df["relative_intensity"] = df["relative_intensity"] * scale
+#     return df
+
+# red_df, green_df, blue_df = [
+#     pd.read_csv(
+#         open_text(data_module, fname),
+#         header=None,
+#         names=["wavelength", "relative_intensity"],
+#     )
+#     for fname in ["red.csv", "green.csv", "blue.csv"]
+# ]
+# [
+#     df["relative_intensity"].clip(lower=0.0, inplace=True)
+#     for df in [red_df, green_df, blue_df]
+# ]
+
+# def _interp_color(df):
+#     return interp1d(
+#         df["wavelength"], df["relative_intensity"], kind="cubic", fill_value=0.0
+#     )
+
+# self.red_interp, self.green_interp, self.blue_interp = [
+#     _interp_color(df) for df in [red_df, green_df, blue_df]
+# ]
+
+# channel_names = self.channel_names.pop("ch_clear").pop("ch_nir")
+
+            # nir: near infrared
+            # extra_channels = (self.sensor.channel_clear, self.sensor.channel_nir)
+            # channel_data = (self.sensor.all_channels + extra_channels)
+
+            # "ch_clear",
+            # "ch_nir",
