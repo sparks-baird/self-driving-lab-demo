@@ -1,7 +1,6 @@
 import numpy as np
-from tqdm import trange, tqdm
-from sklearn.model_selection import ParameterGrid
 from ax import optimize
+from sklearn.model_selection import ParameterGrid
 
 
 def grid_search(sdl, num_iter):
