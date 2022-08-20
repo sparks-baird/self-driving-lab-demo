@@ -39,8 +39,8 @@ _logger = logging.getLogger(__name__)
 
 try:
     import board
-    from blinkt import clear, set_brightness, set_pixel, show
     from adafruit_as7341 import AS7341
+    from blinkt import clear, set_brightness, set_pixel, show
 except NotImplementedError as e:
     print(e)
     _logger.warning(
