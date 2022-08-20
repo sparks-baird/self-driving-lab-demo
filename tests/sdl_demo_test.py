@@ -1,4 +1,5 @@
 from numpy.testing import assert_allclose
+
 from self_driving_lab_demo.core import SelfDrivingLabDemo, SensorSimulator
 
 
