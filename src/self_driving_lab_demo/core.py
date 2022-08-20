@@ -45,7 +45,7 @@ try:
 except NotImplementedError as e:
     print(e)
     _logger.warning(
-        "Safe to ignore if this is CI or not on a Raspberry Pi. However, only the simulator will be available."
+        "Safe to ignore if this is CI or not on a Raspberry Pi. However, only the simulator will be available."  # noqa: E501
     )
     pass
 
