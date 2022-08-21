@@ -45,4 +45,4 @@ def test_sdl_demo_target():
 
     check_mae = 0.0069205842812467815
 
-    assert_almost_equal(data["mae"], check_mae)
+    assert_almost_equal(data["mae"], check_mae, decimal=5)
