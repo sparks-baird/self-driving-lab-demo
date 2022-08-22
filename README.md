@@ -1,4 +1,6 @@
 [![Project generated with PyScaffold](https://img.shields.io/badge/-PyScaffold-005CA0?logo=pyscaffold)](https://pyscaffold.org/)
+
+[![](https://hackaday-io-badges.herokuapp.com/186289.svg?)](https://hackaday.io/project/186289-self-driving-optics-demo)
 <!-- These are examples of badges you might also want to add to your README. Update the URLs accordingly.
 [![Built Status](https://api.cirrus-ci.com/github/<USER>/self-driving-lab-demo.svg?branch=main)](https://cirrus-ci.com/github/<USER>/self-driving-lab-demo)
 [![ReadTheDocs](https://readthedocs.org/projects/self-driving-lab-demo/badge/?version=latest)](https://self-driving-lab-demo.readthedocs.io/en/stable/)
@@ -9,7 +11,7 @@
 [![Twitter](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&label=Twitter)](https://twitter.com/self-driving-lab-demo)
 -->
 
-[![](https://hackaday-io-badges.herokuapp.com/186289.svg?)](https://hackaday.io/project/186289-self-driving-optics-demo)
+**Check out [the notebooks](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/notebooks/README.md) for some tutorials and demonstrations!**
 
 # self-driving-lab-demo (WIP)
 
