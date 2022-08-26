@@ -11,7 +11,7 @@
 [![Twitter](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&label=Twitter)](https://twitter.com/self-driving-lab-demo)
 -->
 
-**Check out [the notebooks](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/notebooks/README.md) for some tutorials and demonstrations!**
+**Check out [the notebooks](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/notebooks/README.md) for some tutorials and demonstrations and [the updated manuscript](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/self_driving_optics_demo-rev1.pdf)!**
 
 # self-driving-lab-demo (WIP)
 
