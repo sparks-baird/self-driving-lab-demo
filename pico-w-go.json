@@ -1,4 +1,4 @@
 {
-    "sync_folder": "src/micropython_sdl_demo",
+    "sync_folder": "src/adafruit_io_sdl_demo",
     "open_on_start": true
 }
