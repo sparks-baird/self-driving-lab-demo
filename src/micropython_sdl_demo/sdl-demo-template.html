@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<body></body>
+
+<h1>SDL-Demo Telemetrics</h1>
+
+<!--
+See also:
+https://www.w3schools.com/html/html_forms.asp
+https://www.w3schools.com/tags/att_input_type_number.asp
+https://stackoverflow.com/questions/19011861/is-there-a-float-input-type-in-html5
+-->
+
+<h2>Inputs</h2>
+<form method="POST" action="">
+  <!-- <label for="brightness">brightness (0.0, 1.0):</label><br>
+  <input type="number" id="brightness" name="brightness" min="0.0" max="1.0" step="any"><br> -->
+
+  <label for="red">R (0, 255):</label><br>
+  <input type="number" id="red" name="red" min="0" max="255" step="1" value="%(red)s"><br>
+
+  <label for="green">G (0, 255):</label><br>
+  <input type="number" id="green" name="green" min="0" max="255" step="1" value="%(green)s"><br>
+
+  <label for="quantity">B (0, 255):</label><br>
+  <input type="number" id="blue" name="blue" min="0" max="255" step="1" value="%(blue)s"><br>
+
+  <br>
+  <input type="submit" name="control_led" , value="Send command to LED">
+</form>
+
+<!-- https://www.geeksforgeeks.org/what-does-s-mean-in-a-python-format-string/ -->
+<h2>Latest Sensor Measurement</h2>
+<p>
+  415 nm: %(ch415)s<br>
+  445 nm: %(ch445)s<br>
+  480 nm: %(ch480)s<br>
+  515 nm: %(ch515)s<br>
+  560 nm: %(ch560)s<br>
+  615 nm: %(ch615)s<br>
+  670 nm: %(ch670)s<br>
+  720 nm: %(ch720)s<br>
+</p>
+
+</body>
+
+</html>
