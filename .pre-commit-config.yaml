@@ -58,5 +58,6 @@ repos:
   rev: 4.0.1
   hooks:
   - id: flake8
+    exclude: ^src/(micropython_sdl_demo|circuitpython_sdl_demo)/
   ## You can add flake8 plugins via `additional_dependencies`:
   #  additional_dependencies: [flake8-bugbear]

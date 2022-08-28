@@ -55,3 +55,4 @@ MANIFEST
 reports/figures/adafruit/README.txt
 reports/figures/adafruit/adafruit_products_e_downloads_fab_print.png
 *.mp4
+src/micropython_sdl_demo/secrets.py
