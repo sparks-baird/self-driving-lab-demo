@@ -59,3 +59,4 @@ src/micropython_sdl_demo/secrets.py
 scripts/pico-w/**/*
 scripts/pico-go-w/**/*
 scripts/pymakr/**/*
+src/adafruit_io_sdl_demo/secrets.py
