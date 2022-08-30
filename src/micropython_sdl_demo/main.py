@@ -15,10 +15,10 @@ wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
 wlan.connect(SSID, PASSWORD)
 
-port = 5000
+port = 80
 
 # Wait for connect or fail
-max_wait = 10
+max_wait = 30
 while max_wait > 0:  # type: ignore
     if wlan.status() < 0 or wlan.status() >= 3:  # type: ignore
         break
@@ -44,15 +44,17 @@ fname = "sdl-demo.html"
 
 @app.route("/", methods=["GET", "POST"])
 def index(request):
-    form_cookie = None
-    message_cookie = None
+    rgb_cookie = None
+    sensor_cookie = None
     if request.method == "POST":
-        form_cookie = str(list(request.form.values()))
-        if "control_led" in request.form:
-            form = request.form
-            R = int(form["red"])
-            G = int(form["green"])
-            B = int(form["blue"])
+        form = request.form
+        rgb_cookie = {
+            "red": int(form["red"]),
+            "green": int(form["green"]),
+            "blue": int(form["blue"]),
+        }
+        if "control_led" in form:
+            R, G, B = [rgb_cookie[key] for key in ["red", "green", "blue"]]  # type: ignore
             print(f"red: {R}, green: {G}, blue: {B}")
 
             pixels[0] = (R, G, B)
@@ -61,9 +63,6 @@ def index(request):
         response = redirect("/")  # type: ignore
 
     else:  # GET
-        if "message" not in request.cookies:
-            message_cookie = "Select a pin and an operation below."
-
         channel_names = [
             "ch415",
             "ch445",
@@ -75,8 +74,10 @@ def index(request):
             "ch720",
         ]
         channel_dict = {
-            ch: datum for ch, datum in zip(channel_names, sensor.all_channels)
+            ch: datum for ch, datum in zip(channel_names, sensor.all_channels)  # type: ignore
         }
+        print(channel_dict)
+        sensor_cookie = channel_dict
 
         R, G, B = pixels[0]
         color_dict = {"red": R, "green": G, "blue": B}
@@ -95,14 +96,14 @@ def index(request):
                 f.write(write_text)
 
         response = send_file(fname)  # type: ignore
-    if form_cookie:
-        response.set_cookie("form", form_cookie)
-    if message_cookie:
-        response.set_cookie("message", message_cookie)
+    if rgb_cookie:
+        response.set_cookie("rgb", rgb_cookie)
+    if sensor_cookie:
+        response.set_cookie("sensor_data", sensor_cookie)
     return response
 
 
-app.run(debug=True)
+app.run(debug=False, port=port)
 
 # %% Code Graveyard
 # form_cookie = f"{request.form['brightness']},{request.form['pull']}"
@@ -126,3 +127,6 @@ app.run(debug=True)
 #     )
 
 # response = redirect("/")  # type: ignore
+
+# if "message" not in request.cookies:
+#     message_cookie = "Select a pin and an operation below."
