@@ -65,6 +65,18 @@ CHANNEL_WAVELENGTHS = [
     720,
 ]
 
+# based on https://www.johndcook.com/wavelength_to_RGB.html
+CHANNEL_HEX_COLORS = [
+    "#7600ed",
+    "#0028ff",
+    "#00d5ff",
+    "#1fff00",
+    "#c3ff00",
+    "#ff8900",
+    "#ff0000",
+    "#db0000",
+]
+
 
 class SensorSimulator(object):
     def __init__(self):
@@ -75,6 +87,10 @@ class SensorSimulator(object):
     @property
     def channel_wavelengths(self):
         return CHANNEL_WAVELENGTHS
+
+    @property
+    def channel_hex_colors(self):
+        return CHANNEL_HEX_COLORS
 
     def create_interpolator(self, fname):
         df = pd.read_csv(
