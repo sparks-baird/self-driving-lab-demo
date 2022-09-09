@@ -1,7 +1,4 @@
-#
-# Example of reading all channels of the AS7341
-# with different channel-mappings
-#
+"""Sterling Baird: wrapper class for AS7341 sensor."""
 
 from as7341 import AS7341, AS7341_MODE_SPM
 from machine import I2C, Pin
@@ -13,7 +10,7 @@ class ExternalDeviceNotFound(OSError):
 
 class Sensor:
     def __init__(
-        self, atime=29, astep=599, gain=4, i2c=I2C(1, scl=Pin(27), sda=Pin(26))
+        self, atime=100, astep=999, gain=64, i2c=I2C(1, scl=Pin(27), sda=Pin(26))
     ):
         """Wrapper for Rob Hamerling's AS7341 implementation.
 
@@ -29,9 +26,10 @@ class Sensor:
         Parameters
         ----------
         atime : int, optional
-            The integration time step size in 2.78 microsecond increments, by default 29, meaning 30 ASTEPS
+            The integration time step size in 2.78 microsecond increments, by default 100
         astep : int, optional
-            The integration time step count. Total integration time will be (ATIME + 1) * (ASTEP + 1) * 2.78µS, by default 599, meaning 1.67 ms
+            The integration time step count. Total integration time will be (ATIME + 1)
+            * (ASTEP + 1) * 2.78µS, by default 999, meaning 281 ms assuming atime=100
         again : int, optional
             The ADC gain multiplier. factor 8 (with pretty much light), by default 4
         i2c : I2C, optional
