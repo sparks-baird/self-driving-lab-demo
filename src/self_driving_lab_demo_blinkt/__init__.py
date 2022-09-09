@@ -14,7 +14,3 @@ except PackageNotFoundError:  # pragma: no cover
     __version__ = "unknown"
 finally:
     del version, PackageNotFoundError
-
-from self_driving_lab_demo.core import SelfDrivingLabDemo
-
-__all__ = ["SelfDrivingLabDemo"]

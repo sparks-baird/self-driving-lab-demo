@@ -52,26 +52,31 @@ def index(request):
             "red": int(form["red"]),
             "green": int(form["green"]),
             "blue": int(form["blue"]),
+            "astep": int(form["astep"]),
+            "atime": int(form["atime"]),
         }
         if "control_led" in form:
-            R, G, B = [rgb_cookie[key] for key in ["red", "green", "blue"]]  # type: ignore
-            print(f"red: {R}, green: {G}, blue: {B}")
+            keys = ["red", "green", "blue", "astep", "atime"]
+            R, G, B, astep, atime = [rgb_cookie[key] for key in keys]
+            print(f"red: {R}, green: {G}, blue: {B}, astep: {astep}, atime: {atime}")
 
             pixels[0] = (R, G, B)
             pixels.write()
+            sensor._astep = astep
+            sensor._atime = atime
 
         response = redirect("/")  # type: ignore
 
     else:  # GET
         channel_names = [
-            "ch415",
-            "ch445",
-            "ch480",
-            "ch515",
-            "ch560",
-            "ch615",
+            "ch410",
+            "ch440",
+            "ch470",
+            "ch510",
+            "ch550",
+            "ch583",
+            "ch620",
             "ch670",
-            "ch720",
         ]
         channel_dict = {
             ch: datum for ch, datum in zip(channel_names, sensor.all_channels)  # type: ignore
@@ -80,14 +85,16 @@ def index(request):
         sensor_cookie = channel_dict
 
         R, G, B = pixels[0]
-        color_dict = {"red": R, "green": G, "blue": B}
+        atime = sensor._atime
+        astep = sensor._astep
+        input_dict = {"red": R, "green": G, "blue": B, "atime": atime, "astep": astep}
 
         def merge_two_dicts(x, y):
             z = x.copy()  # start with keys and values of x
             z.update(y)  # modifies z with keys and values of y
             return z
 
-        response_dict = merge_two_dicts(color_dict, channel_dict)
+        response_dict = merge_two_dicts(input_dict, channel_dict)
 
         with open(template_fname, "r", encoding="utf-8") as template:
             with open(fname, "w", encoding="utf-8") as f:

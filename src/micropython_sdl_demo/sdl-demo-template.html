@@ -26,6 +26,14 @@ https://stackoverflow.com/questions/19011861/is-there-a-float-input-type-in-html
   <label for="quantity">B (0, 255):</label><br>
   <input type="number" id="blue" name="blue" min="0" max="255" step="1" value="%(blue)s"><br>
 
+  <label for="quantity">atime (The integration time step size in 2.78 microsecond
+    increments, by default 100):</label><br>
+  <input type="number" id="atime" name="atime" min="1" step="1" value="%(atime)s"><br>
+
+  <label for="quantity">astep (The integration time step count. Total integration time
+    will be (ATIME + 1) * (ASTEP + 1) * 2.78µS, by default 999):</label><br>
+  <input type="number" id="astep" name="astep" min="1" step="1" value="%(atime)s"><br>
+
   <br>
   <input type="submit" name="control_led" , value="Send command to LED">
 </form>
@@ -33,14 +41,14 @@ https://stackoverflow.com/questions/19011861/is-there-a-float-input-type-in-html
 <!-- https://www.geeksforgeeks.org/what-does-s-mean-in-a-python-format-string/ -->
 <h2>Latest Sensor Measurement</h2>
 <p>
-  415 nm: %(ch415)s<br>
-  445 nm: %(ch445)s<br>
-  480 nm: %(ch480)s<br>
-  515 nm: %(ch515)s<br>
-  560 nm: %(ch560)s<br>
-  615 nm: %(ch615)s<br>
+  410 nm: %(ch410)s<br>
+  440 nm: %(ch440)s<br>
+  470 nm: %(ch470)s<br>
+  510 nm: %(ch510)s<br>
+  550 nm: %(ch550)s<br>
+  583 nm: %(ch583)s<br>
+  620 nm: %(ch620)s<br>
   670 nm: %(ch670)s<br>
-  720 nm: %(ch720)s<br>
 </p>
 
 </body>
