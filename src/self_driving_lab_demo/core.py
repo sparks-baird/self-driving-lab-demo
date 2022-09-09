@@ -20,14 +20,16 @@ References:
     - https://pip.pypa.io/en/stable/reference/pip_install
 """
 
+import ast
 import logging
-import sys
 from importlib.resources import open_text
 from time import sleep
 
 import numpy as np
 import pandas as pd
+import requests
 from scipy.interpolate import interp1d
+from similaritymeasures import frechet_dist
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 
 from self_driving_lab_demo import data as data_module
@@ -38,16 +40,6 @@ __license__ = "MIT"
 
 _logger = logging.getLogger(__name__)
 
-try:
-    import board
-    from adafruit_as7341 import AS7341
-    from blinkt import clear, set_brightness, set_pixel, show
-except NotImplementedError as e:
-    print(e)
-    _logger.warning(
-        "Safe to ignore if this is CI or not on a Raspberry Pi. However, only the simulator will be available."  # noqa: E501
-    )
-
 # ---- Python API ----
 # The functions defined in this section can be imported by users in their
 # Python scripts/interactive interpreter, e.g. via
@@ -55,14 +47,14 @@ except NotImplementedError as e:
 # when using this Python module as a library.
 
 CHANNEL_WAVELENGTHS = [
-    415,
-    445,
-    480,
-    515,
-    560,
-    615,
-    670,
-    720,
+    (410, 29),
+    (440, 33),
+    (470, 36),
+    (510, 40),
+    (550, 42),
+    (583, 44),
+    (620, 53),
+    (670, 60),
 ]
 
 # based on https://www.johndcook.com/wavelength_to_RGB.html
@@ -77,12 +69,40 @@ CHANNEL_HEX_COLORS = [
     "#db0000",
 ]
 
+CHANNEL_NAMES = [
+    "ch410",
+    "ch440",
+    "ch470",
+    "ch510",
+    "ch550",
+    "ch583",
+    "ch620",
+    "ch670",
+]
+
+wavelength_lbl = "wavelength"  # nm
+intensity_lbl = "relative_intensity"  # (uW/cm^2)/nm
+
+
+def pico_server_observe_sensor_data(
+    R: int, G: int, B: int, url="http://192.168.0.111/"
+):
+    payload = {
+        "control_led": "Send+command+to+LED",
+        "red": str(R),
+        "green": str(G),
+        "blue": str(B),
+    }
+    r = requests.post(url, data=payload)
+    sensor_data_cookie = r.cookies["sensor_data"]
+    return ast.literal_eval(sensor_data_cookie)
+
 
 class SensorSimulator(object):
     def __init__(self):
-        self.red_interp = self.create_interpolator("red.csv")
-        self.green_interp = self.create_interpolator("green.csv")
-        self.blue_interp = self.create_interpolator("blue.csv")
+        self.red_interp = self.create_interpolator("neopixel_red.csv")
+        self.green_interp = self.create_interpolator("neopixel_green.csv")
+        self.blue_interp = self.create_interpolator("neopixel_blue.csv")
 
     @property
     def channel_wavelengths(self):
@@ -95,26 +115,31 @@ class SensorSimulator(object):
     def create_interpolator(self, fname):
         df = pd.read_csv(
             open_text(data_module, fname),
-            header=None,
-            names=["wavelength", "relative_intensity"],
+            header=0,
+            names=[wavelength_lbl, intensity_lbl],
         )
 
-        df["relative_intensity"].clip(lower=0.0, inplace=True)
+        df[intensity_lbl].clip(lower=0.0, inplace=True)
 
         # average y-values for repeat x-values
         # see also https://stackoverflow.com/a/51258988/13697228
         df = df.groupby("wavelength", as_index=False).mean()
 
         return interp1d(
-            df["wavelength"],
-            df["relative_intensity"],
+            df[wavelength_lbl],
+            df[intensity_lbl],
             kind="linear",
             bounds_error=False,
             fill_value=0.0,
         )
 
-    def _simulate_sensor_data(self, wavelengths, brightness, R, G, B):
-        rI, gI, bI = brightness * np.array([R, G, B]) / 255
+    def _simulate_sensor_data(self, wavelengths, R, G, B):
+        rI, gI, bI = np.array([R, G, B]) / 255
+
+        # TODO: sample based on Gaussian distributions instead of discrete wavelengths
+
+        wavelengths = np.array(wavelengths)[:, 0]
+
         channel_data = np.sum(
             [
                 self.red_interp(wavelengths) * rI,
@@ -123,10 +148,10 @@ class SensorSimulator(object):
             ],
             axis=0,
         )
-        return tuple(channel_data)
+        return {name: data for name, data in zip(CHANNEL_NAMES, channel_data)}
 
-    def simulate_sensor_data(self, brightness, R, G, B):
-        return self._simulate_sensor_data(self.channel_wavelengths, brightness, R, G, B)
+    def simulate_sensor_data(self, R, G, B):
+        return self._simulate_sensor_data(self.channel_wavelengths, R, G, B)
 
 
 class SelfDrivingLabDemo(object):
@@ -138,6 +163,8 @@ class SelfDrivingLabDemo(object):
         max_brightness=0.35,
         autoload=False,
         simulation=False,
+        observe_sensor_data_fn=pico_server_observe_sensor_data,
+        observe_sensor_data_kwargs=dict(url="http://192.168.0.111/"),
     ):
         self.random_rng = random_rng
         self.target_seed = target_seed
@@ -146,56 +173,40 @@ class SelfDrivingLabDemo(object):
         self.autoload = autoload
         self.simulation = simulation
 
-        self.simulator = SensorSimulator()
+        self.observe_sensor_data_fn = observe_sensor_data_fn
+        self.observe_sensor_data_kwargs = observe_sensor_data_kwargs
 
-        if "adafruit_as7341" in sys.modules:
-            # uses board.SCL and board.SDA
-            self.i2c = board.I2C()
-            self.sensor = AS7341(self.i2c)
-        else:
-            self.i2c = None
-            self.sensor = None
+        self.simulator = SensorSimulator()
 
         if autoload:
             # must come after creating sensor attribute
             self.load_target_data()
 
-    def observe_sensor_data(self, brightness, R, G, B):
+    def observe_sensor_data(self, R, G, B):
         if self.simulation:
-            return self.simulate_sensor_data(brightness, R, G, B)
+            return self.simulate_sensor_data(R, G, B)
         try:
-            set_brightness(brightness)
-            clear()
-            # hardcoded to the pixel in the 3-position (0-indexing)
-            set_pixel(3, R, G, B)
-            show()
-            # list of 8 values
-            channel_data = self.sensor.all_channels
             sleep(self.rest_seconds)
-            return channel_data
+            return self.observe_sensor_data_fn(
+                R, G, B, **self.observe_sensor_data_kwargs
+            )
         except Exception as e:
             print(e)
-        finally:
-            # turn off the LED at the end no matter what
-            clear()
-            show()
 
-    def simulate_sensor_data(self, brightness, R, G, B):
-        return self.simulator.simulate_sensor_data(brightness, R, G, B)
+    def simulate_sensor_data(self, R, G, B):
+        return self.simulator.simulate_sensor_data(R, G, B)
 
     def get_random_inputs(self, rng=None):
         rng = self.random_rng if rng is None else rng
         # 1.0 is really bright, so no more than `max_brightness`
-        brightness = self.max_brightness * rng.random()
-        RGB = 255 * rng.random(3)
+        RGB = 255 * rng.random(3) * self.max_brightness
         R, G, B = np.round(RGB).astype(int)
-        return brightness, R, G, B
+        return R, G, B
 
     @property
     def bounds(self):
-        return dict(
-            brightness=[0.0, self.max_brightness], R=[0, 255], G=[0, 255], B=[0, 255]
-        )
+        mx = int(np.round(self.max_brightness * 255))
+        return dict(R=[0, mx], G=[0, mx], B=[0, mx])
 
     @property
     def parameters(self):
@@ -205,16 +216,7 @@ class SelfDrivingLabDemo(object):
 
     @property
     def channel_names(self):
-        return [
-            "ch415_violet",
-            "ch445_indigo",
-            "ch480_blue",
-            "ch515_cyan",
-            "ch560_green",
-            "ch615_yellow",
-            "ch670_orange",
-            "ch720_red",
-        ]
+        return CHANNEL_NAMES
 
     @property
     def channel_wavelengths(self):
@@ -224,16 +226,25 @@ class SelfDrivingLabDemo(object):
         return self.get_random_inputs(np.random.default_rng(self.target_seed))
 
     def load_target_data(self):
-        self.target_data = self.observe_sensor_data(*self.get_target_inputs())
-        return self.target_data
+        self.target_results = self.observe_sensor_data(*self.get_target_inputs())
+        return self.target_results
 
-    def evaluate(self, brightness, R, G, B):
-        data = self.observe_sensor_data(brightness, R, G, B)
-        results = {name: datum for name, datum in zip(self.channel_names, data)}
+    def evaluate(self, R, G, B):
+        if not hasattr(self, "target_results"):
+            raise ValueError(
+                "must call `load_target_data` first or instantiate with autoload=True"
+            )
+        results = self.observe_sensor_data(R, G, B)
+        target_data = list(self.target_results.values())
+        data = list(results.values())
 
-        results["mae"] = mean_absolute_error(self.target_data, data)
-        results["rmse"] = mean_squared_error(self.target_data, data, squared=False)
+        results["mae"] = mean_absolute_error(target_data, data)
+        results["rmse"] = mean_squared_error(target_data, data, squared=False)
+        results["frechet"] = frechet_dist(target_data, data)
         return results
+
+    def clear(self):
+        self.observe_sensor_data(0, 0, 0)
 
 
 class SDLSimulation(SelfDrivingLabDemo):
@@ -241,124 +252,20 @@ class SDLSimulation(SelfDrivingLabDemo):
         super().__init__(*args, **kwargs)
         self.target_data = self.load_target_data()
 
-    def observe_sensor_data(self, brightness, R, G, B):
-        return super().observe_sensor_data(brightness, R, G, B)
-
-
-def fib(n):
-    """Fibonacci example function
-
-    Args:
-      n (int): integer
-
-    Returns:
-      int: n-th Fibonacci number
-    """
-    assert n > 0
-    a, b = 1, 1
-    for _i in range(n - 1):
-        a, b = b, a + b
-    return a
+    def observe_sensor_data(self, R, G, B):
+        return super().observe_sensor_data(R, G, B)
 
 
 # %% Code Graveyard
 
-# _logger.debug( f"Choosing random inputs. brightness: {brightness}, red: {R}, green:
-#     {G}, blue: {B}"  # noqa: E501
-# )
-# _logger.debug(
-#     f"Setting brightness: {brightness}, red: {R}, green: {G}, blue: {B}"
-# )
+# from scipy.integrate import quad
+# from scipy.stats import norm
 
-# only 2 frequencies supported, 1000 Hz, 1200 Hz (otherwise None)
-# flicker_detected = self.sensor.flicker_detected
-# flicker_frequency = flicker_detected if flicker_detected else 0.0
+# wavelengths, fwhms = np.array(wavelengths)
 
-# flicker_frequency,  # unit: Hz
+# wavelength_grid = np.arange(200, 801)
 
-# osd = observe_sensor_data(
-#     self.sensor, brightness, R, G, B, rest_seconds=self.rest_seconds
-# )
-# with osd as data:
-#     return data
-
-# from contextlib import contextmanager
-
-# @contextmanager
-# def observe_sensor_data(sensor: AS7341, brightness, R, G, B, rest_seconds=0.5):
-#     # ExitStack with @stack.callback would be an alternative to try, except, finally
-#     #
-#     https://docs.python.org/3/library/contextlib.
-# html#replacing-any-use-of-try-finally-and-flag-variables
-#     try:
-#         set_brightness(brightness)
-#         clear()
-#         set_pixel(3, R, G, B)  # hardcoded to the pixel in the 3-position (0-indexing)
-#         show()
-#         sleep(rest_seconds)
-#         # nir: near infrared
-#         extra_channels = (sensor.channel_clear, sensor.channel_nir)
-#         return sensor.all_channels + extra_channels  # list of 10 values
-#     except Exception as e:
-#         print(e)
-#     finally:
-#         # turn off the LED at the end no matter what
-#         clear()
-#         show()
-
-# red_interp = interp1d(red_df["wavelength"], red_df["relative_intensity"],
-# kind="cubic", fill_value=0.0)
-# green_interp = interp1d(green_df["wavelength"], green_df["relative_intensity"],
-# kind="cubic", fill_value=0.0)
-# blue_interp = interp1d(blue_df["wavelength"], blue_df["relative_intensity"],
-# kind="cubic", fill_value=0.0)
-
-
-# red_df.loc[:, "relative_intensity"] = red_df["relative_intensity"] * rI
-# green_df.loc[:, "relative_intensity"] = green_df["relative_intensity"] * gI
-# blue_df.loc[:, "relative_intensity"] = blue_df["relative_intensity"] * bI
-
-# red_interp, green_interp, blue_interp = [
-#     interp_color(df) for df in [red_df, green_df, blue_df]
-# ]
-
-# def _scale_by_brightness(df, scale):
-#     df["relative_intensity"] = df["relative_intensity"] * scale
-#     return df
-
-# red_df, green_df, blue_df = [
-#     pd.read_csv(
-#         open_text(data_module, fname),
-#         header=None,
-#         names=["wavelength", "relative_intensity"],
-#     )
-#     for fname in ["red.csv", "green.csv", "blue.csv"]
-# ]
-# [
-#     df["relative_intensity"].clip(lower=0.0, inplace=True)
-#     for df in [red_df, green_df, blue_df]
-# ]
-
-# def _interp_color(df):
-#     return interp1d(
-#         df["wavelength"], df["relative_intensity"], kind="cubic", fill_value=0.0
-#     )
-
-# self.red_interp, self.green_interp, self.blue_interp = [
-#     _interp_color(df) for df in [red_df, green_df, blue_df]
-# ]
-
-# channel_names = self.channel_names.pop("ch_clear").pop("ch_nir")
-
-# nir: near infrared
-# extra_channels = (self.sensor.channel_clear, self.sensor.channel_nir)
-# channel_data = (self.sensor.all_channels + extra_channels)
-
-# "ch_clear",
-# "ch_nir",
-
-# https://docs.circuitpython.org/projects/as7341/en/latest/examples.html#flicker-detection
-# self.sensor.flicker_detection_enabled = True
-
-# board_name = board.__name__
-# sensor_name = AS7341.__name__
+# weighted_filter = np.zeros_like(wavelength_grid)
+# for wavelength, fwhm in zip(wavelengths, fwhm):
+#     rv = norm(loc=wavelength, scale=fwhm / 2.355)
+#     weighted_filter = weighted_filter + rv.pdf(wavelength_grid)
