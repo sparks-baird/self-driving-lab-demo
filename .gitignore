@@ -60,3 +60,4 @@ scripts/pico-w/**/*
 scripts/pico-go-w/**/*
 scripts/pymakr/**/*
 src/adafruit_io_sdl_demo/secrets.py
+reports/videos/sdl-demo.vpb
