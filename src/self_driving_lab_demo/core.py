@@ -19,20 +19,18 @@ References:
     - https://setuptools.pypa.io/en/latest/userguide/entry_point.html
     - https://pip.pypa.io/en/stable/reference/pip_install
 """
-
-import ast
 import logging
 from importlib.resources import open_text
 from time import sleep
 
 import numpy as np
 import pandas as pd
-import requests
 from scipy.interpolate import interp1d
 from similaritymeasures import frechet_dist
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 
 from self_driving_lab_demo import data as data_module
+from self_driving_lab_demo.utils.observe import mqtt_observe_sensor_data
 
 __author__ = "sgbaird"
 __copyright__ = "sgbaird"
@@ -82,20 +80,6 @@ CHANNEL_NAMES = [
 
 wavelength_lbl = "wavelength"  # nm
 intensity_lbl = "relative_intensity"  # (uW/cm^2)/nm
-
-
-def pico_server_observe_sensor_data(
-    R: int, G: int, B: int, url="http://192.168.0.111/"
-):
-    payload = {
-        "control_led": "Send+command+to+LED",
-        "red": str(R),
-        "green": str(G),
-        "blue": str(B),
-    }
-    r = requests.post(url, data=payload)
-    sensor_data_cookie = r.cookies["sensor_data"]
-    return ast.literal_eval(sensor_data_cookie)
 
 
 class SensorSimulator(object):
@@ -163,8 +147,8 @@ class SelfDrivingLabDemo(object):
         max_brightness=0.35,
         autoload=False,
         simulation=False,
-        observe_sensor_data_fn=pico_server_observe_sensor_data,
-        observe_sensor_data_kwargs=dict(url="http://192.168.0.111/"),
+        observe_sensor_data_fn=mqtt_observe_sensor_data,
+        observe_sensor_data_kwargs={},  # dict(PICO_ID="a123b456")
     ):
         self.random_rng = random_rng
         self.target_seed = target_seed
