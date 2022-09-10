@@ -30,6 +30,11 @@ from similaritymeasures import frechet_dist
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 
 from self_driving_lab_demo import data as data_module
+from self_driving_lab_demo.utils.channel_info import (
+    CHANNEL_HEX_COLORS,
+    CHANNEL_NAMES,
+    CHANNEL_WAVELENGTHS,
+)
 from self_driving_lab_demo.utils.observe import mqtt_observe_sensor_data
 
 __author__ = "sgbaird"
@@ -43,40 +48,6 @@ _logger = logging.getLogger(__name__)
 # Python scripts/interactive interpreter, e.g. via
 # `from self_driving_lab_demo.skeleton import fib`,
 # when using this Python module as a library.
-
-CHANNEL_WAVELENGTHS = [
-    (410, 29),
-    (440, 33),
-    (470, 36),
-    (510, 40),
-    (550, 42),
-    (583, 44),
-    (620, 53),
-    (670, 60),
-]
-
-# based on https://www.johndcook.com/wavelength_to_RGB.html
-CHANNEL_HEX_COLORS = [
-    "#7600ed",
-    "#0028ff",
-    "#00d5ff",
-    "#1fff00",
-    "#c3ff00",
-    "#ff8900",
-    "#ff0000",
-    "#db0000",
-]
-
-CHANNEL_NAMES = [
-    "ch410",
-    "ch440",
-    "ch470",
-    "ch510",
-    "ch550",
-    "ch583",
-    "ch620",
-    "ch670",
-]
 
 wavelength_lbl = "wavelength"  # nm
 intensity_lbl = "relative_intensity"  # (uW/cm^2)/nm
