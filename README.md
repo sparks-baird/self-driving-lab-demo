@@ -1,18 +1,21 @@
-[![Project generated with PyScaffold](https://img.shields.io/badge/-PyScaffold-005CA0?logo=pyscaffold)](https://pyscaffold.org/) [![PyPI-Server](https://img.shields.io/pypi/v/self-driving-lab-demo.svg)](https://pypi.org/project/self-driving-lab-demo/) [![Monthly Downloads](https://pepy.tech/badge/self-driving-lab-demo/month)](https://pepy.tech/project/self-driving-lab-demo) [![Coveralls](https://img.shields.io/coveralls/github/sparks-baird/self-driving-lab-demo/main.svg)](https://coveralls.io/r/sparks-baird/self-driving-lab-demo)
+[![Project generated with PyScaffold](https://img.shields.io/badge/-PyScaffold-005CA0?logo=pyscaffold)](https://pyscaffold.org/)
 
-<!-- [![](https://hackaday-io-badges.herokuapp.com/186289.svg)](https://hackaday.io/project/186289-self-driving-optics-demo) -->
+[![](https://hackaday-io-badges.herokuapp.com/186289.svg?)](https://hackaday.io/project/186289-self-driving-optics-demo)
 <!-- These are examples of badges you might also want to add to your README. Update the URLs accordingly.
 [![Built Status](https://api.cirrus-ci.com/github/<USER>/self-driving-lab-demo.svg?branch=main)](https://cirrus-ci.com/github/<USER>/self-driving-lab-demo)
 [![ReadTheDocs](https://readthedocs.org/projects/self-driving-lab-demo/badge/?version=latest)](https://self-driving-lab-demo.readthedocs.io/en/stable/)
+[![Coveralls](https://img.shields.io/coveralls/github/<USER>/self-driving-lab-demo/main.svg)](https://coveralls.io/r/<USER>/self-driving-lab-demo)
+[![PyPI-Server](https://img.shields.io/pypi/v/self-driving-lab-demo.svg)](https://pypi.org/project/self-driving-lab-demo/)
 [![Conda-Forge](https://img.shields.io/conda/vn/conda-forge/self-driving-lab-demo.svg)](https://anaconda.org/conda-forge/self-driving-lab-demo)
+[![Monthly Downloads](https://pepy.tech/badge/self-driving-lab-demo/month)](https://pepy.tech/project/self-driving-lab-demo)
 [![Twitter](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&label=Twitter)](https://twitter.com/self-driving-lab-demo)
 -->
 
-**Check out [the notebooks](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/notebooks/README.md) for some tutorials and demonstrations and [the updated manuscript](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/self_driving_optics_demo-rev1.pdf)!**
+**Check out [the notebooks](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/notebooks/README.md) for some tutorials and demonstrations! See also [the updated manuscript](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/self_driving_optics_demo-rev1.pdf).**
 
 # self-driving-lab-demo (WIP)
 
-> Software and instructions for setting up and running an autonomous (self-driving) laboratory optics demo using dimmable RGB LEDs, a 10-channel spectrophotometer, a microcontroller, and an adaptive design algorithm.
+> Software and instructions for setting up and running an autonomous (self-driving) laboratory optics demo using dimmable RGB LEDs, an 8-channel spectrophotometer, a microcontroller, and an adaptive design algorithm.
 
 Self-driving labs are the future; however, the capital and expertise required can be daunting. We introduce the idea of a constrained, high-dimensional, multi-objective optimization task for less than $100, a square foot of desk space, and an hour of total setup time from the shopping cart to the first "autonomous drive." We use optics rather than chemistry for our demo; after all, light is easier to move than matter. While not strictly materials-based, importantly, several core principles of a self-driving materials discovery lab are retained in this cross-domain example: sending commands to hardware to adjust physical parameters, receiving measured objective properties, decision-making via active learning, and utilizing cloud-based simulations. The demo is accessible, extensible, modular, and repeatable, making it an ideal candidate for both low-cost experimental adaptive design prototyping and learning the principles of self-driving laboratories in a low-risk setting.
 
@@ -24,21 +27,13 @@ Self-driving labs are the future; however, the capital and expertise required ca
 - [Hackaday project page](https://hackaday.io/project/186289-self-driving-optics-demo)
 - [Adafruit Forum: Developing a closed-loop feedback system via DotStar
 LEDs](https://forums.adafruit.com/viewtopic.php?f=8&t=192420&p=930915)
-- [Adafruit required bill of materials (RPi Zero 2 W build)](http://www.adafruit.com/wishlists/551817)
-
-  <img src="reports/figures/required-wishlist.png" width=500>
-- [Adafruit optional bill of materials (RPi Zero 2 W build)](http://www.adafruit.com/wishlists/551821)
-
-  <img src="reports/figures/optional-wishlist.png" width=500>
-- [Adafruit bill of materials](https://www.adafruit.com/wishlists/551334) (my original one that I ordered and am planning to prototype with)
 
 Most of the build instructions will go into the Hackaday project page, probably with periodic updates to GitHub. GitHub will host the software that I develop.
 
 The BOM uses Raspberry Pi (RPi) in favor of Arduino to support running complex adaptive
-design algorithms locally using the higher-end RPi models such as 4B with 8 GB RAM. RPi
-is a standalone computer, whereas Arduino is a microcontroller.
+design algorithms locally using the higher-end RPi models such as 4B with 8 GB RAM. RPi Zero 2 W and RPi 4B are standalone computers, whereas Arduino typically only has microcontrollers.
 
-Additionally, due to the chip shortage, the current setup (2022-08-16) is designed for
+Due to the chip shortage, the current setup (2022-08-16) is designed for
 RPi Pico W (see https://github.com/sparks-baird/self-driving-lab-demo/issues/8), but can be adapted to other models.
 
 ## ToDo:
@@ -50,11 +45,39 @@ RPi Pico W (see https://github.com/sparks-baird/self-driving-lab-demo/issues/8),
 - [x] [simple 10-channel sensor test](https://github.com/adafruit/Adafruit_CircuitPython_AS7341)
 - [x] [simple Blinkt! + 10-channel sensor test](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/scripts/blinkt_as7341_basic.py)
 - [x] fixture to mount sensor perpendicular to LED Blinkt!
-- [ ] write unit tests for Blinkt! and 10-channel sensor
-- [ ] write script/library to integrate components
+- [x] write unit tests for Blinkt! and 10-channel sensor (simulations)
+- [x] write script/library to integrate components
 - [x] "first drive" using random search
+- [ ] multi-fidelity optimization
+- [ ] bluesky example
+- [ ] network of cloud-based SDLs
+- [ ] initial hackathon ([join the slack channel](https://join.slack.com/t/sdl2-workspace/shared_invite/zt-1fnsk7h1z-UwiewUn66ZhZIheYkH_daQ), invite link expires 10/9/2022. Open an issue if you need the invite link updated.)
+- [ ] 
 
-## Installation
+## Quick Start
+
+### Purchase the hardware
+1. [Pico W Bill of Materials](http://www.adafruit.com/wishlists/553992)
+  1. As of 2022-09-09, you will likely need to either buy a non-wireless RPi Pico H (presoldered headers) or an RPi Pico W + loose headers from a separate supplier (see the [list of official suppliers](https://www.raspberrypi.com/products/raspberry-pi-pico/?variant=raspberry-pi-pico-w) and then solder the headers yourself (or ask a friend or go to a local makerspace or similar). You may wish to sign up for stock notifications for the Pico W at e.g. PiShop. CanaKit seems to have more in stock, albeit higher shipping fees.
+1. 14 Gauge sculpting wire (preferably insulated), e.g. [at Amazon](https://a.co/d/7rxgOeR)
+
+### Pico W setup
+1. If you're going to do any soldering, test to make sure that your Pico W works prior to soldering by connecting the USB-A to micro-USB-B cable between your computer and Pico W while holding the BOOTSEL button the Pico. It should open up a notification for a new drive on your computer.
+1. Solder your headers to the Pico if necessary
+1. Plug the Pico W into the Maker Pi Pico base (the board has an image of where the USB port should be pointing to help you know which orientation to put it in)
+1. Cut (or bend repeatedly until it snaps) about 2.5-3 feet of sculpting wire. Loop the same wire through each of the four mounting holes on the Maker Pi Pico base and each of the four mounting holes on the AS7341, and position the AS7341 pinhole sensor perpendicular to and 2-3 inches away from the NeoPixel LED (labeled as GP28)
+1. (Re)connect the USB cable from the Pico W to your computer while holding the BOOTSEL button on the Pico W, and drag-drop the appropriate MicroPython firmware onto the drive that opens up. This will install MicroPython
+1. Download Thonny (for experienced users, you should still download Thonny for initial testing since it has nice features specific to microcontrollers, but of course for the actual programming you can use your preferred IDE)
+1. Download the code from the appropriate `src` folder (recommended: [`public_mqtt_sdl_demo`](https://github.com/sparks-baird/self-driving-lab-demo/tree/main/src/public_mqtt_sdl_demo))
+1. Rename `sample_secrets.py` to `secrets.py` and populate with the necessary WiFi info (and Pico ID if applicable). SSID is basically the WiFi network name. This may not work for school and work networks, so you can use a hotspot instead or only use the nonwireless functionality ([`nonwireless`](https://github.com/sparks-baird/self-driving-lab-demo/tree/main/src/nonwireless))
+1. Upload the code to the Pico W
+1. Open main.py and click "run" in Thonny
+
+#### Running the optimizations
+
+1. If you choose the `public_mqtt_sdl_demo`, you can control your SDL-Demo remotely from anywhere. Colab notebook WIP
+
+## Advanced Installation
 
 In order to set up the necessary environment:
 
@@ -105,6 +128,18 @@ Then take a look into the `scripts` and `notebooks` folders.
    ```bash
    conda env update -f environment.lock.yml --prune
    ```
+   
+## Other Builds
+
+
+- [Adafruit required bill of materials (RPi Zero 2 W build)](http://www.adafruit.com/wishlists/551817)
+
+  <img src="reports/figures/required-wishlist.png" width=500>
+- [Adafruit optional bill of materials (RPi Zero 2 W build)](http://www.adafruit.com/wishlists/551821)
+
+  <img src="reports/figures/optional-wishlist.png" width=500>
+- [Adafruit bill of materials](https://www.adafruit.com/wishlists/551334) (my original one that I ordered and am planning to prototype with)
+
 ## Project Organization
 
 ```
