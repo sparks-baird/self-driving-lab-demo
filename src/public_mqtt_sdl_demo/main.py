@@ -5,7 +5,7 @@ http://www.steves-internet-guide.com/into-mqtt-python-client/
 
 import json
 from secrets import PASSWORD, SSID
-from time import sleep
+from time import sleep, ticks_diff, ticks_ms
 
 import network
 from as7341_sensor import Sensor
@@ -74,6 +74,17 @@ def callback(topic, msg):
         client.publish(prefix + "as7341/", payload)
 
 
+def heartbeat(first):
+    global lastping
+    if first:
+        client.ping()
+        lastping = ticks_ms()
+    if ticks_diff(ticks_ms(), lastping) >= 300000:
+        client.ping()
+        lastping = ticks_ms()
+    return
+
+
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
     print(msg.topic + " " + str(msg.payload))
@@ -94,20 +105,11 @@ client.on_connect = on_connect
 client.on_message = on_message
 client.subscribe(prefix + "GPIO/#")
 
+heartbeat(True)
 
 while True:
     client.check_msg()
-
-
-# def heartbeat(first):
-#     global lastping
-#     if first:
-#         client.ping()
-#         lastping = time.ticks_ms()
-#     if time.ticks_diff(time.ticks_ms(), lastping) >= 300000:
-#         client.ping()
-#         lastping = time.ticks_ms()
-#     return
+    heartbeat(False)
 
 # heartbeat(True)
 
