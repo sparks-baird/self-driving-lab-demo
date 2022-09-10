@@ -44,7 +44,7 @@ def mqtt_observe_sensor_data(R, G, B, pico_id=None, hostname="test.mosquitto.org
     client.subscribe(sensor_topic)
 
     # ensures double quotes for JSON compatiblity
-    payload = json.dumps(dict(R=R, G=G, B=B))
+    payload = json.dumps(dict(R=int(R), G=int(G), B=int(B)))
     client.publish(neopixel_topic, payload)
 
     t = time()
