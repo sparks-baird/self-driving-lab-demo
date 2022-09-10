@@ -24,6 +24,17 @@ pixels = NeoPixel(Pin(28), 1)  # one NeoPixel on Pin 28 (GP28)
 
 sensor = Sensor()
 
+CHANNEL_NAMES = [
+    "ch410",
+    "ch440",
+    "ch470",
+    "ch510",
+    "ch550",
+    "ch583",
+    "ch620",
+    "ch670",
+]
+
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
 wlan.connect(SSID, PASSWORD)
@@ -65,9 +76,15 @@ def callback(topic, msg):
         pixels[0] = (r, g, b)
         pixels.write()
 
-        payload = json.dumps(
-            dict(pin=p, r=r, g=g, b=b, sensor_data=sensor.all_channels)
-        )
+        # payload = json.dumps(
+        #     dict(pin=p, r=r, g=g, b=b, sensor_data=sensor.all_channels)
+        # )
+        sensor_data = sensor.all_channels
+        sensor_data_dict = {}
+        for ch, datum in zip(CHANNEL_NAMES, sensor_data):
+            sensor_data_dict[ch] = datum
+
+        payload = json.dumps(sensor_data_dict)
 
         print(payload)
 
