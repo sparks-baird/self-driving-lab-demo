@@ -185,7 +185,7 @@ class SelfDrivingLabDemo(object):
         # 1.0 is really bright, so no more than `max_brightness`
         RGB = 255 * rng.random(3) * self.max_brightness
         R, G, B = np.round(RGB).astype(int)
-        return R, G, B
+        return int(R), int(G), int(B)
 
     @property
     def bounds(self):
