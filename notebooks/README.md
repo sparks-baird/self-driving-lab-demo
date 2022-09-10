@@ -54,8 +54,10 @@ difficult to connect to or when nonwireless Pico is being used).
 
 - multi-fidelity optimization (simulation and experiments)
 - high-dimensional Bayesian optimization
+- asynchronous/batch optimization using network of experiments
+- [Bluesky example](https://github.com/bluesky/bluesky)
 - Grid search vs. random vs. Sobol vs. stochastic gradient descent vs. genetic algorithm
-  vs. Bayesian optimization
+  vs. Bayesian optimization (e.g. via [Olympus benchmarking platform](https://github.com/aspuru-guzik-group/olympus))
 
 Any requests? Post on the [issue
 tracker](https://github.com/sparks-baird/self-driving-lab-demo/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)
