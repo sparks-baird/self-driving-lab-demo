@@ -13,7 +13,7 @@ import paho.mqtt.client as mqtt
 import requests
 import serial
 
-from self_driving_lab_demo.core import CHANNEL_NAMES
+from self_driving_lab_demo.utils.channel_info import CHANNEL_NAMES
 
 sensor_data_queue = Queue()
 timeout = 30
