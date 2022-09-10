@@ -41,10 +41,10 @@ difficult to connect to or when nonwireless Pico is being used).
     > (as opposed to DotStar) LED 🥑
 
 ## 4.* Controlling the Pico W Remotely (IoT-style)
-  - [`4.0-paho-mqtt-colab-sdl-demo.ipynb`](4.0-paho-mqtt-colab-sdl-demo.ipynb)
-  - > Google Colab: 📡 Control the Pico W remotely using [MQTT (The Standard for IoT Messaging)](https://mqtt.org/) 📡
-  - [`4.1-paho-mqtt-colab-sdl-demo-search.ipynb`](4.1-paho-mqtt-colab-sdl-demo-search.ipynb)
-  - > Google Colab: 🔁 Run the same algorithm comparison experiments controlled from the cloud! 🔁
+  - [`4.0-paho-mqtt-colab-sdl-demo.ipynb`](4.0-paho-mqtt-colab-sdl-demo.ipynb) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sparks-baird/self-driving-lab-demo/blob/main/notebooks/4.0-paho-mqtt-colab-sdl-demo.ipynb)
+  - > 📡 Control the Pico W remotely using [MQTT (The Standard for IoT Messaging)](https://mqtt.org/) 📡
+  - [`4.1-paho-mqtt-colab-sdl-demo-search.ipynb`](4.1-paho-mqtt-colab-sdl-demo-search.ipynb) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sparks-baird/self-driving-lab-demo/blob/main/notebooks/4.1-paho-mqtt-colab-sdl-demo-search.ipynb)
+  - > 🔁 Run the same algorithm comparison experiments controlled from the cloud! 🔁
 
 ## 5.* Nonwireless Control of Pico
   - [`5.0-nonwireless-search.ipynb`](5.0-nonwireless-search.ipynb)
