@@ -13,9 +13,7 @@ def grid_search(sdl, num_iter):
 
     grid = list(ParameterGrid(param_grid))
 
-    grid_data = [
-        sdl.evaluate(pt["brightness"], pt["R"], pt["G"], pt["B"]) for pt in grid
-    ]
+    grid_data = [sdl.evaluate(pt["R"], pt["G"], pt["B"]) for pt in grid]
 
     return grid, grid_data
 
@@ -29,10 +27,9 @@ def random_search(sdl, num_iter):
     return random_inputs, random_data
 
 
-def ax_bayesian_optimization(sdl, num_iter):
+def ax_bayesian_optimization(sdl, num_iter, objective_name="frechet"):
     def evaluation_function(parameters):
         return sdl.evaluate(
-            brightness=parameters["brightness"],
             R=parameters["R"],
             G=parameters["G"],
             B=parameters["B"],
@@ -41,7 +38,7 @@ def ax_bayesian_optimization(sdl, num_iter):
     best_parameters, values, experiment, model = optimize(
         parameters=sdl.parameters,
         evaluation_function=evaluation_function,
-        objective_name="mae",
+        objective_name=objective_name,
         minimize=True,
         total_trials=num_iter,
     )
