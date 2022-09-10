@@ -42,7 +42,7 @@ try:
     import board
     from adafruit_as7341 import AS7341
     from blinkt import clear, set_brightness, set_pixel, show
-except NotImplementedError as e:
+except (NotImplementedError, ModuleNotFoundError) as e:
     print(e)
     _logger.warning(
         "Safe to ignore if this is CI or not on a Raspberry Pi. However, only the simulator will be available."  # noqa: E501
