@@ -10,6 +10,8 @@ from time import time
 import paho.mqtt.client as mqtt
 import requests
 
+from self_driving_lab_demo.core import CHANNEL_NAMES
+
 sensor_data_queue = Queue()
 timeout = 30
 
@@ -52,7 +54,10 @@ def mqtt_observe_sensor_data(R, G, B, pico_id=None, hostname="test.mosquitto.org
         client.loop()
         if t - time() > 30:
             raise ValueError("Failed to retrieve message within timeout period")
-    return sensor_data_queue.get()
+    return {
+        ch: datum
+        for ch, datum in zip(CHANNEL_NAMES, sensor_data_queue.get()["sensor_data"])
+    }
 
 
 def pico_server_observe_sensor_data(
