@@ -4,11 +4,16 @@ https://www.steves-internet-guide.com/receiving-messages-mqtt-python-clientq=Que
 import ast
 import json
 import logging
+import sys
+from ast import literal_eval
 from queue import Queue
 from time import time
 
 import paho.mqtt.client as mqtt
 import requests
+import serial
+
+from self_driving_lab_demo.core import CHANNEL_NAMES
 
 sensor_data_queue = Queue()
 timeout = 30
@@ -67,3 +72,29 @@ def pico_server_observe_sensor_data(
     r = requests.post(url, data=payload)
     sensor_data_cookie = r.cookies["sensor_data"]
     return ast.literal_eval(sensor_data_cookie)
+
+
+def nonwireless_pico_observe_sensor_data(R, G, B, astep=100, atime=999, com=None):
+
+    # If on Windows, might not be COM3, check device manager --> Ports
+    # https://www.tomshardware.com/how-to/detect-com-port-windows-serial-port-notifier
+    # or take a look at the bottom-RHS of Thonny when connected to the RPi
+    if com is None:
+        com = "COM3" if "win" in sys.platform else "/dev/ttyACM0"
+
+    s = serial.Serial(com, 115200)
+
+    def set_color(red, green, blue):
+        s.write(f"set_color({red}, {green}, {blue})\n".encode("utf-8"))
+
+    def read_sensor(astep=100, atime=999):
+        s.write(f"read_sensor({astep}, {atime})\n".encode("utf-8"))
+        sensor_data_str = s.readline().strip().decode("utf-8")
+        s.readline()  # get rid of the extra line
+        if sensor_data_str == "":
+            raise ValueError("No data returned")
+        return literal_eval(sensor_data_str)
+
+    set_color(R, G, B)
+    sensor_data = read_sensor(astep=astep, atime=atime)
+    return {channel: datum for channel, datum in zip(CHANNEL_NAMES, sensor_data)}
