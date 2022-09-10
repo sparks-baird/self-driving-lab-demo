@@ -1,13 +1,10 @@
-[![Project generated with PyScaffold](https://img.shields.io/badge/-PyScaffold-005CA0?logo=pyscaffold)](https://pyscaffold.org/)
+[![Project generated with PyScaffold](https://img.shields.io/badge/-PyScaffold-005CA0?logo=pyscaffold)](https://pyscaffold.org/) [![PyPI-Server](https://img.shields.io/pypi/v/self-driving-lab-demo.svg)](https://pypi.org/project/self-driving-lab-demo/) [![Monthly Downloads](https://pepy.tech/badge/self-driving-lab-demo/month)](https://pepy.tech/project/self-driving-lab-demo) [![Coveralls](https://img.shields.io/coveralls/github/sparks-baird/self-driving-lab-demo/main.svg)](https://coveralls.io/r/sparks-baird/self-driving-lab-demo)
 
-[![](https://hackaday-io-badges.herokuapp.com/186289.svg?)](https://hackaday.io/project/186289-self-driving-optics-demo)
+<!-- [![](https://hackaday-io-badges.herokuapp.com/186289.svg)](https://hackaday.io/project/186289-self-driving-optics-demo) -->
 <!-- These are examples of badges you might also want to add to your README. Update the URLs accordingly.
 [![Built Status](https://api.cirrus-ci.com/github/<USER>/self-driving-lab-demo.svg?branch=main)](https://cirrus-ci.com/github/<USER>/self-driving-lab-demo)
 [![ReadTheDocs](https://readthedocs.org/projects/self-driving-lab-demo/badge/?version=latest)](https://self-driving-lab-demo.readthedocs.io/en/stable/)
-[![Coveralls](https://img.shields.io/coveralls/github/<USER>/self-driving-lab-demo/main.svg)](https://coveralls.io/r/<USER>/self-driving-lab-demo)
-[![PyPI-Server](https://img.shields.io/pypi/v/self-driving-lab-demo.svg)](https://pypi.org/project/self-driving-lab-demo/)
 [![Conda-Forge](https://img.shields.io/conda/vn/conda-forge/self-driving-lab-demo.svg)](https://anaconda.org/conda-forge/self-driving-lab-demo)
-[![Monthly Downloads](https://pepy.tech/badge/self-driving-lab-demo/month)](https://pepy.tech/project/self-driving-lab-demo)
 [![Twitter](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&label=Twitter)](https://twitter.com/self-driving-lab-demo)
 -->
 
