@@ -24,6 +24,12 @@ pixels = NeoPixel(Pin(28), 1)  # one NeoPixel on Pin 28 (GP28)
 
 sensor = Sensor()
 
+try:
+    onboard_led = Pin("LED", Pin.OUT)  # only works for Pico W
+except Exception as e:
+    print(e)
+    onboard_led = Pin(25, Pin.OUT)
+
 CHANNEL_NAMES = [
     "ch410",
     "ch440",
@@ -102,6 +108,20 @@ def heartbeat(first):
     return
 
 
+def sign_of_life(first):
+    global last_blink
+    if first:
+        onboard_led.on()
+        last_blink = ticks_ms()
+    time_since = ticks_diff(ticks_ms(), last_blink)
+    if onboard_led.value() == 0 and time_since >= 5000:
+        onboard_led.toggle()
+        last_blink = ticks_ms()
+    elif onboard_led.value() == 1 and time_since >= 500:
+        onboard_led.toggle()
+        last_blink = ticks_ms()
+
+
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
     print(msg.topic + " " + str(msg.payload))
@@ -123,12 +143,9 @@ client.on_message = on_message
 client.subscribe(prefix + "GPIO/#")
 
 heartbeat(True)
+sign_of_life(True)
 
 while True:
     client.check_msg()
     heartbeat(False)
-
-# heartbeat(True)
-
-# while True:
-#     heartbeat(False)
+    sign_of_life(False)
