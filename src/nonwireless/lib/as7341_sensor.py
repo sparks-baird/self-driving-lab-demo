@@ -10,7 +10,7 @@ class ExternalDeviceNotFound(OSError):
 
 class Sensor:
     def __init__(
-        self, atime=100, astep=999, gain=64, i2c=I2C(1, scl=Pin(27), sda=Pin(26))
+        self, atime=100, astep=999, gain=128, i2c=I2C(1, scl=Pin(27), sda=Pin(26))
     ):
         """Wrapper for Rob Hamerling's AS7341 implementation.
 
@@ -31,7 +31,7 @@ class Sensor:
             The integration time step count. Total integration time will be (ATIME + 1)
             * (ASTEP + 1) * 2.78µS, by default 999, meaning 281 ms assuming atime=100
         again : int, optional
-            The ADC gain multiplier. factor 8 (with pretty much light), by default 4
+            The ADC gain multiplier. factor 8 (with pretty much light), by default 128
         i2c : I2C, optional
             The I2C bus, by default machine.I2C(1, scl=machine.Pin(27),
             sda=machine.Pin(26))

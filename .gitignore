@@ -62,3 +62,5 @@ scripts/pymakr/**/*
 src/adafruit_io_sdl_demo/secrets.py
 reports/videos/sdl-demo.vpb
 reports/presentations/sdl-demo-acceleration-conf.pptx
+src/public_mqtt_sdl_demo/secrets.py
+**/secrets.py
