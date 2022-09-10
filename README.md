@@ -50,7 +50,6 @@ RPi Pico W (see https://github.com/sparks-baird/self-driving-lab-demo/issues/8),
 - [ ] bluesky example
 - [ ] network of cloud-based SDLs
 - [ ] initial hackathon ([join the slack channel](https://join.slack.com/t/sdl2-workspace/shared_invite/zt-1fnsk7h1z-UwiewUn66ZhZIheYkH_daQ), invite link expires 10/9/2022. Open an issue if you need the invite link updated.)
-- [ ]
 
 ## Quick Start
 
