@@ -82,10 +82,12 @@ def callback(topic, msg):
         pixels[0] = (r, g, b)
         pixels.write()
 
-        # payload = json.dumps(
-        #     dict(pin=p, r=r, g=g, b=b, sensor_data=sensor.all_channels)
-        # )
         sensor_data = sensor.all_channels
+
+        # Turn off the LED
+        pixels[0] = (0, 0, 0)
+        pixels.write()
+
         sensor_data_dict = {}
         for ch, datum in zip(CHANNEL_NAMES, sensor_data):
             sensor_data_dict[ch] = datum
