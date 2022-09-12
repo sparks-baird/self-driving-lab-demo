@@ -68,7 +68,7 @@ def on_connect(client, userdata, flags, rc):
     print("Connected with result code " + str(rc))
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
-    client.subscribe(prefix + "GPIO/#")
+    client.subscribe(prefix + "GPIO/#", qos=2)
 
 
 def callback(topic, msg):
@@ -92,11 +92,13 @@ def callback(topic, msg):
         for ch, datum in zip(CHANNEL_NAMES, sensor_data):
             sensor_data_dict[ch] = datum
 
+        sensor_data_dict["_input_message"] = data
+
         payload = json.dumps(sensor_data_dict)
 
         print(payload)
 
-        client.publish(prefix + "as7341/", payload)
+        client.publish(prefix + "as7341/", payload, qos=1)
 
 
 def heartbeat(first):
