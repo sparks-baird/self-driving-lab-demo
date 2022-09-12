@@ -5,7 +5,7 @@ from sklearn.model_selection import ParameterGrid
 
 def grid_search(sdl, num_iter):
     param_grid = {}
-    num_pts_per_dim = np.floor(num_iter ** (1 / len(sdl.bounds)))
+    num_pts_per_dim = int(np.floor(num_iter ** (1 / len(sdl.bounds))))
     for name, bnd in sdl.bounds.items():
         param_grid[name] = np.linspace(bnd[0], bnd[1], num=num_pts_per_dim)
         if isinstance(bnd[0], int):
