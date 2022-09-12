@@ -47,13 +47,13 @@ def mqtt_observe_sensor_data(
             print("Connected with result code " + str(rc))
         # Subscribing in on_connect() means that if we lose the connection and
         # reconnect then subscriptions will be renewed.
-        client.subscribe(sensor_topic, qos=2)
+        client.subscribe(sensor_topic, qos=0)
 
     client = mqtt.Client()  # create new instance
     client.on_connect = on_connect
     client.on_message = on_message
     client.connect(hostname)  # connect to broker
-    client.subscribe(sensor_topic, qos=1)
+    client.subscribe(sensor_topic, qos=0)
 
     # ensures double quotes for JSON compatiblity
     payload = json.dumps(
@@ -65,7 +65,7 @@ def mqtt_observe_sensor_data(
             _experiment_id=experiment_id,
         )
     )
-    client.publish(neopixel_topic, payload, qos=1)
+    client.publish(neopixel_topic, payload, qos=0)
 
     client.loop_start()
     while True:
