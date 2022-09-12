@@ -114,7 +114,7 @@ class SelfDrivingLabDemo(object):
         self,
         random_rng=np.random.default_rng(42),
         target_seed=604523,
-        rest_seconds=0.1,
+        rest_seconds=0.0,
         max_brightness=0.35,
         autoload=False,
         simulation=False,
