@@ -190,12 +190,15 @@ class SelfDrivingLabDemo(object):
                 "must call `load_target_data` first or instantiate with autoload=True"
             )
         results = self.observe_sensor_data(R, G, B)
-        target_data = list(self.target_results.values())
-        data = list(results.values())
+        target_data = [self.target_results[ch] for ch in CHANNEL_NAMES]
+        data = [results[ch] for ch in CHANNEL_NAMES]
 
         results["mae"] = mean_absolute_error(target_data, data)
         results["rmse"] = mean_squared_error(target_data, data, squared=False)
-        results["frechet"] = frechet_dist(target_data, data)
+
+        target_dist = np.array([CHANNEL_WAVELENGTHS, target_data]).T
+        dist = np.array([CHANNEL_WAVELENGTHS, data]).T
+        results["frechet"] = frechet_dist(target_dist, dist)
         return results
 
     def clear(self):
@@ -224,3 +227,9 @@ class SDLSimulation(SelfDrivingLabDemo):
 # for wavelength, fwhm in zip(wavelengths, fwhm):
 #     rv = norm(loc=wavelength, scale=fwhm / 2.355)
 #     weighted_filter = weighted_filter + rv.pdf(wavelength_grid)
+
+# target_data = list(self.target_results.values())
+# data = list(results.values())
+
+# target_dist = [[wv, pow] for wv, pow in zip(CHANNEL_WAVELENGTHS, target_data)]
+# dist = [(wv, pow) for wv, pow in zip(CHANNEL_WAVELENGTHS, data)]
