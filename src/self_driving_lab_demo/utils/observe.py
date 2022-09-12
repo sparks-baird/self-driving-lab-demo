@@ -65,6 +65,7 @@ def mqtt_observe_sensor_data(
             assert sensor_data["_input_message"]["G"] == G, "green value mismatch"
             assert sensor_data["_input_message"]["B"] == B, "blue value mismatch"
             client.loop_stop()
+            sensor_data.pop("_input_message")  # remove the input message
             return sensor_data
 
 
