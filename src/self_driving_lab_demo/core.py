@@ -33,7 +33,7 @@ from self_driving_lab_demo import data as data_module
 from self_driving_lab_demo.utils.channel_info import (
     CHANNEL_HEX_COLORS,
     CHANNEL_NAMES,
-    CHANNEL_WAVELENGTHS,
+    CHANNEL_WAVELENGTHS_MEAN_FWHM,
 )
 from self_driving_lab_demo.utils.observe import mqtt_observe_sensor_data
 
@@ -61,7 +61,7 @@ class SensorSimulator(object):
 
     @property
     def channel_wavelengths(self):
-        return CHANNEL_WAVELENGTHS
+        return CHANNEL_WAVELENGTHS_MEAN_FWHM
 
     @property
     def channel_hex_colors(self):
@@ -174,8 +174,12 @@ class SelfDrivingLabDemo(object):
         return CHANNEL_NAMES
 
     @property
+    def channel_wavelengths_mean_fwhm(self):
+        return CHANNEL_WAVELENGTHS_MEAN_FWHM
+
+    @property
     def channel_wavelengths(self):
-        return CHANNEL_WAVELENGTHS
+        return [ch[0] for ch in self.channel_wavelengths_mean_fwhm]
 
     def get_target_inputs(self):
         return self.get_random_inputs(np.random.default_rng(self.target_seed))
@@ -190,14 +194,14 @@ class SelfDrivingLabDemo(object):
                 "must call `load_target_data` first or instantiate with autoload=True"
             )
         results = self.observe_sensor_data(R, G, B)
-        target_data = [self.target_results[ch] for ch in CHANNEL_NAMES]
-        data = [results[ch] for ch in CHANNEL_NAMES]
+        target_data = [self.target_results[ch] for ch in self.channel_names]
+        data = [results[ch] for ch in self.channel_names]
 
         results["mae"] = mean_absolute_error(target_data, data)
         results["rmse"] = mean_squared_error(target_data, data, squared=False)
 
-        target_dist = np.array([CHANNEL_WAVELENGTHS, target_data]).T
-        dist = np.array([CHANNEL_WAVELENGTHS, data]).T
+        target_dist = np.array([self.channel_wavelengths, target_data]).T
+        dist = np.array([self.channel_wavelengths, data]).T
         results["frechet"] = frechet_dist(target_dist, dist)
         return results
 
