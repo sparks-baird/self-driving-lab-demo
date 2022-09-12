@@ -7,7 +7,7 @@ import logging
 import sys
 from ast import literal_eval
 from queue import Queue
-from time import time
+from uuid import uuid4
 
 import paho.mqtt.client as mqtt
 import requests
@@ -15,7 +15,7 @@ import serial
 
 from self_driving_lab_demo.utils.channel_info import CHANNEL_NAMES
 
-sensor_data_queue = Queue()
+sensor_data_queue: "Queue[dict]" = Queue()
 timeout = 30
 
 _logger = logging.getLogger(__name__)
@@ -25,11 +25,16 @@ def on_message(client, userdata, msg):
     sensor_data_queue.put(json.loads(msg.payload))
 
 
-def mqtt_observe_sensor_data(R, G, B, pico_id=None, hostname="test.mosquitto.org"):
+def mqtt_observe_sensor_data(
+    R, G, B, pico_id=None, session_id=None, hostname="test.mosquitto.org"
+):
     if pico_id is None:
         _logger.warning(
             "No pico_id provided, but should be provided. On Pico, run the following to get your pico_id. from machine import unique_id; from ubinascii import hexlify; print(hexlify(unique_id()).decode()). Or change pico_id to whatever you want, but make it match between the Pico main.py and this mqtt_observe_sensor_data kwarg."  # noqa: E501
         )
+    if session_id is None:
+        session_id = str(uuid4())
+
     prefix = f"sdl-demo/picow/{pico_id}/"
     neopixel_topic = prefix + "GPIO/28"
     sensor_topic = prefix + "as7341/"
@@ -40,24 +45,27 @@ def mqtt_observe_sensor_data(R, G, B, pico_id=None, hostname="test.mosquitto.org
             print("Connected with result code " + str(rc))
         # Subscribing in on_connect() means that if we lose the connection and
         # reconnect then subscriptions will be renewed.
-        client.subscribe(sensor_topic)
+        client.subscribe(sensor_topic, qos=2)
 
     client = mqtt.Client()  # create new instance
     client.on_connect = on_connect
     client.on_message = on_message
     client.connect(hostname)  # connect to broker
-    client.subscribe(sensor_topic)
+    client.subscribe(sensor_topic, qos=1)
 
     # ensures double quotes for JSON compatiblity
-    payload = json.dumps(dict(R=int(R), G=int(G), B=int(B)))
-    client.publish(neopixel_topic, payload)
+    payload = json.dumps(dict(R=int(R), G=int(G), B=int(B), _session_id=session_id))
+    client.publish(neopixel_topic, payload, qos=2)
 
-    t = time()
-    while sensor_data_queue.empty():
-        client.loop()
-        if t - time() > 30:
-            raise ValueError("Failed to retrieve message within timeout period")
-    return sensor_data_queue.get()
+    client.loop_start()
+    while True:
+        sensor_data = sensor_data_queue.get(timeout)
+        if sensor_data["_input_message"]["_session_id"] == session_id:
+            assert sensor_data["_input_message"]["R"] == R, "red value mismatch"
+            assert sensor_data["_input_message"]["G"] == G, "green value mismatch"
+            assert sensor_data["_input_message"]["B"] == B, "blue value mismatch"
+            client.loop_stop()
+            return sensor_data
 
 
 def pico_server_observe_sensor_data(
@@ -98,3 +106,12 @@ def nonwireless_pico_observe_sensor_data(R, G, B, astep=100, atime=999, com=None
     set_color(R, G, B)
     sensor_data = read_sensor(astep=astep, atime=atime)
     return {channel: datum for channel, datum in zip(CHANNEL_NAMES, sensor_data)}
+
+
+# %% Code Graveyard
+
+# t = time()
+# while sensor_data_queue.empty():
+#     client.loop()
+#     if t - time() > 30:
+#         raise ValueError("Failed to retrieve message within timeout period")
