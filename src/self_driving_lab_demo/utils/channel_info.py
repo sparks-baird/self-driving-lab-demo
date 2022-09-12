@@ -1,5 +1,5 @@
 """Information about AS7341 Channels"""
-CHANNEL_WAVELENGTHS = [
+CHANNEL_WAVELENGTHS_MEAN_FWHM = [
     (410, 29),
     (440, 33),
     (470, 36),

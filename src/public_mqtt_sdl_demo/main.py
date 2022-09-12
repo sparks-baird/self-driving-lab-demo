@@ -21,7 +21,6 @@ prefix = f"sdl-demo/picow/{my_id}/"
 print(f"prefix: {prefix}")
 
 pixels = NeoPixel(Pin(28), 1)  # one NeoPixel on Pin 28 (GP28)
-
 sensor = Sensor()
 
 try:
@@ -68,17 +67,21 @@ def on_connect(client, userdata, flags, rc):
     print("Connected with result code " + str(rc))
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
-    client.subscribe(prefix + "GPIO/#", qos=2)
+
+    # prefer qos=2, but not implemented
+    client.subscribe(prefix + "GPIO/#", qos=0)
 
 
 def callback(topic, msg):
     t = topic.decode("utf-8").lstrip(prefix)
     print(t)
+
     if t[:5] == "GPIO/":
         p = int(t[5:])
         print(msg)
         data = json.loads(msg)
         r, g, b = [data[key] for key in ["R", "G", "B"]]
+
         pixels[0] = (r, g, b)
         pixels.write()
 
@@ -98,7 +101,9 @@ def callback(topic, msg):
 
         print(payload)
 
-        client.publish(prefix + "as7341/", payload, qos=1)
+        # prefer qos=1, but causes recursion error if too many messages in short period
+        # of time
+        client.publish(prefix + "as7341/", payload, qos=0)
 
 
 def heartbeat(first):

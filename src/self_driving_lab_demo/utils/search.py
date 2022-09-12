@@ -29,11 +29,14 @@ def random_search(sdl, num_iter):
 
 def ax_bayesian_optimization(sdl, num_iter, objective_name="frechet"):
     def evaluation_function(parameters):
-        return sdl.evaluate(
+        results = sdl.evaluate(
             R=parameters["R"],
             G=parameters["G"],
             B=parameters["B"],
         )
+        # Ax doesn't like the nested dictionary nor a flattened dict with string data
+        results.pop("_input_message", None)
+        return results
 
     best_parameters, values, experiment, model = optimize(
         parameters=sdl.parameters,

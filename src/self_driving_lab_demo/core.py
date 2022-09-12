@@ -33,7 +33,7 @@ from self_driving_lab_demo import data as data_module
 from self_driving_lab_demo.utils.channel_info import (
     CHANNEL_HEX_COLORS,
     CHANNEL_NAMES,
-    CHANNEL_WAVELENGTHS,
+    CHANNEL_WAVELENGTHS_MEAN_FWHM,
 )
 from self_driving_lab_demo.utils.observe import mqtt_observe_sensor_data
 
@@ -61,7 +61,7 @@ class SensorSimulator(object):
 
     @property
     def channel_wavelengths(self):
-        return CHANNEL_WAVELENGTHS
+        return CHANNEL_WAVELENGTHS_MEAN_FWHM
 
     @property
     def channel_hex_colors(self):
@@ -114,7 +114,7 @@ class SelfDrivingLabDemo(object):
         self,
         random_rng=np.random.default_rng(42),
         target_seed=604523,
-        rest_seconds=0.1,
+        rest_seconds=0.0,
         max_brightness=0.35,
         autoload=False,
         simulation=False,
@@ -174,8 +174,12 @@ class SelfDrivingLabDemo(object):
         return CHANNEL_NAMES
 
     @property
+    def channel_wavelengths_mean_fwhm(self):
+        return CHANNEL_WAVELENGTHS_MEAN_FWHM
+
+    @property
     def channel_wavelengths(self):
-        return CHANNEL_WAVELENGTHS
+        return [ch[0] for ch in self.channel_wavelengths_mean_fwhm]
 
     def get_target_inputs(self):
         return self.get_random_inputs(np.random.default_rng(self.target_seed))
@@ -190,12 +194,15 @@ class SelfDrivingLabDemo(object):
                 "must call `load_target_data` first or instantiate with autoload=True"
             )
         results = self.observe_sensor_data(R, G, B)
-        target_data = list(self.target_results.values())
-        data = list(results.values())
+        target_data = [self.target_results[ch] for ch in self.channel_names]
+        data = [results[ch] for ch in self.channel_names]
 
         results["mae"] = mean_absolute_error(target_data, data)
         results["rmse"] = mean_squared_error(target_data, data, squared=False)
-        results["frechet"] = frechet_dist(target_data, data)
+
+        target_dist = np.array([self.channel_wavelengths, target_data]).T
+        dist = np.array([self.channel_wavelengths, data]).T
+        results["frechet"] = frechet_dist(target_dist, dist)
         return results
 
     def clear(self):
@@ -224,3 +231,9 @@ class SDLSimulation(SelfDrivingLabDemo):
 # for wavelength, fwhm in zip(wavelengths, fwhm):
 #     rv = norm(loc=wavelength, scale=fwhm / 2.355)
 #     weighted_filter = weighted_filter + rv.pdf(wavelength_grid)
+
+# target_data = list(self.target_results.values())
+# data = list(results.values())
+
+# target_dist = [[wv, pow] for wv, pow in zip(CHANNEL_WAVELENGTHS, target_data)]
+# dist = [(wv, pow) for wv, pow in zip(CHANNEL_WAVELENGTHS, data)]

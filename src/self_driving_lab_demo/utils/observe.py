@@ -35,6 +35,8 @@ def mqtt_observe_sensor_data(
     if session_id is None:
         session_id = str(uuid4())
 
+    experiment_id = str(uuid4())
+
     prefix = f"sdl-demo/picow/{pico_id}/"
     neopixel_topic = prefix + "GPIO/28"
     sensor_topic = prefix + "as7341/"
@@ -45,7 +47,7 @@ def mqtt_observe_sensor_data(
             print("Connected with result code " + str(rc))
         # Subscribing in on_connect() means that if we lose the connection and
         # reconnect then subscriptions will be renewed.
-        client.subscribe(sensor_topic, qos=2)
+        client.subscribe(sensor_topic, qos=1)
 
     client = mqtt.Client()  # create new instance
     client.on_connect = on_connect
@@ -54,16 +56,25 @@ def mqtt_observe_sensor_data(
     client.subscribe(sensor_topic, qos=1)
 
     # ensures double quotes for JSON compatiblity
-    payload = json.dumps(dict(R=int(R), G=int(G), B=int(B), _session_id=session_id))
+    payload = json.dumps(
+        dict(
+            R=int(R),
+            G=int(G),
+            B=int(B),
+            _session_id=session_id,
+            _experiment_id=experiment_id,
+        )
+    )
     client.publish(neopixel_topic, payload, qos=2)
 
     client.loop_start()
     while True:
         sensor_data = sensor_data_queue.get(timeout)
-        if sensor_data["_input_message"]["_session_id"] == session_id:
-            assert sensor_data["_input_message"]["R"] == R, "red value mismatch"
-            assert sensor_data["_input_message"]["G"] == G, "green value mismatch"
-            assert sensor_data["_input_message"]["B"] == B, "blue value mismatch"
+        inp = sensor_data["_input_message"]
+        if inp["_session_id"] == session_id and inp["_experiment_id"] == experiment_id:
+            assert inp["R"] == R, "red value mismatch"
+            assert inp["G"] == G, "green value mismatch"
+            assert inp["B"] == B, "blue value mismatch"
             client.loop_stop()
             sensor_data.pop("_input_message")  # remove the input message
             return sensor_data
