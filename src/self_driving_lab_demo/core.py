@@ -135,7 +135,7 @@ class SelfDrivingLabDemo(object):
 
         if autoload:
             # must come after creating sensor attribute
-            self.load_target_data()
+            self.observe_target_results()
 
     def observe_sensor_data(self, R, G, B):
         if self.simulation:
@@ -180,7 +180,7 @@ class SelfDrivingLabDemo(object):
     def get_target_inputs(self):
         return self.get_random_inputs(np.random.default_rng(self.target_seed))
 
-    def load_target_data(self):
+    def observe_target_results(self):
         self.target_results = self.observe_sensor_data(*self.get_target_inputs())
         return self.target_results
 
@@ -205,7 +205,7 @@ class SelfDrivingLabDemo(object):
 class SDLSimulation(SelfDrivingLabDemo):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.target_data = self.load_target_data()
+        self.target_data = self.observe_target_results()
 
     def observe_sensor_data(self, R, G, B):
         return super().observe_sensor_data(R, G, B)
