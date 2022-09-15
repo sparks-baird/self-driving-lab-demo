@@ -1,4 +1,4 @@
-[![](https://hackaday-io-badges.herokuapp.com/186289.svg?b)](https://hackaday.io/project/186289-self-driving-optics-demo) [![Project generated with PyScaffold](https://img.shields.io/badge/-PyScaffold-005CA0?logo=pyscaffold)](https://pyscaffold.org/) [![PyPI-Server](https://img.shields.io/pypi/v/self-driving-lab-demo.svg)](https://pypi.org/project/self-driving-lab-demo/) [![Monthly Downloads](https://pepy.tech/badge/self-driving-lab-demo/month)](https://pepy.tech/project/self-driving-lab-demo) [![Coveralls](https://img.shields.io/coveralls/github/sparks-baird/self-driving-lab-demo/main.svg)](https://coveralls.io/r/sparks-baird/self-driving-lab-demo)
+[<img src="https://hackaday-io-badges.herokuapp.com/186289.svg?b" height=21>](https://hackaday.io/project/186289-self-driving-optics-demo) [![Project generated with PyScaffold](https://img.shields.io/badge/-PyScaffold-005CA0?logo=pyscaffold)](https://pyscaffold.org/) [![PyPI-Server](https://img.shields.io/pypi/v/self-driving-lab-demo.svg)](https://pypi.org/project/self-driving-lab-demo/) [![Monthly Downloads](https://pepy.tech/badge/self-driving-lab-demo/month)](https://pepy.tech/project/self-driving-lab-demo) [![Coveralls](https://img.shields.io/coveralls/github/sparks-baird/self-driving-lab-demo/main.svg)](https://coveralls.io/r/sparks-baird/self-driving-lab-demo)
 <!-- These are examples of badges you might also want to add to your README. Update the URLs accordingly.
 [![Built Status](https://api.cirrus-ci.com/github/<USER>/self-driving-lab-demo.svg?branch=main)](https://cirrus-ci.com/github/<USER>/self-driving-lab-demo)
 [![ReadTheDocs](https://readthedocs.org/projects/self-driving-lab-demo/badge/?version=latest)](https://self-driving-lab-demo.readthedocs.io/en/stable/)
@@ -15,9 +15,24 @@
 
 > Software and instructions for setting up and running an autonomous (self-driving) laboratory optics demo using dimmable RGB LEDs, an 8-channel spectrophotometer, a microcontroller, and an adaptive design algorithm.
 
-Self-driving labs are the future; however, the capital and expertise required can be daunting. We introduce the idea of a constrained, high-dimensional, multi-objective optimization task for less than $100, a square foot of desk space, and an hour of total setup time from the shopping cart to the first "autonomous drive." We use optics rather than chemistry for our demo; after all, light is easier to move than matter. While not strictly materials-based, importantly, several core principles of a self-driving materials discovery lab are retained in this cross-domain example: sending commands to hardware to adjust physical parameters, receiving measured objective properties, decision-making via active learning, and utilizing cloud-based simulations. The demo is accessible, extensible, modular, and repeatable, making it an ideal candidate for both low-cost experimental adaptive design prototyping and learning the principles of self-driving laboratories in a low-risk setting.
+Self-driving labs are the future; however, the capital and expertise required can be daunting. We introduce the idea of an experimental optimization task for less than $100, a square foot of desk space, and an hour of total setup time from the shopping cart to the first "autonomous drive." We use optics rather than chemistry for our demo; after all, light is easier to move than matter. While not strictly materials-based, importantly, several core principles of a self-driving materials discovery lab are retained in this cross-domain example: sending commands to hardware to adjust physical parameters, receiving measured objective properties, decision-making via active learning, and utilizing cloud-based simulations. The demo is accessible, extensible, modular, and repeatable, making it an ideal candidate for both low-cost experimental adaptive design prototyping and learning the principles of self-driving laboratories in a low-risk setting.
 
-<p align="center"><img src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/abstract.png?a" width=750></p>
+## Overview
+
+<img src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/abstract.png?a" width=750>
+
+## Hardware
+
+<img src="reports/figures/materials-annotated.png" width=350>
+
+## Assembled
+
+<img src="notebooks/sdl-demo-test.jpg" width=350>
+
+## Assembled (annotated)
+
+<img src="reports/figures/sdl-demo-annotated.png" width=350>
+
 
 ## See Also
 
