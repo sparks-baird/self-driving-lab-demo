@@ -11,7 +11,7 @@
 
 **Check out [the notebooks](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/notebooks/README.md) for some tutorials and demonstrations! See also [the updated manuscript](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/self_driving_optics_demo-rev1.pdf).**
 
-# self-driving-lab-demo (WIP)
+# self-driving-lab-demo [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sparks-baird/self-driving-lab-demo/blob/main/notebooks/4.2-paho-mqtt-colab-sdl-demo-test.ipynb)
 
 > Software and instructions for setting up and running an autonomous (self-driving) laboratory optics demo using dimmable RGB LEDs, an 8-channel spectrophotometer, a microcontroller, and an adaptive design algorithm.
 
@@ -23,16 +23,22 @@ Self-driving labs are the future; however, the capital and expertise required ca
 
 ## Hardware
 
+<img src="reports/figures/required-wishlist-pico.png" width=600>
+
+Since the Pico WH is difficult to source (2022-09-15), you will likely need to purchase a Pico W (see [Raspberry Pi Official Resellers](https://www.raspberrypi.com/products/raspberry-pi-pico/?variant=raspberry-pi-pico-w)) and solder [male header pins](https://www.adafruit.com/product/5584) onto it.
+
 <img src="reports/figures/materials-annotated.png" width=350>
+<sup>Hardware parts</sup>
 
 ## Assembled
 
 <img src="notebooks/sdl-demo-test.jpg" width=350>
+<sup>assembled SDL-Demo</sup>
 
 ## Assembled (annotated)
 
 <img src="reports/figures/sdl-demo-annotated.png" width=350>
-
+<sup>assembled SDL-Demo (annotated)</sup>
 
 ## See Also
 
