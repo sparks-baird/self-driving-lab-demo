@@ -74,10 +74,12 @@ RPi Pico W (see https://github.com/sparks-baird/self-driving-lab-demo/issues/8),
 
 ## Quick Start
 
+https://youtu.be/GVdfJCsQ8vk
+
 ### Purchase the hardware
-1. [Pico W Bill of Materials](http://www.adafruit.com/wishlists/553992)
-  1. As of 2022-09-09, you will likely need to either buy a non-wireless RPi Pico H (presoldered headers) or an RPi Pico W + loose headers from a separate supplier (see the [list of official suppliers](https://www.raspberrypi.com/products/raspberry-pi-pico/?variant=raspberry-pi-pico-w) and then solder the headers yourself (or ask a friend or go to a local makerspace or similar). You may wish to sign up for stock notifications for the Pico W at e.g. PiShop. CanaKit seems to have more in stock, albeit higher shipping fees.
-1. 14 Gauge sculpting wire (preferably insulated), e.g. [at Amazon](https://a.co/d/7rxgOeR)
+1. [Pico W Bill of Materials](http://www.adafruit.com/wishlists/553992) or [DigiKey](https://www.digikey.com/short/w05rbdq8)
+  1. As of 2022-09-09, you will likely need to buy a RPi Pico W + loose headers from a separate supplier (see the [list of official suppliers](https://www.raspberrypi.com/products/raspberry-pi-pico/?variant=raspberry-pi-pico-w and the DigiKey cart linked above) and then solder the headers yourself (or ask a friend or go to a local makerspace or similar). You may wish to sign up for stock notifications for the Pico W at e.g. PiShop. DigiKey has many in stock (2022-09-19) and a quantity limit of 2 Pico W's. CanaKit seems to have them in stock without quantity restrictions, albeit with higher shipping fees.
+1. 14 Gauge sculpting wire (preferably insulated), e.g. at [DigiKey](https://www.digikey.com/en/products/detail/remington-industries/14UL1007SLDBRO25/11612641) or [Amazon](https://a.co/d/7rxgOeR)
 
 ### Pico W setup
 1. If you're going to do any soldering, test to make sure that your Pico W works prior to soldering by connecting the USB-A to micro-USB-B cable between your computer and Pico W while holding the BOOTSEL button the Pico. It should open up a notification for a new drive on your computer.
