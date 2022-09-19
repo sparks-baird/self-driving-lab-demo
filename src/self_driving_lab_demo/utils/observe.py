@@ -6,6 +6,7 @@ import json
 import logging
 import sys
 from ast import literal_eval
+from time import time
 from queue import Queue
 from uuid import uuid4
 
@@ -68,7 +69,11 @@ def mqtt_observe_sensor_data(
     client.publish(neopixel_topic, payload, qos=2)
 
     client.loop_start()
+    t0 = time()
     while True:
+        if time() - t0 > 30:
+            raise ValueError("Sensor data retrieval timed out")
+        # not sure why the following isn't enough
         sensor_data = sensor_data_queue.get(timeout)
         inp = sensor_data["_input_message"]
         if inp["_session_id"] == session_id and inp["_experiment_id"] == experiment_id:
