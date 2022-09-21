@@ -6,8 +6,8 @@ import json
 import logging
 import sys
 from ast import literal_eval
-from time import time
 from queue import Queue
+from time import time
 from uuid import uuid4
 
 import paho.mqtt.client as mqtt
