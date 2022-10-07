@@ -9,7 +9,7 @@
 [![Twitter](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&label=Twitter)](https://twitter.com/self-driving-lab-demo)
 -->
 
-**Check out [the notebooks](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/notebooks/README.md) for some tutorials and demonstrations! See also [the updated manuscript](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/self_driving_optics_demo-rev1.pdf) and the hackaday page **
+**Check out [the notebooks](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/notebooks/README.md) for some tutorials and demonstrations! See also [the updated manuscript](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/self_driving_optics_demo-rev1.pdf), the hackaday page, and [the WIP liquid spectrophotometry demo](https://github.com/sparks-baird/self-driving-lab-demo/discussions/89).**
 
 # self-driving-lab-demo [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sparks-baird/self-driving-lab-demo/blob/main/notebooks/4.2-paho-mqtt-colab-sdl-demo-test.ipynb)
 
@@ -79,7 +79,7 @@ https://youtu.be/GVdfJCsQ8vk
 ### Purchase the hardware
 1. [Pico W Bill of Materials](http://www.adafruit.com/wishlists/553992) or [DigiKey](https://www.digikey.com/short/w05rbdq8)
   1. As of 2022-09-09, you will likely need to buy a RPi Pico W + loose headers from a separate supplier (see the [list of official suppliers](https://www.raspberrypi.com/products/raspberry-pi-pico/?variant=raspberry-pi-pico-w and the DigiKey cart linked above) and then solder the headers yourself (or ask a friend or go to a local makerspace or similar). You may wish to sign up for stock notifications for the Pico W at e.g. PiShop. DigiKey has many in stock (2022-09-19) and a quantity limit of 2 Pico W's. CanaKit seems to have them in stock without quantity restrictions, albeit with higher shipping fees.
-1. 14 Gauge sculpting wire (preferably insulated), e.g. at [DigiKey](https://www.digikey.com/en/products/detail/remington-industries/14UL1007SLDBRO25/11612641) or [Amazon](https://a.co/d/7rxgOeR)
+1. 14 gauge (outer thickness including insulation) sculpting wire (preferably insulated), e.g. [20 gauge electrical wire at DigiKey](https://www.digikey.com/en/products/detail/remington-industries/20UL1007SLDBLA/11615372) or [14 gauge sculpting wire at Amazon](https://a.co/d/7rxgOeR)
 
 ### Pico W setup
 1. If you're going to do any soldering, test to make sure that your Pico W works prior to soldering by connecting the USB-A to micro-USB-B cable between your computer and Pico W while holding the BOOTSEL button the Pico. It should open up a notification for a new drive on your computer.
@@ -159,6 +159,42 @@ Then take a look into the `scripts` and `notebooks` folders.
 
   <img src="reports/figures/optional-wishlist.png" width=500>
 - [Adafruit bill of materials](https://www.adafruit.com/wishlists/551334) (my original one that I ordered and am planning to prototype with)
+
+## Closed-loop Spectroscopy Laboratory: Liquid
+
+CLSLab is an autonomous self-driving laboratory that uses dilluted food dye, peristaltic pumps, a light source, and a light sensor to perform liquid-based color-matching to a target color. See the following visual summary:
+
+<img src=https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/cls-lab-liquid-summary.png width=450>
+
+See https://github.com/sparks-baird/self-driving-lab-demo/discussions/89 for discussion of ongoing development.
+
+### Bill of Materials
+
+- Everything from the CLSLab:Light demo
+  - Pico W + headers (need to solder headers)
+  - Maker Pi Pico base
+  - Stemma-QT to Grove connector
+  - AS7341 Light Sensor
+  - USB-A to micro-USB-B cable
+  - 5V USB-A wall adapter
+  - 20 AWG sculpting wire
+- Plant drip bag (large) x2
+- Party drink drip bag (small) x3
+- Spectrophotometer cuvette
+- Peristaltic pump x5
+- silicon (or PTFE?) tubing (3 m) (what inner and outer diameter?)
+- LED light source (see https://github.com/sparks-baird/self-driving-lab-demo/discussions/52 for context)
+- tube connectors (which kind?)
+- 4-port single outlet drip manifold
+
+The plant and party IV-style drip bags can be replaced with medical-grade chemically resistant versions that are made up of e.g. polyethylene.
+
+### Required Tools, etc.
+- Computer
+- 2.4 GHz WiFi (needs to be simple SSID+PASSWORD login, no WPA-enterprise such as Eduroam without finagling https://github.com/sparks-baird/self-driving-lab-demo/discussions/83 https://github.com/sparks-baird/self-driving-lab-demo/discussions/88 https://github.com/sparks-baird/self-driving-lab-demo/issues/76)
+- Wire cutters (optional)
+- Scissors
+- 
 
 ## Project Organization
 
