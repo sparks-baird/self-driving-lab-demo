@@ -182,10 +182,12 @@ See https://github.com/sparks-baird/self-driving-lab-demo/discussions/89 for dis
 - Party drink drip bag (small) x3
 - Spectrophotometer cuvette
 - Peristaltic pump x5
-- silicon (or PTFE?) tubing (3 m) (what inner and outer diameter?)
+- silicone (or PTFE?) tubing (3 m) (what inner and outer diameter?)
 - LED light source (see https://github.com/sparks-baird/self-driving-lab-demo/discussions/52 for context)
 - tube connectors (which kind?)
-- 4-port single outlet drip manifold
+- double Wye connectors
+- silicone-to-glass glue or epoxy (to permanently fix a silicone lid to a cuvette)
+- 
 
 The plant and party IV-style drip bags can be replaced with medical-grade chemically resistant versions that are made up of e.g. polyethylene.
 
@@ -194,7 +196,7 @@ The plant and party IV-style drip bags can be replaced with medical-grade chemic
 - 2.4 GHz WiFi (needs to be simple SSID+PASSWORD login, no WPA-enterprise such as Eduroam without finagling https://github.com/sparks-baird/self-driving-lab-demo/discussions/83 https://github.com/sparks-baird/self-driving-lab-demo/discussions/88 https://github.com/sparks-baird/self-driving-lab-demo/issues/76)
 - Wire cutters (optional)
 - Scissors
-- 
+- Hole punch (might need to be leather hole punch + hammer instead of handheld hole punch)
 
 ## Project Organization
 
