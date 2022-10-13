@@ -34,6 +34,10 @@ https://stackoverflow.com/questions/19011861/is-there-a-float-input-type-in-html
     will be (ATIME + 1) * (ASTEP + 1) * 2.78µS, by default 999):</label><br>
   <input type="number" id="astep" name="astep" min="1" step="1" value="%(atime)s"><br>
 
+  <label for="quantity">astep (The integration time step count. Total integration time
+    will be (ATIME + 1) * (ASTEP + 1) * 2.78µS, by default 999):</label><br>
+  <input type="number" id="gain" name="gain" min="0.5" max="512" value="%(gain)s"><br>
+
   <br>
   <input type="submit" name="control_led" , value="Send command to LED">
 </form>

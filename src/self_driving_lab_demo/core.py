@@ -88,7 +88,9 @@ class SensorSimulator(object):
             fill_value=0.0,
         )
 
-    def _simulate_sensor_data(self, wavelengths, R, G, B):
+    def _simulate_sensor_data(
+        self, wavelengths, R, G, B, atime=100, astep=999, gain=128
+    ):
         rI, gI, bI = np.array([R, G, B]) / 255
 
         # TODO: sample based on Gaussian distributions instead of discrete wavelengths
@@ -103,10 +105,14 @@ class SensorSimulator(object):
             ],
             axis=0,
         )
+        integration_time = (astep + 1) * (atime + 1) * 2.78 / 1000  # as7341.py
+        channel_data = channel_data * integration_time * gain
         return {name: data for name, data in zip(CHANNEL_NAMES, channel_data)}
 
-    def simulate_sensor_data(self, R, G, B):
-        return self._simulate_sensor_data(self.channel_wavelengths, R, G, B)
+    def simulate_sensor_data(self, R, G, B, atime=100, astep=999, gain=128):
+        return self._simulate_sensor_data(
+            self.channel_wavelengths, R, G, B, atime, astep, gain
+        )
 
 
 class SelfDrivingLabDemo(object):
@@ -137,19 +143,29 @@ class SelfDrivingLabDemo(object):
             # must come after creating sensor attribute
             self.observe_target_results()
 
-    def observe_sensor_data(self, R, G, B):
+    def observe_sensor_data(self, R, G, B, atime=100, astep=999, gain=128):
         if self.simulation:
-            return self.simulate_sensor_data(R, G, B)
+            return self.simulate_sensor_data(
+                R, G, B, atime=atime, astep=astep, gain=gain
+            )
         try:
             sleep(self.rest_seconds)
             return self.observe_sensor_data_fn(
-                R, G, B, **self.observe_sensor_data_kwargs
+                R,
+                G,
+                B,
+                atime=atime,
+                astep=astep,
+                gain=gain,
+                **self.observe_sensor_data_kwargs
             )
         except Exception as e:
             print(e)
 
-    def simulate_sensor_data(self, R, G, B):
-        return self.simulator.simulate_sensor_data(R, G, B)
+    def simulate_sensor_data(self, R, G, B, atime=100, astep=999, gain=128):
+        return self.simulator.simulate_sensor_data(
+            R, G, B, atime=atime, astep=astep, gain=gain
+        )
 
     def get_random_inputs(self, rng=None):
         rng = self.random_rng if rng is None else rng
@@ -161,7 +177,14 @@ class SelfDrivingLabDemo(object):
     @property
     def bounds(self):
         mx = int(np.round(self.max_brightness * 255))
-        return dict(R=[0, mx], G=[0, mx], B=[0, mx])
+        return dict(
+            R=[0, mx],
+            G=[0, mx],
+            B=[0, mx],
+            atime=[0, 255],
+            astep=[0, 65534],
+            gain=[0.5, 512],
+        )
 
     @property
     def parameters(self):
@@ -188,12 +211,12 @@ class SelfDrivingLabDemo(object):
         self.target_results = self.observe_sensor_data(*self.get_target_inputs())
         return self.target_results
 
-    def evaluate(self, R, G, B):
+    def evaluate(self, R, G, B, atime=100, astep=999, gain=128):
         if not hasattr(self, "target_results"):
             raise ValueError(
                 "must call `load_target_data` first or instantiate with autoload=True"
             )
-        results = self.observe_sensor_data(R, G, B)
+        results = self.observe_sensor_data(R, G, B, atime=atime, astep=astep, gain=gain)
         target_data = [self.target_results[ch] for ch in self.channel_names]
         data = [results[ch] for ch in self.channel_names]
 
@@ -214,8 +237,8 @@ class SDLSimulation(SelfDrivingLabDemo):
         super().__init__(*args, **kwargs)
         self.target_data = self.observe_target_results()
 
-    def observe_sensor_data(self, R, G, B):
-        return super().observe_sensor_data(R, G, B)
+    def observe_sensor_data(self, R, G, B, atime=100, astep=999, gain=128):
+        return super().observe_sensor_data(R, G, B, atime=atime, astep=astep, gain=gain)
 
 
 # %% Code Graveyard

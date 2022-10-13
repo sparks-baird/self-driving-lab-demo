@@ -187,7 +187,7 @@ See https://github.com/sparks-baird/self-driving-lab-demo/discussions/89 for dis
 - tube connectors (which kind?)
 - double Wye connectors
 - silicone-to-glass glue or epoxy (to permanently fix a silicone lid to a cuvette)
-- 
+-
 
 The plant and party IV-style drip bags can be replaced with medical-grade chemically resistant versions that are made up of e.g. polyethylene.
 

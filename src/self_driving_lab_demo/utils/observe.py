@@ -10,6 +10,7 @@ from queue import Queue
 from time import time
 from uuid import uuid4
 
+import numpy as np
 import paho.mqtt.client as mqtt
 import requests
 import serial
@@ -27,7 +28,15 @@ def on_message(client, userdata, msg):
 
 
 def mqtt_observe_sensor_data(
-    R, G, B, pico_id=None, session_id=None, hostname="test.mosquitto.org"
+    R: int,
+    G: int,
+    B: int,
+    atime: int = 100,
+    astep: int = 999,
+    gain: int = 128,
+    pico_id=None,
+    session_id=None,
+    hostname="test.mosquitto.org",
 ):
     if pico_id is None:
         _logger.warning(
@@ -56,12 +65,22 @@ def mqtt_observe_sensor_data(
     client.connect(hostname)  # connect to broker
     client.subscribe(sensor_topic, qos=1)
 
+    assert 0 <= atime <= 255, f"atime ({atime}) should be between 0 and 255"
+    assert 0 <= astep <= 65534, f"astep ({astep}) should be between 0 and 65534"
+    assert 0.5 <= gain <= 512, f"gain ({gain}) should be between 0.5 and 512"
+
+    integration_time = (astep + 1) * (atime + 1) * 2.78 / 1000  # as7341.py
+
     # ensures double quotes for JSON compatiblity
     payload = json.dumps(
         dict(
-            R=int(R),
-            G=int(G),
-            B=int(B),
+            R=int(np.round(R)),
+            G=int(np.round(G)),
+            B=int(np.round(B)),
+            atime=int(np.round(atime)),
+            astep=int(np.round(astep)),
+            integration_time=integration_time,
+            gain=int(np.round(gain)),
             _session_id=session_id,
             _experiment_id=experiment_id,
         )
@@ -71,35 +90,56 @@ def mqtt_observe_sensor_data(
     client.loop_start()
     t0 = time()
     while True:
-        if time() - t0 > 30:
+        if time() - t0 > timeout:
             raise ValueError("Sensor data retrieval timed out")
         # not sure why the following isn't enough
-        sensor_data = sensor_data_queue.get(timeout)
+        sensor_data = sensor_data_queue.get(True, timeout)
         inp = sensor_data["_input_message"]
         if inp["_session_id"] == session_id and inp["_experiment_id"] == experiment_id:
-            assert inp["R"] == R, "red value mismatch"
-            assert inp["G"] == G, "green value mismatch"
-            assert inp["B"] == B, "blue value mismatch"
+
+            # input checking
+            assert inp["R"] == R, f"red value mismatch {inp['R']} != {R}"
+            assert inp["G"] == G, f"green value mismatch {inp['G']} != {G}"
+            assert inp["B"] == B, f"blue value mismatch {inp['B']} != {B}"
+            assert (
+                inp["atime"] == atime
+            ), f"atime value mismatch {inp['atime']} != {atime}"
+            assert (
+                inp["astep"] == astep
+            ), f"astep value mismatch {inp['astep']} != {astep}"
+            assert inp["gain"] == gain, f"gain value mismatch {inp['gain']} != {gain}"
+
             client.loop_stop()
             sensor_data.pop("_input_message")  # remove the input message
             return sensor_data
 
 
 def pico_server_observe_sensor_data(
-    R: int, G: int, B: int, url="http://192.168.0.111/"
+    R: int,
+    G: int,
+    B: int,
+    atime: int = 100,
+    astep: int = 999,
+    gain: int = 128,
+    url="http://192.168.0.111/",
 ):
     payload = {
         "control_led": "Send+command+to+LED",
         "red": str(R),
         "green": str(G),
         "blue": str(B),
+        "atime": str(atime),
+        "astep": str(astep),
+        "gain": str(gain),
     }
     r = requests.post(url, data=payload)
     sensor_data_cookie = r.cookies["sensor_data"]
     return ast.literal_eval(sensor_data_cookie)
 
 
-def nonwireless_pico_observe_sensor_data(R, G, B, astep=100, atime=999, com=None):
+def nonwireless_pico_observe_sensor_data(
+    R, G, B, astep=100, atime=999, gain=128, com=None
+):
 
     # If on Windows, might not be COM3, check device manager --> Ports
     # https://www.tomshardware.com/how-to/detect-com-port-windows-serial-port-notifier
@@ -113,7 +153,7 @@ def nonwireless_pico_observe_sensor_data(R, G, B, astep=100, atime=999, com=None
         s.write(f"set_color({red}, {green}, {blue})\n".encode("utf-8"))
 
     def read_sensor(astep=100, atime=999):
-        s.write(f"read_sensor({astep}, {atime})\n".encode("utf-8"))
+        s.write(f"read_sensor({astep}, {atime}, {gain})\n".encode("utf-8"))
         sensor_data_str = s.readline().strip().decode("utf-8")
         s.readline()  # get rid of the extra line
         if sensor_data_str == "":
