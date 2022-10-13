@@ -16,9 +16,10 @@ def set_color(red, green, blue):
     pixels.write()
 
 
-def read_sensor(astep, atime):
+def read_sensor(astep, atime, gain):
     sensor._astep = astep
     sensor._atime = atime
+    sensor._gain = gain
     return sensor.all_channels
 
 
