@@ -1,5 +1,7 @@
 """Sterling Baird: wrapper class for AS7341 sensor."""
 
+from math import log
+
 from as7341 import AS7341, AS7341_MODE_SPM
 from machine import I2C, Pin
 
@@ -10,7 +12,7 @@ class ExternalDeviceNotFound(OSError):
 
 class Sensor:
     def __init__(
-        self, atime=100, astep=999, gain=128, i2c=I2C(1, scl=Pin(27), sda=Pin(26))
+        self, atime=100, astep=999, gain=8, i2c=I2C(1, scl=Pin(27), sda=Pin(26))
     ):
         """Wrapper for Rob Hamerling's AS7341 implementation.
 
@@ -30,8 +32,8 @@ class Sensor:
         astep : int, optional
             The integration time step count. Total integration time will be (ATIME + 1)
             * (ASTEP + 1) * 2.78µS, by default 999, meaning 281 ms assuming atime=100
-        again : int, optional
-            The ADC gain multiplier. factor 8 (with pretty much light), by default 128
+        gain : int, optional
+            The ADC gain multiplier, by default 128
         i2c : I2C, optional
             The I2C bus, by default machine.I2C(1, scl=machine.Pin(27),
             sda=machine.Pin(26))
@@ -92,9 +94,15 @@ class Sensor:
         return self.__gain
 
     @_gain.setter
-    def _gain(self, value):
-        self.__gain = value
-        self.sensor.set_again(value)
+    def _gain(self, gain):
+        """set AGAIN (code in range 0..10 -> gain factor 0.5 .. 512)
+        gain:  *0.5 | *1 | *2 | *4 | *8 | *16 | *32 | *64 | *128 | *256 | *512
+        code      0    1    2    3    4    5      6     7      8      9     10
+        """
+        self.__gain = gain
+        # gain == 0.5 * 2 ** code --> code == 1.4427 Ln[2 * gain] (via Mathematica)
+        code = int(round(1.4427 * log(2 * gain)))
+        self.sensor.set_again(code)
 
     @property
     def all_channels(self):
@@ -110,3 +118,20 @@ class Sensor:
 
     def disable(self):
         self.sensor.disable()
+
+
+# %% Code Graveyard
+# gain_to_code_lookup = {
+#     0.5: 1,
+#     1: 1,
+#     2: 2,
+#     4: 3,
+#     8: 4,
+#     16: 5,
+#     32: 6,
+#     64: 7,
+#     128: 8,
+#     256: 9,
+#     512: 10,
+# }
+# code = gain_to_code_lookup[gain]
