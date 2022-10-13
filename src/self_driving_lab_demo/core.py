@@ -109,8 +109,10 @@ class SensorSimulator(object):
         channel_data = channel_data * integration_time * gain
         return {name: data for name, data in zip(CHANNEL_NAMES, channel_data)}
 
-    def simulate_sensor_data(self, R, G, B):
-        return self._simulate_sensor_data(self.channel_wavelengths, R, G, B)
+    def simulate_sensor_data(self, R, G, B, atime=100, astep=999, gain=128):
+        return self._simulate_sensor_data(
+            self.channel_wavelengths, R, G, B, atime, astep, gain
+        )
 
 
 class SelfDrivingLabDemo(object):
