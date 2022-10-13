@@ -54,16 +54,20 @@ def index(request):
             "blue": int(form["blue"]),
             "astep": int(form["astep"]),
             "atime": int(form["atime"]),
+            "gain": int(form["gain"]),
         }
         if "control_led" in form:
-            keys = ["red", "green", "blue", "astep", "atime"]
-            R, G, B, astep, atime = [rgb_cookie[key] for key in keys]
-            print(f"red: {R}, green: {G}, blue: {B}, astep: {astep}, atime: {atime}")
+            keys = ["red", "green", "blue", "astep", "atime", "gain"]
+            R, G, B, astep, atime, gain = [rgb_cookie[key] for key in keys]
+            print(
+                f"red: {R}, green: {G}, blue: {B}, astep: {astep}, atime: {atime}, gain: {gain}"  # noqa: E501
+            )
 
             pixels[0] = (R, G, B)
             pixels.write()
             sensor._astep = astep
             sensor._atime = atime
+            sensor._gain = gain
 
         response = redirect("/")  # type: ignore
 
@@ -87,7 +91,15 @@ def index(request):
         R, G, B = pixels[0]
         atime = sensor._atime
         astep = sensor._astep
-        input_dict = {"red": R, "green": G, "blue": B, "atime": atime, "astep": astep}
+        gain = sensor._gain
+        input_dict = {
+            "red": R,
+            "green": G,
+            "blue": B,
+            "atime": atime,
+            "astep": astep,
+            "gain": gain,
+        }
 
         def merge_two_dicts(x, y):
             z = x.copy()  # start with keys and values of x
