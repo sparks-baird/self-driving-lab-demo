@@ -77,14 +77,18 @@ def callback(topic, msg):
     print(t)
 
     if t[:5] == "GPIO/":
-        p = int(t[5:])
+        p = int(t[5:])  # pin number
         print(msg)
         data = json.loads(msg)
         r, g, b = [data[key] for key in ["R", "G", "B"]]
+        atime, astep, gain = [data[key] for key in ["atime", "astep", "gain"]]
 
         pixels[0] = (r, g, b)
         pixels.write()
 
+        sensor._atime = atime
+        sensor._astep = astep
+        sensor._gain = gain
         sensor_data = sensor.all_channels
 
         # Turn off the LED
