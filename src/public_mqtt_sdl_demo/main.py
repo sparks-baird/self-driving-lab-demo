@@ -4,6 +4,7 @@ http://www.steves-internet-guide.com/into-mqtt-python-client/
 """
 
 import json
+import sys
 from secrets import PASSWORD, SSID
 from time import sleep, ticks_diff, ticks_ms
 
@@ -12,6 +13,7 @@ from as7341_sensor import Sensor
 from machine import Pin, unique_id
 from neopixel import NeoPixel
 from ubinascii import hexlify
+from uio import StringIO
 from umqtt.simple import MQTTClient
 
 my_id = hexlify(unique_id()).decode()
@@ -77,29 +79,86 @@ def callback(topic, msg):
     print(t)
 
     if t[:5] == "GPIO/":
-        p = int(t[5:])  # pin number
+        sensor_data_dict = {}
+
+        # pin number isn't used here, but can help with organization for complex tasks
+        try:
+            p = int(t[5:])  # pin number
+            sensor_data_dict["pin"] = p
+        except Exception as e:
+            print(e)
+            sensor_data_dict["pin"] = e
+
         print(msg)
-        data = json.loads(msg)
-        r, g, b = [data[key] for key in ["R", "G", "B"]]
-        atime, astep, gain = [data[key] for key in ["atime", "astep", "gain"]]
 
-        pixels[0] = (r, g, b)
-        pixels.write()
+        # careful not to throw an unrecoverable error due to bad request
+        try:
+            data = json.loads(msg)
+            sensor_data_dict["_input_message"] = data
+            r, g, b = [data[key] for key in ["R", "G", "B"]]
+            atime = data.get("atime", 100)
+            astep = data.get("astep", 999)
+            gain = data.get("gain", 128)
 
-        sensor._atime = atime
-        sensor._astep = astep
-        sensor._gain = gain
-        sensor_data = sensor.all_channels
+            # don't allow access to hardware if any input values are out of bounds
+            if not isinstance(r, int):
+                raise ValueError(f"R must be an integer, not {type(r)} ({r})")
+            if not isinstance(g, int):
+                raise ValueError(f"G must be an integer, not {type(g)} ({g})")
+            if not isinstance(b, int):
+                raise ValueError(f"B must be an integer, not {type(b)} ({b})")
+            if not isinstance(atime, int):
+                raise ValueError(
+                    f"atime must be an integer, not {type(atime)} ({atime})"
+                )
+            if not isinstance(astep, int):
+                raise ValueError(
+                    f"astep must be an integer, not {type(astep)} ({astep})"
+                )
+            if not isinstance(gain, int) and gain != 0.5:
+                if gain not in [0.5, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512]:
+                    raise ValueError(
+                        f"gain must be an integer, not {type(gain)} ({gain})"
+                    )
+            if r < 0 or r > 255:
+                raise ValueError(f"R value {r} out of range (0..255)")
+            if g < 0 or g > 255:
+                raise ValueError(f"G value {g} out of range (0..255)")
+            if b < 0 or b > 255:
+                raise ValueError(f"B value {b} out of range (0..255)")
+            if atime < 0 or atime > 255:
+                raise ValueError(f"atime value {atime} out of range (0..255)")
+            if astep < 0 or astep > 65535:
+                raise ValueError(f"astep value {astep} out of range (0..65535)")
+            if gain < 0.5 or gain > 512:
+                raise ValueError(f"gain value {gain} out of range (0.5..512)")
+
+            pixels[0] = (r, g, b)
+            pixels.write()
+
+            sensor._atime = atime
+            sensor._astep = astep
+            sensor._gain = gain
+            sensor_data = sensor.all_channels
+
+            for ch, datum in zip(CHANNEL_NAMES, sensor_data):
+                sensor_data_dict[ch] = datum
+        except Exception as err:
+            print(err)
+            sensor_data_dict["_input_message"] = msg
+            try:
+                with StringIO() as f:
+                    sys.print_exception(err, f)
+                    sensor_data_dict["error"] = f.getvalue()
+            except Exception as err2:
+                print(err2)
+                sensor_data_dict[
+                    "error"
+                ] = f"Failed to extract file and line number due to {err2}.\nOriginal error: {err}"
 
         # Turn off the LED
         pixels[0] = (0, 0, 0)
         pixels.write()
-
-        sensor_data_dict = {}
-        for ch, datum in zip(CHANNEL_NAMES, sensor_data):
-            sensor_data_dict[ch] = datum
-
-        sensor_data_dict["_input_message"] = data
 
         payload = json.dumps(sensor_data_dict)
 
@@ -162,3 +221,22 @@ while True:
     client.check_msg()
     heartbeat(False)
     sign_of_life(False)
+
+
+# %% Code Graveyard
+#  with open(f"{log_dir}/error-{i}.txt", "w") as f:
+#      sys.print_exception(e, f)
+#  with open(f"{log_dir}/error-{i}.txt", "r") as f:
+#      e = f.readlines()
+#      e = " ".join(e)
+#  sensor_data_dict["error"] = e
+
+# import errno
+# import os
+# log_dir = "logs"
+# try:
+#     os.mkdir(log_dir)
+# except OSError as exc:
+#     if exc.errno != errno.EEXIST:
+#         raise
+#     pass
