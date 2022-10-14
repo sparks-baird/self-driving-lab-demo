@@ -157,12 +157,12 @@ def test_bad_payload_values():
         # not sure why the following isn't enough
         sensor_data = sensor_data_queue.get(True, timeout)
         inp = sensor_data["_input_message"]
-        try:
-            inp = json.loads(inp)
-        except (json.JSONDecodeError, TypeError) as e:
-            print(e)
-            continue
-        if inp["_session_id"] == session_id and inp["_experiment_id"] == experiment_id:
+
+        if (
+            isinstance(inp, dict)
+            and inp["_session_id"] == session_id
+            and inp["_experiment_id"] == experiment_id
+        ):
             client.loop_stop()
             sensor_data.pop("_input_message")
             print(sensor_data)
