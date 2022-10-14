@@ -191,8 +191,7 @@ def test_bad_json_payload():
     t0 = time()
     while True:
         if time() - t0 > timeout:
-            raise ValueError("Sensor data retrieval timed out")
-        # not sure why the following isn't enough
+            raise ValueError(f"Sensor data retrieval timed out ({timeout} seconds)")
         sensor_data = sensor_data_queue.get(True, timeout)
         if sensor_data["_input_message"] == payload:
             client.loop_stop()

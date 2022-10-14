@@ -59,7 +59,7 @@ def mqtt_observe_sensor_data(
         # reconnect then subscriptions will be renewed.
         client.subscribe(sensor_topic, qos=1)
 
-    client = mqtt.Client()  # create new instance
+    client = mqtt.Client(client_id=session_id)  # create new instance
     client.on_connect = on_connect
     client.on_message = on_message
     client.connect(hostname)  # connect to broker
@@ -91,15 +91,19 @@ def mqtt_observe_sensor_data(
     t0 = time()
     while True:
         if time() - t0 > timeout:
-            raise ValueError("Sensor data retrieval timed out")
-        # not sure why the following isn't enough
+            raise ValueError(f"Sensor data retrieval timed out ({timeout} seconds)")
         sensor_data = sensor_data_queue.get(True, timeout)
         inp = sensor_data["_input_message"]
-        if sensor_data.get("error", None) is not None:
-            raise ValueError(
-                f"Experiment failed. {sensor_data['error']}. Input message: {inp}"
-            )
-        if inp["_session_id"] == session_id and inp["_experiment_id"] == experiment_id:
+
+        if (
+            isinstance(inp, dict)
+            and inp["_session_id"] == session_id
+            and inp["_experiment_id"] == experiment_id
+        ):
+            if sensor_data.get("error", None) is not None:
+                raise ValueError(
+                    f"Experiment failed. {sensor_data['error']}. Input message: {inp}"
+                )
 
             # input checking
             assert inp["R"] == R, f"red value mismatch {inp['R']} != {R}"
