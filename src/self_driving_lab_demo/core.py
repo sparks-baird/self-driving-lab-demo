@@ -148,19 +148,16 @@ class SelfDrivingLabDemo(object):
             return self.simulate_sensor_data(
                 R, G, B, atime=atime, astep=astep, gain=gain
             )
-        try:
-            sleep(self.rest_seconds)
-            return self.observe_sensor_data_fn(
-                R,
-                G,
-                B,
-                atime=atime,
-                astep=astep,
-                gain=gain,
-                **self.observe_sensor_data_kwargs
-            )
-        except Exception as e:
-            print(e)
+        sleep(self.rest_seconds)
+        return self.observe_sensor_data_fn(
+            R,
+            G,
+            B,
+            atime=atime,
+            astep=astep,
+            gain=gain,
+            **self.observe_sensor_data_kwargs
+        )
 
     def simulate_sensor_data(self, R, G, B, atime=100, astep=999, gain=128):
         return self.simulator.simulate_sensor_data(
@@ -209,6 +206,10 @@ class SelfDrivingLabDemo(object):
 
     def observe_target_results(self):
         self.target_results = self.observe_sensor_data(*self.get_target_inputs())
+        if self.target_results is None or (
+            self.target_results.get("error", None) is not None
+        ):
+            raise RuntimeError(self.target_results["error"])
         return self.target_results
 
     def evaluate(self, R, G, B, atime=100, astep=999, gain=128):
@@ -217,6 +218,9 @@ class SelfDrivingLabDemo(object):
                 "must call `load_target_data` first or instantiate with autoload=True"
             )
         results = self.observe_sensor_data(R, G, B, atime=atime, astep=astep, gain=gain)
+        if results.get("error", None) is not None:
+            raise ValueError(results["error"])
+
         target_data = [self.target_results[ch] for ch in self.channel_names]
         data = [results[ch] for ch in self.channel_names]
 
