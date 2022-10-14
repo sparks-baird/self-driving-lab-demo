@@ -10,7 +10,7 @@ from time import sleep, ticks_diff, ticks_ms
 
 import network
 from as7341_sensor import Sensor
-from machine import Pin, unique_id
+from machine import PWM, Pin, unique_id
 from neopixel import NeoPixel
 from ubinascii import hexlify
 from uio import StringIO
@@ -63,6 +63,15 @@ else:
     status = wlan.ifconfig()
     ip = status[0]  # type: ignore
     print(f"ip: {ip}")
+
+buzzer = PWM(Pin(18))
+
+
+def beep(power=0.01):
+    buzzer.freq(300)
+    buzzer.duty_u16(round(65535 * power))
+    sleep(0.15)
+    buzzer.duty_u16(0)
 
 
 def on_connect(client, userdata, flags, rc):
@@ -133,6 +142,7 @@ def callback(topic, msg):
             if gain < 0.5 or gain > 512:
                 raise ValueError(f"gain value {gain} out of range (0.5..512)")
 
+            beep()  # where to put the beep?
             pixels[0] = (r, g, b)
             pixels.write()
 
