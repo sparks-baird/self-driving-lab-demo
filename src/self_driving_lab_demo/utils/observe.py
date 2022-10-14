@@ -18,7 +18,7 @@ import serial
 from self_driving_lab_demo.utils.channel_info import CHANNEL_NAMES
 
 sensor_data_queue: "Queue[dict]" = Queue()
-timeout = 30
+timeout = 60
 
 _logger = logging.getLogger(__name__)
 
