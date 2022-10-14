@@ -18,7 +18,6 @@ import serial
 from self_driving_lab_demo.utils.channel_info import CHANNEL_NAMES
 
 sensor_data_queue: "Queue[dict]" = Queue()
-timeout = 60
 
 _logger = logging.getLogger(__name__)
 
@@ -36,6 +35,8 @@ def mqtt_observe_sensor_data(
     gain: int = 128,
     pico_id=None,
     session_id=None,
+    timeout=3600,
+    queue_timeout=60,
     hostname="test.mosquitto.org",
 ):
     if pico_id is None:
@@ -92,7 +93,7 @@ def mqtt_observe_sensor_data(
     while True:
         if time() - t0 > timeout:
             raise ValueError(f"Sensor data retrieval timed out ({timeout} seconds)")
-        sensor_data = sensor_data_queue.get(True, timeout)
+        sensor_data = sensor_data_queue.get(True, queue_timeout)
         inp = sensor_data["_input_message"]
 
         if (
