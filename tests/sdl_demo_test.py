@@ -159,8 +159,8 @@ def test_bad_payload_values():
         inp = sensor_data["_input_message"]
         try:
             inp = json.loads(inp)
-        except json.JSONDecodeError as e:
-            print("JSONDecodeError", e)
+        except (json.JSONDecodeError, TypeError) as e:
+            print(e)
             continue
         if inp["_session_id"] == session_id and inp["_experiment_id"] == experiment_id:
             client.loop_stop()
