@@ -169,12 +169,10 @@ def callback(topic, msg):
 
             for ch, datum in zip(CHANNEL_NAMES, sensor_data):
                 sensor_data_dict[ch] = datum
-        except (json.JSONDecodeError, TypeError) as err:
-            print(err)
-            sensor_data_dict["_input_message"] = msg
-            sensor_data_dict["error"] = get_traceback(err)
         except Exception as err:
             print(err)
+            if "_input_message" not in sensor_data_dict.keys():
+                sensor_data_dict["_input_message"] = msg
             sensor_data_dict["error"] = get_traceback(err)
 
         # turn off the LEDs
