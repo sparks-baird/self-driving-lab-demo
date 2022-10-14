@@ -134,14 +134,8 @@ def callback(topic, msg):
 
     if t[:5] == "GPIO/":
         sensor_data_dict = {}
-
-        # pin numbers not used here, but can help with organization for complex tasks
-        try:
-            p = int(t[5:])  # pin number
-            sensor_data_dict["pin"] = p
-        except Exception as e:
-            print(e)
-            sensor_data_dict["pin"] = e
+        # # pin numbers not used here, but can help with organization for complex tasks
+        # p = int(t[5:])  # pin number
 
         print(msg)
 
@@ -177,13 +171,6 @@ def callback(topic, msg):
 
         # turn off the LEDs
         reset_experiment()
-
-        sensor_data_dict["_session_id"] = sensor_data_dict.get("_session_id", None)
-
-        sensor_data_dict["_experiment_id"] = sensor_data_dict.get(
-            "_experiment_id", None
-        )
-
         payload = json.dumps(sensor_data_dict)
         print(payload)
 
@@ -280,3 +267,16 @@ while True:
 #     sensor_data_dict[
 #         "_input_message"
 #     ] = f"json.loads({msg}) failed. {json_err}"
+
+# sensor_data_dict["_session_id"] = sensor_data_dict.get("_session_id", None)
+
+# sensor_data_dict["_experiment_id"] = sensor_data_dict.get(
+#     "_experiment_id", None
+# )
+
+# try:
+#     p = int(t[5:])  # pin number
+#     sensor_data_dict["pin"] = p
+# except Exception as e:
+#     print(e)
+#     sensor_data_dict["pin"] = e
