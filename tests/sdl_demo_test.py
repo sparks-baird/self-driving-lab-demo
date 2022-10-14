@@ -1,6 +1,10 @@
+import json
+from queue import Queue
+from time import time
 from uuid import uuid4
 
 import numpy as np
+import paho.mqtt.client as mqtt
 from numpy.testing import assert_allclose, assert_almost_equal
 
 from self_driving_lab_demo.core import SelfDrivingLabDemo, SensorSimulator
@@ -9,6 +13,28 @@ from self_driving_lab_demo_blinkt.core import (
     SelfDrivingLabDemo as SelfDrivingLabDemoBlinkt,
 )
 from self_driving_lab_demo_blinkt.core import SensorSimulator as SensorSimulatorBlinkt
+
+sensor_data_queue: "Queue[dict]" = Queue()
+timeout = 30
+
+hostname = "test.mosquitto.org"
+
+prefix = "sdl-demo/picow/test/"
+neopixel_topic = prefix + "GPIO/NaN"
+sensor_topic = prefix + "as7341/"
+
+
+# The callback for when the client receives a CONNACK response from the server.
+def on_connect(client, userdata, flags, rc):
+    if rc != 0:
+        print("Connected with result code " + str(rc))
+    # Subscribing in on_connect() means that if we lose the connection and
+    # reconnect then subscriptions will be renewed.
+    client.subscribe(sensor_topic, qos=1)
+
+
+def on_message(client, userdata, msg):
+    sensor_data_queue.put(json.loads(msg.payload))
 
 
 def test_simulator():
@@ -90,6 +116,91 @@ def test_public_demo():
     )
     print(results)
     print(fidelity_results)
+
+
+def test_bad_payload_values():
+    R = -11
+    G = -12
+    B = -13
+    atime = None
+    astep = dict()
+    gain = []
+    session_id = str(uuid4())
+    experiment_id = str(uuid4())
+
+    client = mqtt.Client()  # create new instance
+    client.on_connect = on_connect
+    client.on_message = on_message
+    client.connect(hostname)  # connect to broker
+    client.subscribe(sensor_topic, qos=1)
+
+    # ensures double quotes for JSON compatiblity
+    payload = json.dumps(
+        dict(
+            R=R,
+            G=G,
+            B=B,
+            atime=atime,
+            astep=astep,
+            gain=gain,
+            _session_id=session_id,
+            _experiment_id=experiment_id,
+        )
+    )
+    client.publish(neopixel_topic, payload, qos=2)
+
+    client.loop_start()
+    t0 = time()
+    while True:
+        if time() - t0 > timeout:
+            raise ValueError("Sensor data retrieval timed out")
+        # not sure why the following isn't enough
+        sensor_data = sensor_data_queue.get(True, timeout)
+        inp = sensor_data["_input_message"]
+        try:
+            inp = json.loads(inp)
+        except json.JSONDecodeError as e:
+            print("JSONDecodeError", e)
+            continue
+        if inp["_session_id"] == session_id and inp["_experiment_id"] == experiment_id:
+            client.loop_stop()
+            sensor_data.pop("_input_message")
+            print(sensor_data)
+            if sensor_data["error"] is None:
+                raise ValueError(
+                    "No error detected despite bad dictionary values (e.g. RGB)"
+                )
+            break
+
+
+def test_bad_json_payload():
+    client = mqtt.Client()  # create new instance
+    client.on_connect = on_connect
+    client.on_message = on_message
+    client.connect(hostname)  # connect to broker
+    client.subscribe(sensor_topic, qos=1)
+
+    payload = "This (bad) payload should be a JSON-formatted string via e.g. json.dumps(...)"  # noqa: E501
+    client.publish(
+        neopixel_topic,
+        payload,
+        qos=2,
+    )
+
+    client.loop_start()
+    t0 = time()
+    while True:
+        if time() - t0 > timeout:
+            raise ValueError("Sensor data retrieval timed out")
+        # not sure why the following isn't enough
+        sensor_data = sensor_data_queue.get(True, timeout)
+        if sensor_data["_input_message"] == payload:
+            client.loop_stop()
+            sensor_data.pop("_input_message")
+            print(sensor_data)
+            if sensor_data["error"] is None:
+                raise ValueError("No error detected despite non-JSON payload..")
+            break
 
 
 def test_blinkt_simulator():
