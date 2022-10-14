@@ -5,8 +5,11 @@ from sklearn.model_selection import ParameterGrid
 
 def grid_search(sdl, num_iter):
     param_grid = {}
-    num_pts_per_dim = int(np.floor(num_iter ** (1 / len(sdl.bounds))))
-    for name, bnd in sdl.bounds.items():
+    parameters = sdl.bounds
+    parameters = dict(R=parameters["R"], G=parameters["G"], B=parameters["B"])
+    parameters
+    num_pts_per_dim = int(np.floor(num_iter ** (1 / len(parameters))))
+    for name, bnd in parameters.items():
         param_grid[name] = np.linspace(bnd[0], bnd[1], num=num_pts_per_dim)
         if isinstance(bnd[0], int):
             param_grid[name] = np.round(param_grid[name]).astype(int)
@@ -21,8 +24,16 @@ def grid_search(sdl, num_iter):
 def random_search(sdl, num_iter):
     random_inputs = []
     random_data = []
+
+    def get_random_color(sdl, rng=None):
+        rng = sdl.random_rng if rng is None else rng
+        # 1.0 is really bright, so no more than `max_brightness`
+        RGB = 255 * rng.random(3) * sdl.max_brightness
+        R, G, B = np.round(RGB).astype(int)
+        return int(R), int(G), int(B)
+
     for i in range(num_iter):
-        random_inputs.append(sdl.get_random_inputs())
+        random_inputs.append(get_random_color(sdl))
         random_data.append(sdl.evaluate(*random_inputs[i]))
     return random_inputs, random_data
 
@@ -38,8 +49,11 @@ def ax_bayesian_optimization(sdl, num_iter, objective_name="frechet"):
         results.pop("_input_message", None)
         return results
 
+    bounds = dict(R=sdl.bounds["R"], G=sdl.bounds["G"], B=sdl.bounds["B"])
+    parameters = [dict(name=nm, type="range", bounds=bnd) for nm, bnd in bounds.items()]
+
     best_parameters, values, experiment, model = optimize(
-        parameters=sdl.parameters,
+        parameters=parameters,
         evaluation_function=evaluation_function,
         objective_name=objective_name,
         minimize=True,
