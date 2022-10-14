@@ -138,10 +138,10 @@ def callback(topic, msg):
         # pin numbers not used here, but can help with organization for complex tasks
         try:
             p = int(t[5:])  # pin number
-        except Exception as p:
-            print(p)
-
-        sensor_data_dict["pin"] = p
+            sensor_data_dict["pin"] = p
+        except Exception as e:
+            print(e)
+            sensor_data_dict["pin"] = e
 
         print(msg)
 
