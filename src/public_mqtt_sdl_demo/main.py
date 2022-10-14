@@ -67,7 +67,7 @@ else:
 buzzer = PWM(Pin(18))
 
 
-def beep(power=0.01):
+def beep(power=0.005):
     buzzer.freq(300)
     buzzer.duty_u16(round(65535 * power))
     sleep(0.15)
