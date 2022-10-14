@@ -95,6 +95,10 @@ def mqtt_observe_sensor_data(
         # not sure why the following isn't enough
         sensor_data = sensor_data_queue.get(True, timeout)
         inp = sensor_data["_input_message"]
+        if sensor_data.get("error", None) is not None:
+            raise ValueError(
+                f"Experiment failed. {sensor_data['error']}. Input message: {inp}"
+            )
         if inp["_session_id"] == session_id and inp["_experiment_id"] == experiment_id:
 
             # input checking
