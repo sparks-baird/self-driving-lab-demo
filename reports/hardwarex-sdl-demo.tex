@@ -1,0 +1,421 @@
+% GENERAL INFORMATION: HardwareX is an open access journal established to promote free and open source designing, building and customizing of scientific infrastructure (hardware). For more details on best practices for sharing open hardware see http://www.oshwa.org/sharing-best-practices/
+
+\documentclass[11pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1.5cm]{geometry}
+\usepackage{titlesec}
+\usepackage{tabu}
+\usepackage{enumitem}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\newlist{selectlist}{itemize}{2}
+\setlist[selectlist]{label=$\square$,leftmargin=*,noitemsep,topsep=0pt}
+
+\usepackage{lmodern}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=blue,
+}
+
+\urlstyle{same}
+
+% Set up the section label formatting
+\titleformat{\section}[block]{\hspace{1em}\bfseries}{\thesection.}{0.5em}{}
+\titleformat{\subsection}[block]{\hspace{1em}}{\thesubsection}{0.5em}{}
+
+\begin{document}
+% Create the title block
+\begin{flushleft}
+
+{\Huge \bf {\it HardwareX} article template} \textbf{Version 2 (June 2021)}\\
+\vskip 0.5cm
+{\bf Before you complete this template, a few important points to note:}
+
+\begin{itemize}
+\item[$\bullet$]Unsure whether your designs would make a suitable hardware article? Visit our webpage \href{https://www.journals.elsevier.com/hardwarex/submit-your-hardware/everything-you-need-to-know-about-hardwarex}{\underline{Everything you need to know about {\it HardwareX}}.}
+\item[$\bullet$]The format of a hardware article is very different to a traditional research article. To help you write yours, we have created this template. {\bf We will only consider hardware articles submitted using this template.}
+\item[$\bullet$]{\it HardwareX} is dedicated to the communication of advances in open source scientific infrastructure. {\bf By submitting to the journal, you are confirming that all the information necessary to reproduce your design/hardware is communicated in full and is accessible for use under an open source license.}
+\item[$\bullet$]It is important that the designs referred to in your {\it HardwareX} article are {\bf publicly available.} You’ll find information on our hardware sharing criteria in the template. Not sure how to prepare your hardware for sharing? The \href{https://www.oshwa.org/sharing-best-practices/}{\underline{Open Source Hardware Association}} has some best practice tips.
+\item[$\bullet$]Please consult the {\it HardwareX} \href{https://www.elsevier.com/journals/hardwarex/2468-0672/guide-for-authors}{\underline{Guide for Authors}} when preparing your manuscript; it highlights mandatory requirements and is packed with useful advice. We have also developed a \href{https://www.journals.elsevier.com/hardwarex/submit-your-hardware/how-to-submit-your-scientific-hardware-article-to-hardwarex}{\underline{step-by-step video guide}} to help you complete this template accurately and increase your chances of acceptance.
+\end{itemize}
+{\bf Still got questions?}\\
+\begin{itemize}
+\item[$\circ$] Visit our \href{https://www.journals.elsevier.com/hardwarex/submit-your-hardware/everything-you-need-to-know-about-hardwarex}{\underline{Everything you need to know about {\it HardwareX}}} webpage or email us at \href{mailto:hardwareX@elsevier.com}{\underline{hardwareX@elsevier.com}}
+\end{itemize}
+
+Now you are ready to fill in the template below. As you complete each section, please carefully read the associated instructions. All sections are mandatory.
+\begin{center}
+\colorbox{yellow}{\textbf{ \textit{ Once you have completed the template, delete this line and everything above it before} }}
+\colorbox{yellow}{\textbf{ \textit{ submitting your article. In addition, please delete the instructions in the template}}}
+\colorbox{yellow}{\textbf{ \textit{  (the text written in italics).}}}
+\colorbox{yellow}{- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
+\end{center}
+
+
+% Remove all text in italics when filling out the template and replace with your manuscripts corresponding text in regular font.
+%\textit{Text in italics are template instructions. Remove and replace all instructions with regular font text.}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{10pt}
+% \textbf{\large HardwareX article template}
+
+%Insert title
+%Max. 20 words. A good title should contain the fewest possible words that adequately describe the content of a paper.
+\textbf{Article title}\\ \textit{Please avoid acronyms and abbreviations where possible.}
+
+%Insert Authors
+\textbf{Authors}\\ \textit{List all authors. Please mark the corresponding author with (*)}
+
+%Insert Affiliations
+\textbf{Affiliations}\\ \textit{Please include the full address of each author institution}
+
+%Insert Contact Email
+%Include institutional email address of the corresponding author
+\textbf{Corresponding author’s email address and Twitter handle}\\ \textit{Institutional email address preferred. If you have a Twitter handle, please add it here ‘twitter: \@....’}
+
+%Insert Abstract
+%Max. 200 words. Remember that the abstract is what readers see first in electronic abstracting and indexing services. This is the advertisement of your article. Make it interesting, and easy to be understood. Be accurate and specific, keep it as brief as possible.
+\textbf{Abstract}\\ \textit{Max. 200 words. Remember that the abstract is what readers see first in electronic abstracting \& indexing services - make it brief, specific, interesting and easy to understand. If a research article refers to your hardware, cite that research article here.}
+
+%Insert Keywords
+% At least 3 keywords. There is no limit on the no. of keywords you can list. Please remember that effective keywords should not repeat words appearing in your title, and should be neither too general nor too narrow.
+\textbf{Keywords}\\ \textit{Add at least 3 keywords and a maximum of 6 keywords.}
+
+\newpage
+\textbf{Specifications table}\\
+\textit{Please replace the italicizied instructions in the right column of the table with the relevant information about your hardware.}
+\vskip 0.2cm
+\tabulinesep=1ex
+\begin{tabu} to \linewidth {|X|X[3,l]|}
+\hline  \textbf{Hardware name} & \textit{The name of the hardware that you have invented/customized}
+  %Please specify the name of the hardware that you invented / customized
+  \\
+  \hline \textbf{Subject area} & %
+  % Please state the subject area most relevant to the original community for which this hardware was developed. Example subject areas are listed below.
+  \textit{Please select the subject area that best reflects the community for which your hardware was developed (deleting the rest):}
+  \vskip 0.1cm
+  \begin{itemize}[noitemsep, topsep=0pt]
+  \item \textit{Engineering and material science}
+  \item \textit{Chemistry and biochemistry}
+  \item \textit{Medical (e.g. pharmaceutical science)}
+  \item \textit{Neuroscience}
+  \item \textit{Biological sciences (e.g. microbiology and biochemistry)}
+  \item \textit{Environmental, planetary and agricultural sciences}
+  \item \textit{Educational tools and open source alternatives to existing infrastructure}
+  \item \textit{General}
+  \end{itemize}
+  \\
+  \hline \textbf{Hardware type} &
+    \textit{Please select the subject area that best reflects the purpose for which your hardware was developed (deleting the rest):}
+  \vskip 0.1cm
+  \begin{itemize}[noitemsep, topsep=0pt]
+  \item \textit{Imaging tools}
+  \item \textit{Measuring physical properties and in-lab sensors}
+  \item \textit{Biological sample handling and preparation}
+  \item \textit{Field measurements and sensors}
+  \item \textit{Electrical engineering and computer science}
+  \item \textit{Mechanical engineering and materials science}
+  \item \textit{Other (please specify)}
+  \end{itemize}
+  \\
+\hline \textbf{Closest commercial analog} &
+  %Please specify the open source license. For more details see the guide to authors.
+  \textit{Please specify the closest commercial analog to the submitted hardware. What would this hardware replace? If no commercial analog exists, state “No commercial analog is available.”}
+  \\
+\hline \textbf{Open source license} &
+  %Please specify the open source license. For more details see the guide to authors.
+  {\it All designs must be submitted under an open source license (for more details see the \href{https://www.elsevier.com/journals/hardwarex/2468-0672/guide-for-authors}{\underline{Guide for Authors}}). Please specify the open source license you’ve selected here. }
+  \\
+\hline \textbf{Cost of hardware} &
+  %Approximate cost of hardware (complete breakdown will be included in the Bill of Materials).
+  \textit{Insert an approximate cost only - we will ask you for a complete breakdown of costs in a later section \textbf{(Bill of materials).}}
+  \\
+\hline \textbf{Source file repository} &
+  % Link to the source file repository
+      % insert a DOI URL to an approved source file repository:  Mendeley Data, theOSF, or Zenodo (instructions).  For example: "https://doi.org/10.5281/zenodo.3346799"
+      % If there is no external repository write “Available in the article”
+  \textit{If you’ve uploaded your source files to an approved repository (\href{http://osf.io}{\underline{OSF}}, \href{https://data.mendeley.com/}{\underline{Mendeley Data}} or \href{https://zenodo.org/}{\underline{Zenodo}}) write the DOI URL here. For exemple:  \href{http://doi.org/10.17605/OSF.IO/WGK7Q}{http://doi.org/10.17605/OSF.IO/WGK7Q}}
+%  DOI URL to an approved source file repository: \href{https://data.mendeley.com/}{Mendeley Data}, the \href{http://osf.io}{OSF}, or \href{https://zenodo.org/}{Zenodo} \href{https://doi.org/10.5281/zenodo.3346799}{(instructions)}. \linebreak For example: "https://doi.org/10.5281/zenodo.3346799" \linebreak If there is no external repository write “Available in the article"}
+  \\
+\hline \textbf{OSHWA certification UID} \vskip 0.1cm {\it (OPTIONAL)}&
+  %Insert OSHWA Certification UID (optional)
+{\it We encourage you to apply for a free \href{https://certification.oshwa.org/}{\underline{OSHWA Certification}}, which confirms your work is open-source compliant.
+\vskip 0.2cm
+If certification has been acquired, insert the OSHWA UID here. For example: “CH000005”. In your OSHWA certification project description, include a link to your HardwareX publication and the tag \#HX.
+\vskip 0.2cm
+If you haven’t acquired certification, please delete this row of the specifications table.}
+\\\hline
+\end{tabu}
+\end{flushleft}
+% create the main body of the paper
+\newpage
+\section{Hardware in context}
+% Include a short description of the hardware, putting into context of similar open hardware and proprietary equipment in the field.
+\textit{Write a short description of the hardware and provide context, i.e., describe similar open hardware and proprietary equipment in the field.}
+\section{Hardware description}
+% Describe the hardware, highlighting the customization rather than the steps of the procedure. Highlight how it differs/which advantage it offers over pre-existing methods. For example, how could this hardware: be compared to other hardware in terms of cost or ease of use, be used in the development of further designs in a particular area, and so on.
+
+% > Add 3-5 bulleted points to broadly explain to other researchers how the hardware could be potentially useful to them, for either standard or novel laboratory tasks, inside or outside of the original user community.
+
+\textit{Describe your hardware, highlighting the customization rather than the steps involved in the procedure. Explain how it differs from other hardware and the advantages it offers over pre-existing methods. For example, how does this hardware compare to other hardware in terms of cost or ease of use, or how can it be used to develop further designs in a particular area?
+\vskip 0.3cm \noindent
+Add 3-5 bullet points which broadly explain to other researchers - inside or outside of the original user community - how the hardware could help them, with either standard or novel laboratory tasks.}
+
+\section*{\textit{Design files}}
+% The  complete  design  files  must  be  either  uploaded  to  an  approved  online  repository,  uploaded  at the  time  of  submission  on  the  online  Editorial  Manager  submission  interface  as  supplementary materials [CAD files, videos,. . . ], or included in the body of the manuscript [e.g.  figures].  The three approved  online  repositories  are  Mendeley  Data,  the  Open  Science  Framework,  and  Zenodo. See repository instructions: https://doi.org/10.5281/zenodo.3346799
+
+% Design files should be in preferred format for making modifications. See OSHWA’s open-source definition for details: https://www.oshwa.org/definition/
+
+\textit{Your design files should be editable - see \href{https://www.oshwa.org/definition/}{OSHWA’s open source definition of ‘Documentation’} for further details. You must then either:}
+\begin{itemize}
+\item[$\bullet$]{\it Upload your design files to one of the three approved online repositories - \href{https://data.mendeley.com/}{Mendeley Data} (\href{https://doi.org/10.5281/zenodo.3346799}{instructions}), the \href{https://osf.io/}{Open Science Framework} (\href{https://osf.io/wgk7q/wiki/home/}{instructions}) or \href{https://zenodo.org/}{Zenodo} (\href{https://doi.org/10.5281/zenodo.3346799}{instructions}). We recommend this option as the repositories support versioning of files.}
+\item[$\bullet$]{\it Upload your design files as supplementary materials (e.g., CAD files, videos…) to Hardware X’s online editorial system when you submit your manuscript.}
+\item[$\bullet$]{\it Include your design files in the body of the manuscript (e.g., as figures).}
+\end{itemize}
+
+%
+%\textit{The complete design files must be either uploaded to an approved online repository, uploaded at the time of submission on the online \href{https://editorialmanager.com/ohx/}{Editorial Manager} submission interface as supplementary materials [CAD files, videos,\dots], or included in the body of the manuscript [e.g. figures]. The three approved online repositories are \href{https://data.mendeley.com/}{Mendeley Data}, the \href{http://osf.io}{Open Science Framework}, and \href{https://zenodo.org/}{Zenodo}. See repository instructions \href{https://doi.org/10.5281/zenodo.3346799}{here}. Design files should be in preferred format for making modifications. See \href{https://www.oshwa.org/definition/}{OSHWA’s open-source definition} for details.}
+%\begin{itemize}
+\vskip 0.1 cm
+\noindent
+\textit{\underline{CAD files:} You are encouraged to use free and open source software packages for creating the files. For CAD files, \href{http://www.openscad.org/}{OpenSCAD}, \href{http://www.freecadweb.org/}{FreeCAD}, or \href{https://www.blender.org/}{Blender} are encouraged, but, if these are not available, we accept source files from proprietary CAD packages, such as Autocad or Solidworks, and other drawing packages.}
+\vskip 0.1 cm
+\noindent
+\textit{\underline{3D printing:} Supplementary files that facilitate digital replication of the devices are encouraged;  for example, STL files for 3D printing components. We recommend uploading CAD files to the \href{http://3dprint.nih.gov/}{\underline{NIH 3D Print Exchange}} as Custom Labware and then entering the link here.}
+\vskip 0.1 cm
+\noindent
+\textit{\underline{Electronics:} PCB layouts and other electronics design files can be uploaded to the \href{http://www.ohwr.org/}{\underline{Open Hardware Repository}} or other repositories or as supplementary materials.}
+\vskip 0.1 cm
+\noindent
+\textit{\underline{Software and firmware:} All software files used in the design and operation of the hardware should be included in the repository. Provide a description of the software and firmware and use extensive comments in the code.}
+
+\section{Design files summary}
+\textit{Complete a separate row for each design file associated with your hardware (including the primary design files). Any empty rows should be deleted.}
+% Please include a summary of all design files for your hardware by filling rows of the table below
+\vskip 0.1cm
+\tabulinesep=1ex
+\begin{tabu} to \linewidth {|X|X|X[1.5,1]|X[1.5,1]|}
+\hline
+\textbf{Design filename} & \textbf{File type} & \textbf{Open source license} & \textbf{Location of the file} \\\hline
+%Insert design files
+\textit{For example: Design file 1} & \textit{e.g. CAD file, figures, videos} & \textit{All designs must be submitted under an open hardware license. Enter the corresponding open source license for the file.} & \textit{Either enter the URL for the repository or the sentence: "Available with the article".}  \\\hline
+\dots & \dots & \dots & \dots \\\hline
+\dots & \dots & \dots & \dots \\\hline
+% Design file 3 & File type & License & Link \\\hline
+\end{tabu}
+
+
+% For each design file listed in the summary above, include a short description of the file below (one or two sentences)
+\vskip 0.3cm
+\noindent
+\textit{For each design file listed in the summary table above, include a short description of the file below (just one or two sentences per design file).}
+
+\section*{\textit{Bill of materials}}
+% For a complex Bill of Materials, the complete Bill of Materials (editable spreadsheet file e.g., ODS file type or PDF file) can be uploaded in an open access online location such as the Open Science Framework repository. Include the link here. Alternatively, the Bill of Materials can be uploaded at the time of submission on the online Elsevier submission interface as supplementary material.
+
+% > To make it easy to tell which item in the Bill of Materials corresponds to which component in your design file(s), use matching designators in both places, or otherwise explain the correspondence.
+
+% > For material type, select from: Metal, semi-conductor, ceramic, polymer, biomaterial, organic, inorganic, composite, nanomaterial, semiconductor, non-specific, or other
+\textit{If your bill of materials is long or complex, you can upload the details in an editable spreadsheet, e.g., ODS file type, Excel spreadsheet or PDF file, to an open access online location, such as the \href{https://osf.io/}{\underline{Open Science Framework}} repository. Include the link here. Alternatively, the bill of materials can be submitted alongside your manuscript as supplementary material.}
+
+\section{Bill of materials summary}
+\textit{Complete a separate row for each component of your hardware – all components associated with a cost should be listed and any empty rows should be deleted. }
+\vskip 0.2cm
+\tabulinesep=1ex
+\noindent
+\begin{tabu} to \linewidth {|X[1.1,1]|X|X[0.6,1]|X[0.8,1]|X|X|X[1.1,1]|}
+%\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+\textbf{Designator} & \textbf{Component} & \textbf{Number} & \textbf{Cost per unit - currency} & \textbf{Total cost - currency} & \textbf{Source of materials} & \textbf{Material type} \\\hline
+
+%Insert items here
+\textit{If possible, use the same designator here as you use in the associated design file. If that’s not possible, you will need to explain the relationship between the two.} & \textit{Name of Component 1} & \textit{Number of units} & \textit{Cost per unit and the currency used} & \textit{Total cost and the currency used} & \textit{If possible, include a direct link to a webpage where the component can be purchased } & \textit{Select from:
+\vskip 0.1cm
+%\begin{itemize}
+-Metal
+\vskip 0.1cm
+-Semi-conductor
+\vskip 0.1cm
+-Ceramic
+\vskip 0.1cm
+-Polymer
+\vskip 0.1cm
+-Biomaterial
+\vskip 0.1cm
+-Organic
+\vskip 0.1cm
+-Inorganic
+\vskip 0.1cm
+-Composite
+\vskip 0.1cm
+-Nanomaterial
+\vskip 0.1cm
+-Semiconductor
+\vskip 0.1cm
+-Non-specific
+\vskip 0.1cm
+-Other
+%\end{itemize}
+} \\\hline
+\dots & \dots & \dots & \dots & \dots & \dots & \dots \\\hline
+
+\dots & \dots & \dots & \dots & \dots & \dots & \dots \\\hline
+
+\dots & \dots & \dots & \dots & \dots & \dots & \dots \\\hline
+% Designator 3 & Name of Component 2 & Number of units & Cost per unit & Total cost & Source of materials & Material type \\\hline
+\end{tabu}\\
+\vskip 0.2cm
+%\end{tabular}
+\noindent
+\textit{You can use this space for any additional descriptions of the materials used.}
+\section{Build instructions}
+%Provide detailed, step by step instructions for the construction of the reported hardware include all necessary information for reproducing the submitted hardware.
+% > Explain and, when possible, characterize design decisions. Including design alternatives if they exist.
+% > Use visual instructions such as schematics, images, and videos.
+% > Clearly reference design files and component parts described in the Design File Summary and Bill of Materials.
+% >Highlight potential safety concerns that may arise
+
+\textit{Provide detailed, step-by-step construction instructions for the submitted hardware:
+\begin{itemize}
+\item[$\bullet$]Include all necessary information for reproducing it.
+\item[$\bullet$]Explain and (when possible) characterize design decisions. Include any design alternatives you created.
+\item[$\bullet$]Use visual instructions such as schematics, images and videos.
+\item[$\bullet$]Clearly reference design files and component parts described in the \textbf{Design file summary} and the \textbf {Bill of materials summary}.
+\item[$\bullet$]Highlight any potential safety concerns.
+\end{itemize}}
+
+\section{Operation instructions}
+%Provide detailed instructions for the safe and proper operation of the hardware.
+%> Step-by-step operational instructions for operating the hardware.
+%> Use visual instructions as necessary.
+%> Highlight potential safety hazards.
+
+\textit{Provide detailed, step-by-step instructions for the safe and proper operation of the hardware.
+\begin{itemize}
+\item[$\bullet$]Use visual instructions, as necessary.
+\item[$\bullet$]Highlight any potential safety hazards.
+\end{itemize}}
+
+\section{Validation and characterization}
+%Demonstrate the operation of the hardware and characterize its performance over relevant critical metrics
+%> Demonstrate the use of the hardware for a relevant use case.
+%> If possible, characterize performance of the hardware over operational parameters.
+%> Create a bulleted list that describes the capabilities (and limitations) of the hardware. For example consider descriptions of load, operation time, spin speed, coefficient of variation, accuracy, precision and etc.
+
+\textit{Demonstrate the operation of the hardware and characterize its performance for a specific scientific application.
+\begin{itemize}
+\item[$\bullet$]Highlight a relevant use case.
+\item[$\bullet$]If possible, characterize performance of the hardware over operational parameters.
+\item[$\bullet$]Create a bulleted list describing the capabilities (and limitations) of the hardware. For example, load and operation time, spin speed, coefficient of variation, accuracy, precision, etc.
+\end{itemize}}
+
+\noindent
+\textbf{Ethics statements}\\
+
+\noindent
+{\it HardwareX has ethical guidelines that all authors must comply with. In addition, we ask you to complete the relevant statement(s) below.  Please delete those which are not relevant for your work.}\\
+
+\noindent
+{\it \textbf{If your work involved human subjects,} please include a statement here confirming that the relevant informed consent was obtained from those subjects:}\\
+
+\noindent
+{\it \textbf{If your work involved animal experiments,} please include a statement here confirming that those experiments complied with the ARRIVE guidelines and were carried out in accordance with the U.K. Animals (Scientific Procedures) Act, 1986 and associated guidelines; EU Directive 2010/63/EU for animal experiments; or the National Institutes of Health guide for the care and use of laboratory animals (NIH Publications No. 8023, revised 1978). Note, the sex of the animals must be indicated, and, where appropriate, the influence (or association) of sex on the results of the study:}\\
+
+\noindent
+\textbf{CRediT author statement}\\
+\noindent
+{\it CRediT is in initiative that enables authors to share an accurate and detailed description of their diverse contributions to a published work.}\\
+
+\noindent
+{\it Example of a CRediT author statement:
+\textbf{Zhang San}: Conceptualization, Methodology, Software \textbf{Priya Singh}: Data curation, Writing- Original draft preparation. \textbf{Wang Wu}: Visualization, Investigation. \textbf{Jan Jansen}: Supervision. \textbf{Ajay Kumar}: Software, Validation.: \textbf{Sun Qi}: Writing- Reviewing and Editing.}\\
+
+\noindent
+{\it Please add a CRediT author statement for your data article here, using the \href{https://www.elsevier.com/authors/journal-authors/policies-and-ethics/credit-author-statement}{categories listed on this webpage}.}\\
+
+
+\noindent
+\textbf{Acknowledgements}\\
+% [List here those individuals who provided help during the research (e.g., providing language help, writing assistance or proof reading the article, etc.).] Please also identify who provided financial support for the conduct of the research and/or preparation of the article and to briefly describe the role of the sponsor(s), if any, in study design; in the collection, analysis and interpretation of data; in the writing of the report; and in the decision to submit the article for publication. If the funding source(s) had no such involvement then this should be stated.}
+\noindent
+\textit{All contributors who do not meet the criteria for authorship should be listed in an acknowledgments section.}
+\vskip 0.2cm
+\noindent
+\textit{In addition, please list any funding sources in this section. List funding sources in this standard way to facilitate compliance to funder's requirements:}
+\vskip 0.2cm
+\noindent
+\textit{Funding: This work was supported by the National Institutes of Health [grant numbers xxxx, yyyy]; the Bill \& Melinda Gates Foundation, Seattle, WA [grant number zzzz]; and the United States Institutes of Peace [grant number aaaa].}
+\vskip 0.2cm
+\noindent
+\textit{It is not necessary to include detailed descriptions on the program or type of grants and awards. When funding is from a block grant or other resources available to a university, college, or other research institution, submit the name of the institute or organization that provided the funding.}
+\vskip 0.2cm
+\noindent
+\textit{If no funding has been provided for the research, please include the following sentence:}
+\vskip 0.2cm
+\noindent
+\textit{This research did not receive any specific grant from funding agencies in the public, commercial, or not-for-profit sectors.
+}\\
+
+
+\noindent
+\textbf{References}\\
+\noindent
+\textit{If relevant, you should include a reference to the original publication of the hardware you customized and a reference to the repository in which your design files are published.  Other references can be included, as required; for example, references that put your device in context in the literature. For more information on the reference format in HardwareX please see the \href{https://www.elsevier.com/journals/hardwarex/2468-0672/guide-for-authors}{\underline{Guide for Authors}}.}
+%> Include at least one reference, to the original publication of the hardware you customized.
+%> Include other references as required. Include references to put your device in context in the literature. For more information on the reference format in HardwareX please see the Guide for Authors at: https://www.elsevier.com/journals/hardwarex/2468-0672/guide-for-authors
+
+\begin{center}
+---------------------------------------------------------------------------------------------------------------------------
+\end{center}
+{\it \underline{Additional Information for authors.} (do not include these lines in your submission)\\
+
+\noindent
+\textbf{Author manuscript checklist}
+\begin{itemize}
+\item[$\bullet$]Is the subject of the submission under an open source license? Are design files in the preferred format for making modifications as defined by the \href{http://www.oshwa.org/definition/}{\underline{Open Source Hardware definition}}?
+
+\item[$\bullet$]Can the hardware be reproduced with the details provided in the submission?
+
+\item[$\bullet$]Are all relevant design files available on either the Mendeley Data, Open Science Framework, or Zenodo repository? Are they described in the Design Files Summary, and clearly documented? (E.g., descriptive file names, commented code, labeled images, etc.)
+\begin{itemize}
+\item[$\circ$]If in the Open Science Framework, has the repository been registered? \href{https://osf.io/wgk7q/wiki/home/}{\underline{Instructions}}
+\item[$\circ$]If in Zenodo, is the repository open access and published? \href{https://doi.org/10.5281/zenodo.3346799}{\underline{Instructions}}
+\item[$\circ$]If in Mendeley Data, is the repository published or the sharable link included in the additional information you plan to submit? \href{https://doi.org/10.5281/zenodo.3346799}{\underline{Instructions}}
+\end{itemize}
+\item[$\bullet$]Are visual instructions used when necessary?
+
+\item[$\bullet$]Is the utility of the hardware to the scientific community explained clearly? Has a specific scientific application been demonstrated using the hardware?
+
+\item[$\bullet$]Is the performance of the hardware adequately demonstrated and characterized?
+
+\item[$\bullet$]Are all potential safety concerns addressed?
+
+\item[$\bullet$]For more information on the article template consult the \href{https://www.elsevier.com/journals/hardwarex/2468-0672/guide-for-authors}{\underline{Guide to Authors}}.
+\end{itemize}}
+
+\vskip 1.5cm
+\begin{center}
+{\Huge \it Reminder: Before you submit, please delete all
+the instructions in this document (the text in italics), including this paragraph.\\
+Thank you!}
+\end{center}
+
+\end{document}
+
+%> Author manuscript checklist
+%> ●	HardwareX is a journal dedicated to the exhaustive and fully open source communication of advances in scientific infrastructure. Upon submission the author declares that all information necessary to reproduce the subject of the submission (e.g. bill of materials, build instructions, calibration procedures, source files, code, and safety considerations) is communicated in full and is accessible for use under an open source license.
+%> ●	Is the subject of the submission under an open source license? Are design files in the preferred format for making modifications? As defined by the Open Source Hardware definition.
+%> ●	Can the hardware be reproduced with the details provided in the submission?
+%> ●	Are all relevant design files available on Mendeley Data, the Open Science Framework, or Zenodo repositories, described in the Summary of Design Files document, and clearly documented? (e.g. descriptive file names, commented code, labeled images, etc.)
+%>      ○	If in the Open Science Framework, the repository has be registered? Instructions
+%>      ○	If in Zenodo, the repository is open access and is published? Instructions
+%>      ○	If in Mendeley Data, the repository is published or the sharable link was included in the additional information of the Editorial Submission interface? Instructions
+%> ●	Are visual instructions used when necessary?
+%> ●	Is the utility of the hardware to the scientific community? Has a specific scientific application been demonstrated using the hardware?
+%> ●	Is the performance of the hardware adequately demonstrated and characterized?
+%> ●	Are all potential safety concerns addressed?
+%> ●	For more information on the article template consult the Guide to Authors.}
