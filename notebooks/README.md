@@ -49,10 +49,16 @@ difficult to connect to or when nonwireless Pico is being used).
 ## 5.* Nonwireless Control of Pico
   - [`5.0-nonwireless-search.ipynb`](5.0-nonwireless-search.ipynb)
   - > No PicoW? No problem! 🤖 Run the same algorithm comparison experiments using a nonwireless Pico! 🤖
+  
+## 6.* Advanced optimization
+  - [`6.0-olympus-benchmarking-basic.ipynb`](6.0-olympus-benchmarking-basic.ipynb)
+  - [`6.1-multi-objective.ipynb`](6.1-multi-objective.ipynb)
+  - [`6.2-multi-fidelity.ipynb`](6.2-multi-fidelity.ipynb)
+    - [`6.2.1-multi-fidelity-continuous.ipynb`](6.2.1-multi-fidelity-continuous.ipynb)
 
 ## More to come!
 
-- multi-fidelity optimization (simulation and experiments)
+- discrete multi-fidelity optimization (simulation and experiments)
 - high-dimensional Bayesian optimization
 - asynchronous/batch optimization using network of experiments
 - [Bluesky example](https://github.com/bluesky/bluesky)
