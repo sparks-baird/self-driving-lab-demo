@@ -7,6 +7,8 @@ import logging
 import sys
 from ast import literal_eval
 from queue import Queue
+
+# from ray.util.queue import Queue
 from time import time
 from uuid import uuid4
 
@@ -17,13 +19,9 @@ import serial
 
 from self_driving_lab_demo.utils.channel_info import CHANNEL_NAMES
 
-sensor_data_queue: "Queue[dict]" = Queue()
-
 _logger = logging.getLogger(__name__)
 
-
-def on_message(client, userdata, msg):
-    sensor_data_queue.put(json.loads(msg.payload))
+sensor_data_queue: "Queue[dict]" = Queue()
 
 
 def mqtt_observe_sensor_data(
@@ -52,6 +50,9 @@ def mqtt_observe_sensor_data(
     neopixel_topic = prefix + "GPIO/28"
     sensor_topic = prefix + "as7341/"
 
+    def on_message(client, userdata, msg):
+        sensor_data_queue.put(json.loads(msg.payload))
+
     # The callback for when the client receives a CONNACK response from the server.
     def on_connect(client, userdata, flags, rc):
         if rc != 0:
@@ -60,7 +61,9 @@ def mqtt_observe_sensor_data(
         # reconnect then subscriptions will be renewed.
         client.subscribe(sensor_topic, qos=1)
 
-    client = mqtt.Client(client_id=session_id)  # create new instance
+    # NOTE: don't pass client_id=session_id, otherwise you might run into issues with
+    # running multiple experiments simultaneously with overlapping client_id-s
+    client = mqtt.Client()  # create new instance
     client.on_connect = on_connect
     client.on_message = on_message
     client.connect(hostname)  # connect to broker
@@ -121,6 +124,8 @@ def mqtt_observe_sensor_data(
             client.loop_stop()
             sensor_data.pop("_input_message")  # remove the input message
             return sensor_data
+        # except Empty:
+        #     pass
 
 
 def pico_server_observe_sensor_data(
@@ -181,3 +186,26 @@ def nonwireless_pico_observe_sensor_data(
 #     client.loop()
 #     if t - time() > 30:
 #         raise ValueError("Failed to retrieve message within timeout period")
+
+# sensor_data = sensor_data_queue.get(False)
+
+# sensor_data = {
+#     "ch470": 4390,
+#     "ch670": 2044,
+#     "ch550": 1287,
+#     "ch410": 613,
+#     "ch440": 2378,
+#     "_input_message": {
+#         "_session_id": session_id,
+#         "R": R,
+#         "G": G,
+#         "B": B,
+#         "_experiment_id": experiment_id,
+#         "atime": atime,
+#         "astep": astep,
+#         "gain": gain,
+#     },
+#     "ch583": 1252,
+#     "ch510": 1441,
+#     "ch620": 1490,
+# }
