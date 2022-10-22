@@ -64,6 +64,7 @@ difficult to connect to or when nonwireless Pico is being used).
 - [Bluesky example](https://github.com/bluesky/bluesky)
 - Grid search vs. random vs. Sobol vs. stochastic gradient descent vs. genetic algorithm
   vs. Bayesian optimization (e.g. via [Olympus benchmarking platform](https://github.com/aspuru-guzik-group/olympus))
+- Storing experiments in a database backend (e.g. SQL, MongoDB)
 
 Any requests? Post on the [issue
 tracker](https://github.com/sparks-baird/self-driving-lab-demo/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)
