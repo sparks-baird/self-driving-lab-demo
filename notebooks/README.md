@@ -49,7 +49,7 @@ difficult to connect to or when nonwireless Pico is being used).
 ## 5.* Nonwireless Control of Pico
   - [`5.0-nonwireless-search.ipynb`](5.0-nonwireless-search.ipynb)
   - > No PicoW? No problem! 🤖 Run the same algorithm comparison experiments using a nonwireless Pico! 🤖
-  
+
 ## 6.* Advanced optimization
   - [`6.0-olympus-benchmarking-basic.ipynb`](6.0-olympus-benchmarking-basic.ipynb)
   - [`6.1-multi-objective.ipynb`](6.1-multi-objective.ipynb)
