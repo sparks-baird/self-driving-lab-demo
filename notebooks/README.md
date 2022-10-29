@@ -55,6 +55,7 @@ difficult to connect to or when nonwireless Pico is being used).
   - [`6.1-multi-objective.ipynb`](6.1-multi-objective.ipynb)
   - [`6.2-multi-fidelity.ipynb`](6.2-multi-fidelity.ipynb)
     - [`6.2.1-multi-fidelity-continuous.ipynb`](6.2.1-multi-fidelity-continuous.ipynb)
+  - [`6.3-batch-optimization.ipynb`](6.3-batch-optimization.ipynb)
 
 ## More to come!
 
