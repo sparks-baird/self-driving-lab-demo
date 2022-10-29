@@ -63,11 +63,13 @@ difficult to connect to or when nonwireless Pico is being used).
 - high-dimensional Bayesian optimization ([SAASBO](https://ax.dev/tutorials/saasbo.html), [MORBO](https://github.com/facebookresearch/morbo))
 - scalable Bayesian optimization ([MORBO](https://github.com/facebookresearch/morbo), [Dragonfly](https://github.com/dragonfly/dragonfly))
 - asynchronous/batch optimization using network of experiments
-- [Bluesky example](https://github.com/bluesky/bluesky)
 - Grid search vs. random vs. Sobol vs. stochastic gradient descent vs. genetic algorithm
   vs. Bayesian optimization (e.g. via [Olympus benchmarking platform](https://github.com/aspuru-guzik-group/olympus))
+- Repeat experiments for high-variance or failure-prone experiments via [RayTune Repeater](https://docs.ray.io/en/latest/tune/api_docs/suggestion.html#repeated-evaluations-tune-search-repeater)
+- Combinations of above
+- External evaluation of simulation functions (e.g. FuncX, Slurm, AWS, Google Cloud)
+- Experimental orchestration software via [Bluesky](https://github.com/bluesky/bluesky)
 - Storing experiments in a database backend (e.g. SQL, MongoDB)
-- Repeat experiments via [RayTune Repeater](https://docs.ray.io/en/latest/tune/api_docs/suggestion.html#repeated-evaluations-tune-search-repeater)
 - Combinations of above
 
 Any requests? Post on the [issue
