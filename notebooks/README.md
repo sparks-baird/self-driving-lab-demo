@@ -45,6 +45,8 @@ difficult to connect to or when nonwireless Pico is being used).
   - > 📡 Control the Pico W remotely using [MQTT (The Standard for IoT Messaging)](https://mqtt.org/) 📡
   - [`4.1-paho-mqtt-colab-sdl-demo-search.ipynb`](4.1-paho-mqtt-colab-sdl-demo-search.ipynb) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sparks-baird/self-driving-lab-demo/blob/main/notebooks/4.1-paho-mqtt-colab-sdl-demo-search.ipynb)
   - > 🔁 Run the same algorithm comparison experiments controlled from the cloud! 🔁
+  - [`4.2-paho-mqtt-colab-sdl-demo-test.ipynb`](4.2-paho-mqtt-colab-sdl-demo-test.ipynb) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sparks-baird/self-driving-lab-demo/blob/main/notebooks/4.2-paho-mqtt-colab-sdl-demo-test.ipynb)
+  - > 🌎 Remotely access a public demo (located in Salt Lake City, UT) from anywhere in the world 🌍
 
 ## 5.* Nonwireless Control of Pico
   - [`5.0-nonwireless-search.ipynb`](5.0-nonwireless-search.ipynb)
