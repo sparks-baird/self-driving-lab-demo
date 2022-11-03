@@ -15,7 +15,7 @@ on:
   schedule:
     # Run roughly every 15 days at 00:00 UTC
     # (useful to check if updates on dependencies break the package)
-    - cron: '0 0 1,16 * *'
+    - cron: '0 14,22 * * MON-SAT'
 
 concurrency:
   group: >-
