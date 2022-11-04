@@ -1,8 +1,8 @@
 import time
 
 import ntptime
-import requests
 import uos
+import urequests
 from machine import SPI, Pin
 from sdcard import sdcard
 
@@ -18,6 +18,7 @@ def initialize_sdcard(
     phase=0,
     bits=8,
     firstbit=SPI.MSB,
+    verbose=True,
 ):
     try:
         cs = Pin(cs_pin, Pin.OUT)
@@ -39,9 +40,11 @@ def initialize_sdcard(
 
         vfs = uos.VfsFat(sd)
         uos.mount(vfs, "/sd")  # type: ignore
+        print("SD Card initialized successfully")
         return True
     except Exception as e:
         print(e)
+        print("SD Card failed to initialize")
         return False
 
 
@@ -72,7 +75,7 @@ def log_to_mongodb(
 
     if verbose:
         print("sending...")
-    response = requests.post(url, headers=headers, json=insertPayload)
+    response = urequests.post(url, headers=headers, json=insertPayload)
 
     if verbose:
         print(
