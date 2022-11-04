@@ -1,0 +1,15 @@
+{
+    "python.linting.enabled": true,
+    "python.analysis.typeshedPaths": [
+        ".vscode\\Pico-W-Stub"
+    ],
+    "python.languageServer": "Pylance",
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.extraPaths": [
+        ".vscode\\Pico-W-Stub\\stubs",
+        "src\\public_mqtt_sdl_demo\\lib",
+        "src\\public_mqtt_sdl_demo"
+    ],
+    "picowgo.syncFolder": "src/public_mqtt_sdl_demo",
+    "picowgo.openOnStart": true
+}
