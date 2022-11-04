@@ -6,10 +6,16 @@ http://www.steves-internet-guide.com/into-mqtt-python-client/
 import json
 import sys
 from secrets import PASSWORD, SSID
-from time import sleep, ticks_diff, ticks_ms
+from time import sleep, ticks_diff, ticks_ms  # type: ignore
 
 import network
 from as7341_sensor import Sensor
+from data_logging import (
+    get_timestamp,
+    initialize_sdcard,
+    log_to_mongodb,
+    write_payload_backup,
+)
 from machine import PWM, Pin, unique_id
 from neopixel import NeoPixel
 from ubinascii import hexlify
@@ -21,6 +27,15 @@ my_id = hexlify(unique_id()).decode()
 prefix = f"sdl-demo/picow/{my_id}/"
 
 print(f"prefix: {prefix}")
+
+mongodb_app_name = "data-sarkl"
+mongodb_url = f"https://data.mongodb-api.com/app/{mongodb_app_name}/endpoint/data/v1/action/findOne"  # noqa: E501
+mongodb_api_key = "KM4Y2EvuCeBsyOxVt6NYzLInNQOVBjZgpR9bIbUT2uCMINaQDIQk787iRx61Lt9X"
+mongodb_cluster_name = "sparks-materials-informatics"
+mongodb_database_name = "clslab-light-mixing"
+mongodb_collection_name = "public"
+
+data_backup_fpath = "experiments.txt"
 
 pixels = NeoPixel(Pin(28), 1)  # one NeoPixel on Pin 28 (GP28)
 sensor = Sensor()
@@ -76,12 +91,21 @@ def beep(power=0.005):
 
 def get_traceback(err):
     try:
-        with StringIO() as f:
+        with StringIO() as f:  # type: ignore
             sys.print_exception(err, f)
             return f.getvalue()
     except Exception as err2:
         print(err2)
         return f"Failed to extract file and line number due to {err2}.\nOriginal error: {err}"  # noqa: E501
+
+
+# TODO: function to write data to SD card
+sdcard_ready = initialize_sdcard()
+
+# # Open the file we just created and read from it
+# with open("/sd/test01.txt", "r") as file:
+#     data = file.read()
+#     print(data)
 
 
 def validate_inputs(r, g, b, atime, astep, gain):
@@ -152,7 +176,7 @@ def callback(topic, msg):
             # don't allow access to hardware if any input values are out of bounds
             validate_inputs(r, g, b, atime, astep, gain)
 
-            beep()  # REVIEW: where to put the beep?
+            beep()
             pixels[0] = (r, g, b)
             pixels.write()
 
@@ -163,20 +187,37 @@ def callback(topic, msg):
 
             for ch, datum in zip(CHANNEL_NAMES, sensor_data):
                 sensor_data_dict[ch] = datum
+
         except Exception as err:
             print(err)
             if "_input_message" not in sensor_data_dict.keys():
                 sensor_data_dict["_input_message"] = msg
             sensor_data_dict["error"] = get_traceback(err)
 
+        sensor_data_dict["utc_timestamp"] = get_timestamp()
+
         # turn off the LEDs
         reset_experiment()
         payload = json.dumps(sensor_data_dict)
         print(payload)
 
+        if sdcard_ready:
+            write_payload_backup(payload, fpath=data_backup_fpath)
+
         # prefer qos=1, but causes recursion error if too many messages in short period
         # of time
         client.publish(prefix + "as7341/", payload, qos=0)
+
+        # TODO: try:except logging data to database backend
+        log_to_mongodb(
+            payload,
+            url=mongodb_url,
+            api_key=mongodb_api_key,
+            cluster_name=mongodb_cluster_name,
+            database_name=mongodb_database_name,
+            collection_name=mongodb_collection_name,
+            verbose=True,
+        )
 
 
 def heartbeat(first):
@@ -220,8 +261,8 @@ client = MQTTClient(
 )
 client.connect()
 client.set_callback(callback)
-client.on_connect = on_connect
-client.on_message = on_message
+client.on_connect = on_connect  # type: ignore
+client.on_message = on_message  # type: ignore
 client.subscribe(prefix + "GPIO/#")
 
 heartbeat(True)
@@ -231,3 +272,13 @@ while True:
     client.check_msg()
     heartbeat(False)
     sign_of_life(False)
+
+
+## Code Graveyard
+
+# if sdcard_ready:
+#     try:
+#         write_payload_backup(payload, fpath=data_backup_fpath)
+#     except Exception as e:
+#         print(e)
+#         print("failed to write payload backup to SD card")
