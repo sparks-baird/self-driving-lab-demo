@@ -11,6 +11,7 @@ from time import sleep, ticks_diff, ticks_ms  # type: ignore
 import network
 from as7341_sensor import Sensor
 from data_logging import (
+    get_onboard_temperature,
     get_timestamp,
     initialize_sdcard,
     log_to_mongodb,
@@ -28,14 +29,17 @@ prefix = f"sdl-demo/picow/{my_id}/"
 
 print(f"prefix: {prefix}")
 
+# https://medium.com/@johnlpage/introduction-to-microcontrollers-and-the-pi-pico-w-f7a2d9ad1394
+# for a tutorial on how to use MongoDB Atlas with the Pico W, but you're welcome and
+# encouraged to log to the public MongoDB instance via the information below :)
 mongodb_app_name = "data-sarkl"
-mongodb_url = f"https://data.mongodb-api.com/app/{mongodb_app_name}/endpoint/data/v1/action/findOne"  # noqa: E501
+mongodb_url = f"https://data.mongodb-api.com/app/{mongodb_app_name}/endpoint/data/v1/action/insertOne"  # noqa: E501
 mongodb_api_key = "KM4Y2EvuCeBsyOxVt6NYzLInNQOVBjZgpR9bIbUT2uCMINaQDIQk787iRx61Lt9X"
 mongodb_cluster_name = "sparks-materials-informatics"
 mongodb_database_name = "clslab-light-mixing"
 mongodb_collection_name = "public"
 
-data_backup_fpath = "experiments.txt"
+data_backup_fpath = "/sd/experiments.txt"
 
 pixels = NeoPixel(Pin(28), 1)  # one NeoPixel on Pin 28 (GP28)
 sensor = Sensor()
@@ -82,7 +86,7 @@ else:
 buzzer = PWM(Pin(18))
 
 
-def beep(power=0.005):
+def beep(buzzer, power=0.005):
     buzzer.freq(300)
     buzzer.duty_u16(round(65535 * power))
     sleep(0.15)
@@ -99,7 +103,6 @@ def get_traceback(err):
         return f"Failed to extract file and line number due to {err2}.\nOriginal error: {err}"  # noqa: E501
 
 
-# TODO: function to write data to SD card
 sdcard_ready = initialize_sdcard()
 
 # # Open the file we just created and read from it
@@ -176,7 +179,7 @@ def callback(topic, msg):
             # don't allow access to hardware if any input values are out of bounds
             validate_inputs(r, g, b, atime, astep, gain)
 
-            beep()
+            beep(buzzer)
             pixels[0] = (r, g, b)
             pixels.write()
 
@@ -194,7 +197,16 @@ def callback(topic, msg):
                 sensor_data_dict["_input_message"] = msg
             sensor_data_dict["error"] = get_traceback(err)
 
-        sensor_data_dict["utc_timestamp"] = get_timestamp()
+        try:
+            sensor_data_dict["utc_timestamp"] = get_timestamp(timeout=2)
+            sensor_data_dict["onboard_temperature_K"] = get_onboard_temperature(
+                unit="K"
+            )
+            sensor_data_dict["sd_card_ready"] = sdcard_ready
+        except OverflowError as e:
+            print(get_traceback(e))
+        except Exception as e:
+            print(get_traceback(e))
 
         # turn off the LEDs
         reset_experiment()
@@ -202,22 +214,31 @@ def callback(topic, msg):
         print(payload)
 
         if sdcard_ready:
-            write_payload_backup(payload, fpath=data_backup_fpath)
+            try:
+                write_payload_backup(payload, fpath=data_backup_fpath)
+            except Exception as e:
+                w = f"Failed to write to SD card: {get_traceback(e)}"
+                print(w)
+                sensor_data_dict["warning"] = w
+                payload = json.dumps(sensor_data_dict)
 
         # prefer qos=1, but causes recursion error if too many messages in short period
         # of time
         client.publish(prefix + "as7341/", payload, qos=0)
 
         # TODO: try:except logging data to database backend
-        log_to_mongodb(
-            payload,
-            url=mongodb_url,
-            api_key=mongodb_api_key,
-            cluster_name=mongodb_cluster_name,
-            database_name=mongodb_database_name,
-            collection_name=mongodb_collection_name,
-            verbose=True,
-        )
+        try:
+            log_to_mongodb(
+                sensor_data_dict,
+                url=mongodb_url,
+                api_key=mongodb_api_key,
+                cluster_name=mongodb_cluster_name,
+                database_name=mongodb_database_name,
+                collection_name=mongodb_collection_name,
+                verbose=True,
+            )
+        except Exception as e:
+            print(f"Failed to log to MongoDB backend: {get_traceback(e)}")
 
 
 def heartbeat(first):
