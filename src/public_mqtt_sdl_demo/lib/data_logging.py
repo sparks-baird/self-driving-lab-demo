@@ -1,10 +1,26 @@
+import sys
 import time
 
+import machine
 import ntptime
 import uos
 import urequests
 from machine import SPI, Pin
 from sdcard import sdcard
+from uio import StringIO
+
+# # uses a more robust ntptime
+# from lib.ntptime import ntptime
+
+
+def get_traceback(err):
+    try:
+        with StringIO() as f:  # type: ignore
+            sys.print_exception(err, f)
+            return f.getvalue()
+    except Exception as err2:
+        print(err2)
+        return f"Failed to extract file and line number due to {err2}.\nOriginal error: {err}"  # noqa: E501
 
 
 def initialize_sdcard(
@@ -40,22 +56,24 @@ def initialize_sdcard(
 
         vfs = uos.VfsFat(sd)
         uos.mount(vfs, "/sd")  # type: ignore
-        print("SD Card initialized successfully")
+        if verbose:
+            print("SD Card initialized successfully")
         return True
     except Exception as e:
-        print(e)
-        print("SD Card failed to initialize")
+        if verbose:
+            print(get_traceback(e))
+            print("SD Card failed to initialize")
         return False
 
 
-def write_payload_backup(payload: str, fpath: str = "experiments.txt"):
+def write_payload_backup(payload: str, fpath: str = "/sd/experiments.txt"):
     with open(fpath, "a") as file:
         # line = ",".join([str(payload[key]) for key in payload.keys()])
         file.write(f"{payload}\r\n")
 
 
 def log_to_mongodb(
-    payload: str,
+    document: dict,
     api_key: str,
     url: str,
     cluster_name: str,
@@ -70,11 +88,11 @@ def log_to_mongodb(
         "dataSource": cluster_name,
         "database": database_name,
         "collection": collection_name,
-        "document": payload,
+        "document": document,
     }
 
     if verbose:
-        print("sending...")
+        print(f"sending document to {cluster_name}:{database_name}:{collection_name}")
     response = urequests.post(url, headers=headers, json=insertPayload)
 
     if verbose:
@@ -90,7 +108,23 @@ def log_to_mongodb(
     response.close()
 
 
-def get_timestamp():
-    utc_tuple = time.gmtime(ntptime.time() + 946684800)
+def get_timestamp(timeout=2):
+    ntptime.timeout = timeout  # type: ignore
+    utc_tuple = time.gmtime(ntptime.time())
     year, month, mday, hour, minute, second, weekday, yearday = utc_tuple
-    return f"{year}-{month}-{mday} {hour}:{minute}:{second}"
+    return f"{year}-{month}-{mday} {hour:02}:{minute:02}:{second:02}"
+
+
+def get_onboard_temperature(unit="K"):
+    sensor_temp = machine.ADC(4)
+    conversion_factor = 3.3 / (65535)
+    reading = sensor_temp.read_u16() * conversion_factor
+    celsius_degrees = 27 - (reading - 0.706) / 0.001721
+    if unit == "C":
+        return celsius_degrees
+    elif unit == "K":
+        return celsius_degrees + 273.15
+    elif unit == "F":
+        return celsius_degrees * 9 / 5 + 32
+    else:
+        raise ValueError("Invalid unit. Must be one of 'C', 'K', or 'F")
