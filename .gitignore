@@ -81,3 +81,4 @@ notebooks/secrets.json
 reports/~$clslab-liquid-bom.xlsx
 scripts/secrets.json
 notebooks/escience/temp-plot.html
+src/public_mqtt_sdl_demo/lib/rsa/**/*
