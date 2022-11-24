@@ -20,10 +20,15 @@ from data_logging import (
 from machine import PWM, Pin, unique_id
 from neopixel import NeoPixel
 from ubinascii import hexlify
+from ufastrsa.genprime import genrsa
+from ufastrsa.rsa import RSA
 from uio import StringIO
 from umqtt.simple import MQTTClient
 
 my_id = hexlify(unique_id()).decode()
+
+bits = 512
+cipher = RSA(*genrsa(bits, e=65537))
 
 prefix = f"sdl-demo/picow/{my_id}/"
 
