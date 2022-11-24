@@ -14,6 +14,7 @@ def main():
         print("pkcs_verify OK")
         assert r.pkcs_decrypt(r.pkcs_encrypt(data)) == data
         print("pkcs_decrypt OK")
+        print(dir(r))
 
 
 if __name__ == "__main__":
