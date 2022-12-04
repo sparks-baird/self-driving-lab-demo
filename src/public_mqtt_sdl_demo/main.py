@@ -4,7 +4,6 @@ http://www.steves-internet-guide.com/into-mqtt-python-client/
 """
 
 import json
-import sys
 from secrets import PASSWORD, SSID
 from time import sleep, ticks_diff, ticks_ms  # type: ignore
 
@@ -19,15 +18,15 @@ from data_logging import (
 )
 from machine import PWM, Pin, unique_id
 from neopixel import NeoPixel
+from sdl_demo_utils import beep, get_traceback, merge_two_dicts
 from ubinascii import hexlify
 from ufastrsa.genprime import genrsa
 from ufastrsa.rsa import RSA
-from uio import StringIO
 from umqtt.simple import MQTTClient
 
 my_id = hexlify(unique_id()).decode()
 
-bits = 512
+bits = 256  # use larger values for higher complexity (e.g. 512, 1028)
 cipher = RSA(*genrsa(bits, e=65537))
 
 prefix = f"sdl-demo/picow/{my_id}/"
@@ -46,25 +45,11 @@ mongodb_collection_name = "public"
 
 data_backup_fpath = "/sd/experiments.txt"
 
-pixels = NeoPixel(Pin(28), 1)  # one NeoPixel on Pin 28 (GP28)
-sensor = Sensor()
-
 try:
     onboard_led = Pin("LED", Pin.OUT)  # only works for Pico W
 except Exception as e:
     print(e)
     onboard_led = Pin(25, Pin.OUT)
-
-CHANNEL_NAMES = [
-    "ch410",
-    "ch440",
-    "ch470",
-    "ch510",
-    "ch550",
-    "ch583",
-    "ch620",
-    "ch670",
-]
 
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
@@ -90,34 +75,27 @@ else:
 
 buzzer = PWM(Pin(18))
 
-
-def beep(buzzer, power=0.005):
-    buzzer.freq(300)
-    buzzer.duty_u16(round(65535 * power))
-    sleep(0.15)
-    buzzer.duty_u16(0)
-
-
-def get_traceback(err):
-    try:
-        with StringIO() as f:  # type: ignore
-            sys.print_exception(err, f)
-            return f.getvalue()
-    except Exception as err2:
-        print(err2)
-        return f"Failed to extract file and line number due to {err2}.\nOriginal error: {err}"  # noqa: E501
-
-
 sdcard_ready = initialize_sdcard()
 
-# # Open the file we just created and read from it
-# with open("/sd/test01.txt", "r") as file:
-#     data = file.read()
-#     print(data)
+
+def initialize_devices():
+    pixels = NeoPixel(Pin(28), 1)  # one NeoPixel on Pin 28 (GP28)
+    sensor = Sensor()
+    return {"pixels": pixels, "sensor": sensor}
 
 
-def validate_inputs(r, g, b, atime, astep, gain):
+devices = initialize_devices()
+
+
+def validate_inputs(parameters, devices=None):
     # don't allow access to hardware if any input values are out of bounds
+
+    # USER-DEFINED
+    r, g, b = [parameters[key] for key in ["R", "G", "B"]]
+    atime = parameters.get("atime", 100)
+    astep = parameters.get("astep", 999)
+    gain = parameters.get("gain", 128)
+
     if not isinstance(r, int):
         raise ValueError(f"R must be an integer, not {type(r)} ({r})")
     if not isinstance(g, int):
@@ -143,9 +121,52 @@ def validate_inputs(r, g, b, atime, astep, gain):
         raise ValueError(f"astep value {astep} out of range (0..65535)")
     if gain < 0.5 or gain > 512:
         raise ValueError(f"gain value {gain} out of range (0.5..512)")
+    # END USER INPUT
 
 
-def reset_experiment():
+def run_experiment(parameters, devices=None):
+    if devices is None:
+        devices = initialize_devices()
+
+    # USER-DEFINED
+    pixels = devices["pixels"]
+    sensor = devices["sensor"]
+
+    r, g, b = [parameters[key] for key in ["R", "G", "B"]]
+    atime = parameters.get("atime", 100)
+    astep = parameters.get("astep", 999)
+    gain = parameters.get("gain", 128)
+
+    pixels[0] = (r, g, b)
+    pixels.write()
+
+    sensor._atime = atime
+    sensor._astep = astep
+    sensor._gain = gain
+    sensor_data = sensor.all_channels
+
+    CHANNEL_NAMES = [
+        "ch410",
+        "ch440",
+        "ch470",
+        "ch510",
+        "ch550",
+        "ch583",
+        "ch620",
+        "ch670",
+    ]
+
+    sensor_data = {ch: datum for ch, datum in zip(CHANNEL_NAMES, sensor_data)}
+    return sensor_data
+
+
+def reset_experiment(devices=None):
+    if devices is None:
+        devices = initialize_devices()
+
+    # USER-DEFINED
+    pixels = devices["pixels"]
+
     # Turn off the LED
     pixels[0] = (0, 0, 0)
     pixels.write()
@@ -165,7 +186,7 @@ def callback(topic, msg):
     print(t)
 
     if t[:5] == "GPIO/":
-        sensor_data_dict = {}
+        payload_data = {}
         # # pin numbers not used here, but can help with organization for complex tasks
         # p = int(t[5:])  # pin number
 
@@ -174,40 +195,26 @@ def callback(topic, msg):
         # careful not to throw an unrecoverable error due to bad request
         # Perform the experiment and record the results
         try:
-            data = json.loads(msg)
-            sensor_data_dict["_input_message"] = data
-            r, g, b = [data[key] for key in ["R", "G", "B"]]
-            atime = data.get("atime", 100)
-            astep = data.get("astep", 999)
-            gain = data.get("gain", 128)
+            parameters = json.loads(msg)
+            payload_data["_input_message"] = parameters
 
             # don't allow access to hardware if any input values are out of bounds
-            validate_inputs(r, g, b, atime, astep, gain)
+            validate_inputs(parameters)
 
             beep(buzzer)
-            pixels[0] = (r, g, b)
-            pixels.write()
-
-            sensor._atime = atime
-            sensor._astep = astep
-            sensor._gain = gain
-            sensor_data = sensor.all_channels
-
-            for ch, datum in zip(CHANNEL_NAMES, sensor_data):
-                sensor_data_dict[ch] = datum
+            sensor_data = run_experiment(parameters, devices)
+            payload_data = merge_two_dicts(payload_data, sensor_data)
 
         except Exception as err:
             print(err)
-            if "_input_message" not in sensor_data_dict.keys():
-                sensor_data_dict["_input_message"] = msg
-            sensor_data_dict["error"] = get_traceback(err)
+            if "_input_message" not in payload_data.keys():
+                payload_data["_input_message"] = msg
+            payload_data["error"] = get_traceback(err)
 
         try:
-            sensor_data_dict["utc_timestamp"] = get_timestamp(timeout=2)
-            sensor_data_dict["onboard_temperature_K"] = get_onboard_temperature(
-                unit="K"
-            )
-            sensor_data_dict["sd_card_ready"] = sdcard_ready
+            payload_data["utc_timestamp"] = get_timestamp(timeout=2)
+            payload_data["onboard_temperature_K"] = get_onboard_temperature(unit="K")
+            payload_data["sd_card_ready"] = sdcard_ready
         except OverflowError as e:
             print(get_traceback(e))
         except Exception as e:
@@ -215,7 +222,7 @@ def callback(topic, msg):
 
         # turn off the LEDs
         reset_experiment()
-        payload = json.dumps(sensor_data_dict)
+        payload = json.dumps(payload_data)
         print(payload)
 
         if sdcard_ready:
@@ -224,17 +231,16 @@ def callback(topic, msg):
             except Exception as e:
                 w = f"Failed to write to SD card: {get_traceback(e)}"
                 print(w)
-                sensor_data_dict["warning"] = w
-                payload = json.dumps(sensor_data_dict)
+                payload_data["warning"] = w
+                payload = json.dumps(payload_data)
 
         # prefer qos=1, but causes recursion error if too many messages in short period
         # of time
         client.publish(prefix + "as7341/", payload, qos=0)
 
-        # TODO: try:except logging data to database backend
         try:
             log_to_mongodb(
-                sensor_data_dict,
+                payload_data,
                 url=mongodb_url,
                 api_key=mongodb_api_key,
                 cluster_name=mongodb_cluster_name,
@@ -308,3 +314,9 @@ while True:
 #     except Exception as e:
 #         print(e)
 #         print("failed to write payload backup to SD card")
+
+
+# # Open the file we just created and read from it
+# with open("/sd/test01.txt", "r") as file:
+#     data = file.read()
+#     print(data)
