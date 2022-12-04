@@ -84,7 +84,7 @@ sdcard_ready = initialize_sdcard()
 
 
 def initialize_devices():
-    PUMP_PINS = {"red": 0, "yellow": 1, "blue": 2, "water": 3}
+    PUMP_PINS = {"R": 0, "Y": 1, "B": 2, "water": 3}
     pumps = {name: PWM(Pin(i)) for name, i in PUMP_PINS.items()}
     sensor = Sensor()
     return {"pumps": pumps, "sensor": sensor}
@@ -98,8 +98,8 @@ def validate_inputs(parameters, devices=None):
 
     # USER-DEFINED
     r, y, b, w = [parameters[key] for key in ["R", "Y", "B", "water"]]
-    runtime = parameters.get("runtime", 5)
-    prerinse_time = parameters.get("prerinse_time", 5)
+    runtime = parameters.get("runtime", 5.0)
+    prerinse_time = parameters.get("prerinse_time", 5.0)
 
     atime = parameters.get("atime", 100)
     astep = parameters.get("astep", 999)
@@ -156,10 +156,10 @@ def validate_inputs(parameters, devices=None):
     if gain < 0.5 or gain > 512:
         raise ValueError(f"gain value {gain} out of range (0.5..512)")
 
-    if runtime < 1 or runtime > 100:
+    if runtime < 1 or runtime > 20:
         raise ValueError(f"runtime value {runtime} out of range (1..100)")
 
-    if prerinse_time < 1 or prerinse_time > 100:
+    if prerinse_time < 1 or prerinse_time > 20:
         raise ValueError(f"prerinse_time value {prerinse_time} out of range (1..100)")
     # END USER INPUT
 
@@ -193,7 +193,8 @@ def control_inputs(parameters, devices=None):
 
     # REVIEW: probably better to rinse at beginning of experiment than end
     run_pump(water_pump, 1.0)
-    rinse_time = parameters.get("prerinse_time", 5)
+    rinse_time = parameters.get("prerinse_time", 5.0)
+    runtime = parameters.get("runtime", 5.0)
     sleep(rinse_time)
 
     keys = list(pumps.keys())
@@ -201,7 +202,7 @@ def control_inputs(parameters, devices=None):
     run_pumps(
         [pumps[key] for key in keys],
         [parameters[key] for key in keys],
-        parameters["runtime"],
+        runtime,
     )
 
 
@@ -248,7 +249,7 @@ def reset_experiment(parameters, devices=None):
     pumps = devices["pumps"]
 
     # Turn off the pumps
-    [run_pump(pump, 0.0) for pump in pumps]
+    [run_pump(pump, 0.0) for pump in pumps.values()]
 
 
 def emergency_shutdown(devices=None):
@@ -259,7 +260,7 @@ def emergency_shutdown(devices=None):
     pumps = devices["pumps"]
 
     # Turn off the pumps
-    [run_pump(pump, 0.0) for pump in pumps]
+    [run_pump(pump, 0.0) for pump in pumps.values()]
 
 
 def on_connect(client, userdata, flags, rc):
@@ -314,8 +315,11 @@ def callback(topic, msg):
             parameters = json.loads(msg)
             reset_experiment(parameters, devices=devices)
         except Exception as e:
-            emergency_shutdown(devices=devices)
-            payload_data["reset_error"] = get_traceback(e)
+            try:
+                emergency_shutdown(devices=devices)
+                payload_data["reset_error"] = get_traceback(e)
+            except Exception as e:
+                payload_data["emergency_error"] = get_traceback(e)
 
         payload = json.dumps(payload_data)
         print(payload)
