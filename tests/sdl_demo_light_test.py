@@ -35,7 +35,7 @@ def on_message(client, userdata, msg):
 
 def test_simulator():
     sim = SensorSimulatorLight()
-    channel_data = list(sim.simulate_sensor_data(12, 24, 48).values())
+    channel_data = list(sim.simulate_sensor_data(dict(R=12, G=24, B=48)).values())
 
     check_channel_data = list(
         {
