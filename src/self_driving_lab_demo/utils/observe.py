@@ -134,6 +134,7 @@ def liquid_observe_sensor_data(
     B: float,
     water: float = 0.0,
     prerinse_time: float = 5.0,
+    runtime: float = 5.0,
     atime: int = 100,
     astep: int = 999,
     gain: int = 128,
@@ -189,6 +190,7 @@ def liquid_observe_sensor_data(
             B=float(B),
             water=float(water),
             prerinse_time=float(prerinse_time),
+            runtime=float(runtime),
             atime=int(np.round(atime)),
             astep=int(np.round(astep)),
             integration_time=integration_time,
@@ -233,6 +235,9 @@ def liquid_observe_sensor_data(
             assert (
                 inp["prerinse_time"] == prerinse_time
             ), f"prerinse_time value mismatch {inp['prerinse_time']} != {prerinse_time}"
+            assert (
+                inp["runtime"] == runtime
+            ), f"runtime value mismatch {inp['runtime']} != {runtime}"
             assert (
                 inp["atime"] == atime
             ), f"atime value mismatch {inp['atime']} != {atime}"
