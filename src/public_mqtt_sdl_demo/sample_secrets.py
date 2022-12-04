@@ -2,3 +2,4 @@
 SSID = "Enter your SSID here"
 PASSWORD = "Enter your WiFi password here"
 PICO_ID = "Enter your Pico ID here. Printed to cmd line in main.py"
+MONGODB_API_KEY = "Enter your Mongo DB API Key"
