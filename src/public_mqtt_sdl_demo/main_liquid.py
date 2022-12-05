@@ -8,7 +8,7 @@ import time
 from secrets import PASSWORD, SSID
 
 try:
-    from secrets import MONGODB_API_KEY
+    from secrets import MONGODB_API_ID, MONGODB_API_KEY
 except Exception as e:
     print(e)
 
@@ -24,16 +24,12 @@ from data_logging import (
     write_payload_backup,
 )
 from machine import PWM, Pin, unique_id
-from sdl_demo_utils import beep, get_traceback, merge_two_dicts
+from sdl_demo_utils import beep, encrypt_id, get_traceback, merge_two_dicts
 from ubinascii import hexlify
-from ufastrsa.genprime import genrsa
-from ufastrsa.rsa import RSA
 from umqtt.simple import MQTTClient
 
 my_id = hexlify(unique_id()).decode()
-
-bits = 256
-cipher = RSA(*genrsa(bits, e=65537))
+my_id = encrypt_id(my_id)
 
 prefix = f"sdl-demo/picow/{my_id}/"
 
@@ -99,6 +95,7 @@ def validate_inputs(parameters, devices=None):
     # USER-DEFINED
     r, y, b, w = [parameters[key] for key in ["R", "Y", "B", "water"]]
     runtime = parameters.get("runtime", 5.0)
+    prerinse_power = parameters.get("prerinse_power", 0.5)
     prerinse_time = parameters.get("prerinse_time", 5.0)
 
     atime = parameters.get("atime", 100)
@@ -159,6 +156,9 @@ def validate_inputs(parameters, devices=None):
     if runtime < 1 or runtime > 20:
         raise ValueError(f"runtime value {runtime} out of range (1..100)")
 
+    if prerinse_power < 0 or prerinse_power > 1:
+        raise ValueError(f"prerinse_power value {prerinse_power} out of range (0..1)")
+
     if prerinse_time < 1 or prerinse_time > 20:
         raise ValueError(f"prerinse_time value {prerinse_time} out of range (1..100)")
     # END USER INPUT
@@ -192,13 +192,13 @@ def control_inputs(parameters, devices=None):
     water_pump = pumps["water"]
 
     # REVIEW: probably better to rinse at beginning of experiment than end
-    run_pump(water_pump, 1.0)
-    rinse_time = parameters.get("prerinse_time", 5.0)
+    prerinse_power = parameters.get("prerinse_power", 0.5)
+    prerinse_time = parameters.get("prerinse_time", 5.0)
+    run_pump(water_pump, prerinse_power)
+    sleep(prerinse_time)
+
     runtime = parameters.get("runtime", 5.0)
-    sleep(rinse_time)
-
     keys = list(pumps.keys())
-
     run_pumps(
         [pumps[key] for key in keys],
         [parameters[key] for key in keys],
@@ -338,6 +338,9 @@ def callback(topic, msg):
         client.publish(prefix + "as7341/", payload, qos=0)
 
         try:
+            # for "Apply When" rule
+            payload_data["mongodb_api_id"] = MONGODB_API_ID
+
             log_to_mongodb(
                 payload_data,
                 url=mongodb_url,
