@@ -18,16 +18,12 @@ from data_logging import (
 )
 from machine import PWM, Pin, unique_id
 from neopixel import NeoPixel
-from sdl_demo_utils import beep, get_traceback, merge_two_dicts
+from sdl_demo_utils import beep, encrypt_id, get_traceback, merge_two_dicts
 from ubinascii import hexlify
-from ufastrsa.genprime import genrsa
-from ufastrsa.rsa import RSA
 from umqtt.simple import MQTTClient
 
 my_id = hexlify(unique_id()).decode()
-
-bits = 256  # use larger values for higher complexity (e.g. 512, 1028)
-cipher = RSA(*genrsa(bits, e=65537))
+my_id = encrypt_id(my_id)
 
 prefix = f"sdl-demo/picow/{my_id}/"
 
@@ -299,6 +295,8 @@ client.subscribe(prefix + "GPIO/#")
 
 heartbeat(True)
 sign_of_life(True)
+
+print("Waiting for experiment requests...")
 
 while True:
     client.check_msg()
