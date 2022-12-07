@@ -88,14 +88,29 @@ class SensorSimulatorLight(SensorSimulator):
 
 
 class SelfDrivingLabDemoLight(SelfDrivingLabDemo):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        if self.observe_sensor_data_fn is None:
-            self.observe_sensor_data_fn = mqtt_observe_sensor_data
-
-        if self.simulator is None:
-            self.simulator = SensorSimulatorLight()
+    def __init__(
+        self,
+        random_rng=np.random.default_rng(42),
+        target_seed=604523,
+        rest_seconds=0.0,
+        max_power=0.35,
+        autoload=False,
+        simulation=False,
+        simulator=SensorSimulatorLight(),
+        observe_sensor_data_fn=mqtt_observe_sensor_data,
+        observe_sensor_data_kwargs={},  # dict(PICO_ID="a123b456")
+    ):
+        super().__init__(
+            random_rng=random_rng,
+            target_seed=target_seed,
+            rest_seconds=rest_seconds,
+            max_power=max_power,
+            autoload=autoload,
+            simulation=simulation,
+            simulator=simulator,
+            observe_sensor_data_fn=observe_sensor_data_fn,
+            observe_sensor_data_kwargs=observe_sensor_data_kwargs,
+        )
 
     def get_random_inputs(self, rng=None):
         rng = self.random_rng if rng is None else rng
