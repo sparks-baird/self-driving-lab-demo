@@ -1,5 +1,8 @@
-"""WiFi Login Info. Rename to secrets.py"""
+"""WiFi Login Info. Rename this file to secrets.py"""
 SSID = "Enter your SSID here"
 PASSWORD = "Enter your WiFi password here"
-PICO_ID = "Enter your Pico ID here. Printed to cmd line in main.py"
-MONGODB_API_KEY = "Enter your Mongo DB API Key"
+MONGODB_API_KEY = "Enter your Mongo DB API Key (optional)"
+MONGODB_COLLECTION_NAME = "Enter the name of the Mongo DB collection (optional)"
+DEVICE_NICKNAME = (
+    "For logging back to Mongo DB, enter whatever name you want here (optional)"
+)
