@@ -96,7 +96,12 @@ def mqtt_observe_sensor_data(
     while True:
         if time() - t0 > timeout:
             raise ValueError(f"Sensor data retrieval timed out ({timeout} seconds)")
-        sensor_data = sensor_data_queue.get(True, queue_timeout)
+        try:
+            sensor_data = sensor_data_queue.get(True, queue_timeout)
+        except Empty as e:
+            raise Empty(
+                "Sensor data retrieval timed out ({queue_timeout} seconds)"
+            ) from e
         inp = sensor_data["_input_message"]
 
         if (
@@ -133,6 +138,7 @@ def liquid_observe_sensor_data(
     Y: float,
     B: float,
     water: float = 0.0,
+    prerinse_power: float = 0.5,
     prerinse_time: float = 5.0,
     runtime: float = 5.0,
     atime: int = 100,
@@ -189,6 +195,7 @@ def liquid_observe_sensor_data(
             Y=float(Y),
             B=float(B),
             water=float(water),
+            prerinse_power=float(prerinse_power),
             prerinse_time=float(prerinse_time),
             runtime=float(runtime),
             atime=int(np.round(atime)),
@@ -211,7 +218,7 @@ def liquid_observe_sensor_data(
             sensor_data = sensor_data_queue.get(True, queue_timeout)
         except Empty as e:
             raise Empty(
-                "Sensor data retrieval timed out ({queue_timeout} seconds)"
+                f"Sensor data retrieval timed out ({queue_timeout} seconds)"
             ) from e
         inp = sensor_data["_input_message"]
 
@@ -232,6 +239,9 @@ def liquid_observe_sensor_data(
             assert (
                 inp["water"] == water
             ), f"water value mismatch {inp['water']} != {water}"
+            assert (
+                inp["prerinse_power"] == prerinse_power
+            ), f"prerinse_power value mismatch {inp['prerinse_power']} != {prerinse_power}"  # noqa: E501
             assert (
                 inp["prerinse_time"] == prerinse_time
             ), f"prerinse_time value mismatch {inp['prerinse_time']} != {prerinse_time}"
