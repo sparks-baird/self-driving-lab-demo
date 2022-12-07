@@ -99,12 +99,13 @@ class SelfDrivingLabDemoLiquid(SelfDrivingLabDemo):
 
     @property
     def bounds(self):
-        mx = int(np.round(self.max_power))
+        mx = self.max_power
         return dict(
             R=[0, mx],
             G=[0, mx],
             B=[0, mx],
             w=[0, mx],
+            prerinse_power=[0, mx],
             prerinse_time=[1, 20],
             runtime=[1, 20],
             atime=[0, 255],
@@ -116,7 +117,17 @@ class SelfDrivingLabDemoLiquid(SelfDrivingLabDemo):
     def parameters(self):
         parameters = []
         for nm, bnd in self.bounds.items():
-            if nm in ["R", "G", "B", "w", "prerinse_time", "runtime", "atime", "astep"]:
+            if nm in [
+                "R",
+                "G",
+                "B",
+                "w",
+                "prerinse_power",
+                "prerinse_time",
+                "runtime",
+                "atime",
+                "astep",
+            ]:
                 parameters.append(dict(name=nm, type="range", bounds=bnd))
             elif nm in ["gain"]:
                 parameters.append(
