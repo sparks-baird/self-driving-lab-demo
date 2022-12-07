@@ -78,7 +78,7 @@ class SelfDrivingLabDemo(object):
         sleep(self.rest_seconds)
 
         return self.observe_sensor_data_fn(
-            parameters, **self.observe_sensor_data_kwargs
+            **parameters, **self.observe_sensor_data_kwargs
         )
 
     def simulate_sensor_data(self, parameters):
