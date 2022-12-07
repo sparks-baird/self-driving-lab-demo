@@ -4,95 +4,69 @@ http://www.steves-internet-guide.com/into-mqtt-python-client/
 """
 
 import json
-import time
 from secrets import PASSWORD, SSID
+from time import sleep, ticks_diff, ticks_ms  # type: ignore
 
 try:
-    from secrets import MONGODB_API_ID, MONGODB_API_KEY
+    from secrets import DEVICE_NICKNAME, MONGODB_API_KEY, MONGODB_COLLECTION_NAME
 except Exception as e:
     print(e)
 
-from time import sleep, ticks_diff, ticks_ms  # type: ignore
+from time import sleep
 
-import network
 from as7341_sensor import Sensor
-from data_logging import (
-    get_onboard_temperature,
-    get_timestamp,
-    initialize_sdcard,
-    log_to_mongodb,
-    write_payload_backup,
-)
+from data_logging import initialize_sdcard
 from machine import PWM, Pin, unique_id
-from sdl_demo_utils import beep, encrypt_id, get_traceback, merge_two_dicts
+from netman import connectWiFi
+from sdl_demo_utils import (
+    Experiment,
+    encrypt_id,
+    get_onboard_led,
+    get_traceback,
+    heartbeat,
+    sign_of_life,
+)
 from ubinascii import hexlify
 from umqtt.simple import MQTTClient
 
-my_id = hexlify(unique_id()).decode()
-my_id = encrypt_id(my_id)
-
-prefix = f"sdl-demo/picow/{my_id}/"
-
-print(f"prefix: {prefix}")
-
 # https://medium.com/@johnlpage/introduction-to-microcontrollers-and-the-pi-pico-w-f7a2d9ad1394
-# for a tutorial on how to use MongoDB Atlas with the Pico W, but you're welcome and
-# encouraged to log to the public MongoDB instance via the information below :)
+# you can request a MongoDB collection specific to you by emailing
+# sterling.baird@utah.edu
 mongodb_app_name = "data-sarkl"
 mongodb_url = f"https://data.mongodb-api.com/app/{mongodb_app_name}/endpoint/data/v1/action/insertOne"  # noqa: E501
 mongodb_cluster_name = "sparks-materials-informatics"
 mongodb_database_name = "clslab-liquid-mixing"
-mongodb_collection_name = "public"
 
-data_backup_fpath = "/sd/experiments.txt"
+connectWiFi(SSID, PASSWORD, country="US")
 
-try:
-    onboard_led = Pin("LED", Pin.OUT)  # only works for Pico W
-except Exception as e:
-    print(e)
-    onboard_led = Pin(25, Pin.OUT)
+my_id = hexlify(unique_id()).decode()
+my_encrypted_id = encrypt_id(my_id, verbose=True)
+trunc_device_id = str(my_encrypted_id)[0:10]
+prefix = f"sdl-demo/picow/{my_id}/"
+mqtt_host = "test.mosquitto.org"
 
-wlan = network.WLAN(network.STA_IF)
-wlan.active(True)
-wlan.connect(SSID, PASSWORD)
+print(f"Unencrypted PICO ID (keep private): {my_id}")
+print(f"Encrypted PICO ID (OK to share publicly): {my_encrypted_id}")
+print(f"Truncated, encrypted PICO ID (OK to share publicly): {trunc_device_id}")
+print(f"MQTT prefix: {prefix}")
 
-# Wait for connect or fail
-max_wait = 30
-while max_wait > 0:  # type: ignore
-    if wlan.status() < 0 or wlan.status() >= 3:  # type: ignore
-        break
-    max_wait -= 1
-    print("waiting for connection...")
-    sleep(1)
+sdcard_backup_fpath = "/sd/experiments.txt"
 
-# Handle connection error
-if wlan.status() != 3:  # type: ignore
-    raise RuntimeError("network connection failed")
-else:
-    print("connected")
-    status = wlan.ifconfig()
-    ip = status[0]  # type: ignore
-    print(f"ip: {ip}")
+######################################
+#### BEGIN USER-DEFINED FUNCTIONS ####
+######################################
 
-buzzer = PWM(Pin(18))
-
-sdcard_ready = initialize_sdcard()
+PUMP_PINS = {"R": 0, "Y": 1, "B": 2, "water": 3}
+pumps = {name: PWM(Pin(i)) for name, i in PUMP_PINS.items()}
+sensor = Sensor()
 
 
-def initialize_devices():
-    PUMP_PINS = {"R": 0, "Y": 1, "B": 2, "water": 3}
-    pumps = {name: PWM(Pin(i)) for name, i in PUMP_PINS.items()}
-    sensor = Sensor()
+def get_devices():
     return {"pumps": pumps, "sensor": sensor}
-
-
-devices = initialize_devices()
 
 
 def validate_inputs(parameters, devices=None):
     # don't allow access to hardware if any input values are out of bounds
-
-    # USER-DEFINED
     r, y, b, w = [parameters[key] for key in ["R", "Y", "B", "water"]]
     runtime = parameters.get("runtime", 5.0)
     prerinse_power = parameters.get("prerinse_power", 0.5)
@@ -161,7 +135,6 @@ def validate_inputs(parameters, devices=None):
 
     if prerinse_time < 1 or prerinse_time > 20:
         raise ValueError(f"prerinse_time value {prerinse_time} out of range (1..100)")
-    # END USER INPUT
 
 
 def run_pump(pump, power):
@@ -171,21 +144,21 @@ def run_pump(pump, power):
 
 def run_pumps(pumps, powers, runtime):
     runtime_ms = runtime * 1000
-    t0 = time.ticks_ms()
+    t0 = ticks_ms()
 
     for pump, power in zip(pumps, powers):
         pump.freq(20000)
         pump.duty_u16(round(65535 * power))
 
     while True:
-        if time.ticks_diff(time.ticks_ms(), t0) > runtime_ms:
+        if ticks_diff(ticks_ms(), t0) > runtime_ms:
             break
         sleep(0.01)
 
 
 def control_inputs(parameters, devices=None):
     if devices is None:
-        devices = initialize_devices()
+        devices = get_devices()
 
     # USER-DEFINED
     pumps = devices["pumps"]
@@ -205,10 +178,15 @@ def control_inputs(parameters, devices=None):
         runtime,
     )
 
+    # REVIEW: if a flow sensor were installed in the waste, this could be used
+    # to verify that the experiment is functioning properly. If the flow doesn't
+    # match what's expected based on the input parameters, then an error could
+    # be raised and an email notification, indicating a need for maintenance.
+
 
 def measure_sensors(parameters, devices=None):
     if devices is None:
-        devices = initialize_devices()
+        devices = get_devices()
 
     sensor = devices["sensor"]
 
@@ -244,7 +222,7 @@ def run_experiment(parameters, devices=None):
 
 def reset_experiment(parameters, devices=None):
     if devices is None:
-        devices = initialize_devices()
+        devices = get_devices()
 
     pumps = devices["pumps"]
 
@@ -255,12 +233,28 @@ def reset_experiment(parameters, devices=None):
 def emergency_shutdown(devices=None):
     # in CLSLabs:Liquid case, same as reset_experiment
     if devices is None:
-        devices = initialize_devices()
+        devices = get_devices()
 
     pumps = devices["pumps"]
 
     # Turn off the pumps
     [run_pump(pump, 0.0) for pump in pumps.values()]
+
+
+######################################
+##### END USER-DEFINED FUNCTIONS #####
+######################################
+
+devices = get_devices()
+
+onboard_led = get_onboard_led()
+buzzer = PWM(Pin(18))
+sdcard_ready = initialize_sdcard()
+
+
+# MQTT Resources:
+# https://gist.github.com/sammachin/b67cc4f395265bccd9b2da5972663e6d
+# http://www.steves-internet-guide.com/into-mqtt-python-client/
 
 
 def on_connect(client, userdata, flags, rc):
@@ -277,106 +271,38 @@ def callback(topic, msg):
     print(t)
 
     if t[:5] == "GPIO/":
-        payload_data = {}
-        # # pin numbers not used here, but can help with organization for complex tasks
-        # p = int(t[5:])  # pin number
 
-        print(msg)
-
-        # careful not to throw an unrecoverable error due to bad request
-        # Perform the experiment and record the results
-        try:
-            parameters = json.loads(msg)
-            payload_data["_input_message"] = parameters
-
-            # don't allow access to hardware if any input values are out of bounds
-            validate_inputs(parameters)
-
-            beep(buzzer)
-            sensor_data = run_experiment(parameters, devices=devices)
-            payload_data = merge_two_dicts(payload_data, sensor_data)
-
-        except Exception as err:
-            print(err)
-            if "_input_message" not in payload_data.keys():
-                payload_data["_input_message"] = msg
-            payload_data["error"] = get_traceback(err)
-
-        try:
-            payload_data["utc_timestamp"] = get_timestamp(timeout=2)
-            payload_data["onboard_temperature_K"] = get_onboard_temperature(unit="K")
-            payload_data["sd_card_ready"] = sdcard_ready
-        except OverflowError as e:
-            print(get_traceback(e))
-        except Exception as e:
-            print(get_traceback(e))
-
-        try:
-            parameters = json.loads(msg)
-            reset_experiment(parameters, devices=devices)
-        except Exception as e:
-            try:
-                emergency_shutdown(devices=devices)
-                payload_data["reset_error"] = get_traceback(e)
-            except Exception as e:
-                payload_data["emergency_error"] = get_traceback(e)
+        experiment = Experiment(
+            validate_inputs_fn=validate_inputs,
+            run_experiment_fn=run_experiment,
+            reset_experiment_fn=reset_experiment,
+            emergency_shutdown_fn=reset_experiment,
+            devices=devices,
+            buzzer=buzzer,
+        )
+        payload_data = experiment.try_experiment(msg)
 
         payload = json.dumps(payload_data)
         print(payload)
 
-        if sdcard_ready:
-            try:
-                write_payload_backup(payload, fpath=data_backup_fpath)
-            except Exception as e:
-                w = f"Failed to write to SD card: {get_traceback(e)}"
-                print(w)
-                payload_data["warning"] = w
-                payload = json.dumps(payload_data)
+        if experiment.sdcard_ready:
+            payload = experiment.write_to_sd_card(payload, fpath=sdcard_backup_fpath)
 
         # prefer qos=1, but causes recursion error if too many messages in short period
         # of time
         client.publish(prefix + "as7341/", payload, qos=0)
 
-        try:
-            # for "Apply When" rule
-            payload_data["mongodb_api_id"] = MONGODB_API_ID
-
-            log_to_mongodb(
-                payload_data,
-                url=mongodb_url,
-                api_key=MONGODB_API_KEY,
-                cluster_name=mongodb_cluster_name,
-                database_name=mongodb_database_name,
-                collection_name=mongodb_collection_name,
-                verbose=True,
-            )
-        except Exception as e:
-            print(f"Failed to log to MongoDB backend: {get_traceback(e)}")
-
-
-def heartbeat(first):
-    global lastping
-    if first:
-        client.ping()
-        lastping = ticks_ms()
-    if ticks_diff(ticks_ms(), lastping) >= 300000:
-        client.ping()
-        lastping = ticks_ms()
-    return
-
-
-def sign_of_life(first):
-    global last_blink
-    if first:
-        onboard_led.on()
-        last_blink = ticks_ms()
-    time_since = ticks_diff(ticks_ms(), last_blink)
-    if onboard_led.value() == 0 and time_since >= 5000:
-        onboard_led.toggle()
-        last_blink = ticks_ms()
-    elif onboard_led.value() == 1 and time_since >= 500:
-        onboard_led.toggle()
-        last_blink = ticks_ms()
+        experiment.log_to_mongodb(
+            payload_data,
+            url=mongodb_url,
+            api_key=MONGODB_API_KEY,
+            cluster_name=mongodb_cluster_name,
+            database_name=mongodb_database_name,
+            collection_name=MONGODB_COLLECTION_NAME,
+            device_nickname=DEVICE_NICKNAME,
+            trunc_device_id=trunc_device_id,
+            verbose=True,
+        )
 
 
 # The callback for when a PUBLISH message is received from the server.
@@ -386,41 +312,32 @@ def on_message(client, userdata, msg):
 
 client = MQTTClient(
     prefix,
-    "test.mosquitto.org",
+    mqtt_host,
     user=None,
     password=None,
-    keepalive=0,
-    ssl=False,
+    keepalive=30,
+    ssl=True,
     ssl_params={},
 )
-client.connect()
+try:
+    client.connect()
+except OSError as e:
+    print(get_traceback(e))
+    print("Retrying client.connect() in 2 seconds...")
+    sleep(2.0)
+    client.connect()
+
 client.set_callback(callback)
 client.on_connect = on_connect  # type: ignore
 client.on_message = on_message  # type: ignore
 client.subscribe(prefix + "GPIO/#")
 
-heartbeat(True)
-sign_of_life(True)
+heartbeat(client, True)
+sign_of_life(onboard_led, True)
 
 print("Waiting for experiment requests...")
 
 while True:
     client.check_msg()
-    heartbeat(False)
-    sign_of_life(False)
-
-
-## Code Graveyard
-
-# if sdcard_ready:
-#     try:
-#         write_payload_backup(payload, fpath=data_backup_fpath)
-#     except Exception as e:
-#         print(e)
-#         print("failed to write payload backup to SD card")
-
-
-# # Open the file we just created and read from it
-# with open("/sd/test01.txt", "r") as file:
-#     data = file.read()
-#     print(data)
+    heartbeat(client, False)
+    sign_of_life(onboard_led, False)
