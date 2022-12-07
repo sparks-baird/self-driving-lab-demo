@@ -26,23 +26,21 @@ def random_search(sdl, num_iter):
 
     def get_random_color(sdl, rng=None):
         rng = sdl.random_rng if rng is None else rng
-        # 1.0 is really bright, so no more than `max_brightness`
-        RGB = 255 * rng.random(3) * sdl.max_brightness
+        # 1.0 is really bright, so no more than `max_power`
+        RGB = 255 * rng.random(3) * sdl.max_power
         R, G, B = np.round(RGB).astype(int)
         return dict(R=int(R), G=int(G), B=int(B))
 
     for i in range(num_iter):
         random_inputs.append(get_random_color(sdl))
-        random_data.append(sdl.evaluate(**random_inputs[i]))
+        random_data.append(sdl.evaluate(random_inputs[i]))
     return random_inputs, random_data
 
 
 def ax_bayesian_optimization(sdl, num_iter, objective_name="frechet"):
     def evaluation_function(parameters):
         results = sdl.evaluate(
-            R=parameters["R"],
-            G=parameters["G"],
-            B=parameters["B"],
+            dict(R=parameters["R"], G=parameters["G"], B=parameters["B"])
         )
         # Ax doesn't like the nested dictionary nor a flattened dict with string data
         results.pop("_input_message", None)
