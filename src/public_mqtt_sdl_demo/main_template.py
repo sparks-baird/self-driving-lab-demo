@@ -103,7 +103,7 @@ def run_experiment(parameters, devices=None):
     return sensor_data
 
 
-def reset_experiment(devices=None):
+def reset_experiment(parameters, devices=None):
     # for example, turn off the motors, home a stage, etc.
     # sometimes it might make sense to perform the resetting of the experiment during
     # the run_experiment function: for example, when rinsing out a chamber, since the

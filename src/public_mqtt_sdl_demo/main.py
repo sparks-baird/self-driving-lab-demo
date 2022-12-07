@@ -139,7 +139,7 @@ def run_experiment(parameters, devices=None):
     return sensor_data
 
 
-def reset_experiment(devices=None):
+def reset_experiment(parameters, devices=None):
     if devices is None:
         devices = get_devices()
 
