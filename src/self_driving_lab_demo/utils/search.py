@@ -7,7 +7,6 @@ def grid_search(sdl, num_iter):
     param_grid = {}
     parameters = sdl.bounds
     parameters = dict(R=parameters["R"], G=parameters["G"], B=parameters["B"])
-    parameters
     num_pts_per_dim = int(np.floor(num_iter ** (1 / len(parameters))))
     for name, bnd in parameters.items():
         param_grid[name] = np.linspace(bnd[0], bnd[1], num=num_pts_per_dim)
@@ -16,7 +15,7 @@ def grid_search(sdl, num_iter):
 
     grid = list(ParameterGrid(param_grid))
 
-    grid_data = [sdl.evaluate(pt["R"], pt["G"], pt["B"]) for pt in grid]
+    grid_data = [sdl.evaluate(dict(R=pt["R"], G=pt["G"], B=pt["B"])) for pt in grid]
 
     return grid, grid_data
 
@@ -30,11 +29,11 @@ def random_search(sdl, num_iter):
         # 1.0 is really bright, so no more than `max_brightness`
         RGB = 255 * rng.random(3) * sdl.max_brightness
         R, G, B = np.round(RGB).astype(int)
-        return int(R), int(G), int(B)
+        return dict(R=int(R), G=int(G), B=int(B))
 
     for i in range(num_iter):
         random_inputs.append(get_random_color(sdl))
-        random_data.append(sdl.evaluate(*random_inputs[i]))
+        random_data.append(sdl.evaluate(**random_inputs[i]))
     return random_inputs, random_data
 
 
