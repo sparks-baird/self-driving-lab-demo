@@ -15,8 +15,17 @@ except PackageNotFoundError:  # pragma: no cover
 finally:
     del version, PackageNotFoundError
 
-from self_driving_lab_demo.core import SelfDrivingLabDemo
+from self_driving_lab_demo.core import SelfDrivingLabDemo, SensorSimulator
+from self_driving_lab_demo.demos.light import (
+    SelfDrivingLabDemoLight,
+    SensorSimulatorLight,
+)
+from self_driving_lab_demo.demos.liquid import (
+    SelfDrivingLabDemoLiquid,
+    SensorSimulatorLiquid,
+)
 from self_driving_lab_demo.utils.observe import (
+    liquid_observe_sensor_data,
     mqtt_observe_sensor_data,
     pico_server_observe_sensor_data,
 )
@@ -28,7 +37,13 @@ from self_driving_lab_demo.utils.search import (
 
 __all__ = [
     "SelfDrivingLabDemo",
+    "SelfDrivingLabDemoLight",
+    "SelfDrivingLabDemoLiquid",
+    "SensorSimulator",
+    "SensorSimulatorLight",
+    "SensorSimulatorLiquid",
     "mqtt_observe_sensor_data",
+    "liquid_observe_sensor_data",
     "pico_server_observe_sensor_data",
     "grid_search",
     "random_search",

@@ -1,5 +1,4 @@
 import ray
-from ray_get_reproducer_utils import get_data, put_data
 
 # Start Ray. This creates some processes that can do work in parallel.
 ray.init(num_cpus=2)
@@ -9,8 +8,6 @@ ray.init(num_cpus=2)
 # "task"). Ray will load-balance different `square` tasks automatically.
 @ray.remote
 def square(x):
-    put_data()
-    get_data()
     return x * x
 
 

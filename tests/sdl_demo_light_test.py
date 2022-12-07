@@ -7,7 +7,7 @@ import numpy as np
 import paho.mqtt.client as mqtt
 from numpy.testing import assert_allclose, assert_almost_equal
 
-from self_driving_lab_demo.core import SelfDrivingLabDemo, SensorSimulator
+from self_driving_lab_demo import SelfDrivingLabDemoLight, SensorSimulatorLight
 from self_driving_lab_demo.utils.observe import mqtt_observe_sensor_data
 
 sensor_data_queue: "Queue[dict]" = Queue()
@@ -34,8 +34,8 @@ def on_message(client, userdata, msg):
 
 
 def test_simulator():
-    sim = SensorSimulator()
-    channel_data = list(sim.simulate_sensor_data(12, 24, 48).values())
+    sim = SensorSimulatorLight()
+    channel_data = list(sim.simulate_sensor_data(dict(R=12, G=24, B=48)).values())
 
     check_channel_data = list(
         {
@@ -54,8 +54,8 @@ def test_simulator():
 
 
 def test_sdl_demo_simulation():
-    sdl = SelfDrivingLabDemo(simulation=True)
-    channel_data = list(sdl.observe_sensor_data(255, 255, 255).values())
+    sdl = SelfDrivingLabDemoLight(simulation=True)
+    channel_data = list(sdl.observe_sensor_data(dict(R=255, G=255, B=255)).values())
 
     check_channel_data = list(
         {
@@ -74,7 +74,7 @@ def test_sdl_demo_simulation():
 
     fidelity_channel_data = list(
         sdl.observe_sensor_data(
-            255, 255, 255, atime=100 * 2, astep=999 * 2, gain=128 * 2
+            dict(R=255, G=255, B=255, atime=100 * 2, astep=999 * 2, gain=128 * 2)
         ).values()
     )
 
@@ -85,8 +85,8 @@ def test_sdl_demo_simulation():
 
 
 def test_sdl_demo_target():
-    sdl = SelfDrivingLabDemo(autoload=True, simulation=True, target_seed=15)
-    data = sdl.evaluate(50, 150, 250)
+    sdl = SelfDrivingLabDemoLight(autoload=True, simulation=True, target_seed=15)
+    data = sdl.evaluate(dict(R=50, G=150, B=250))
 
     check_mae = 87146.7286109353
     check_rmse = 177834.9903063588
@@ -98,7 +98,7 @@ def test_sdl_demo_target():
 
 
 def test_public_demo():
-    sdl = SelfDrivingLabDemo(
+    sdl = SelfDrivingLabDemoLight(
         autoload=True,
         target_seed=15,
         observe_sensor_data_fn=mqtt_observe_sensor_data,
@@ -106,9 +106,9 @@ def test_public_demo():
             pico_id="test", session_id=f"pytest-{str(uuid4())}"
         ),
     )
-    results = sdl.evaluate(10, 11, 12)
+    results = sdl.evaluate(dict(R=10, G=11, B=12))
     fidelity_results = sdl.evaluate(
-        10, 11, 12, atime=100 * 2, astep=999 * 2, gain=128 * 2
+        dict(R=10, G=11, B=12, atime=100 * 2, astep=999 * 2, gain=128 * 2)
     )
     print(results)
     print(fidelity_results)

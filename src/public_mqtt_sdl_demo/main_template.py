@@ -1,4 +1,8 @@
-"""Run a self-driving lab on a Raspberry Pi Pico W."""
+"""
+https://gist.github.com/sammachin/b67cc4f395265bccd9b2da5972663e6d
+http://www.steves-internet-guide.com/into-mqtt-python-client/
+"""
+
 import json
 from secrets import PASSWORD, SSID
 
@@ -9,12 +13,12 @@ except Exception as e:
 
 from time import sleep
 
-from as7341_sensor import Sensor
 from data_logging import initialize_sdcard
 from machine import PWM, Pin, unique_id
-from neopixel import NeoPixel
 from netman import connectWiFi
 from sdl_demo_utils import (
+    DummyMotor,
+    DummySensor,
     Experiment,
     encrypt_id,
     get_onboard_led,
@@ -48,9 +52,8 @@ print(f"MQTT prefix: {prefix}")
 
 sdcard_backup_fpath = "/sd/experiments.txt"
 
-
 ######################################
-##### END USER-DEFINED FUNCTIONS #####
+#### BEGIN USER-DEFINED FUNCTIONS ####
 ######################################
 
 # at minimum, the following functions should be defined:
@@ -61,93 +64,58 @@ sdcard_backup_fpath = "/sd/experiments.txt"
 # - validate_inputs (check that input parameters are valid)
 
 # device objects should be defined here
-pixels = NeoPixel(Pin(28), 1)  # one NeoPixel on Pin 28 (GP28)
-sensor = Sensor()
+motor = DummyMotor()
+motor2 = DummyMotor()
+sensor = DummySensor()
+
+motor_name_1 = "motor1"
+motor_name_2 = "motor2"
+sensor_name = "sensor"
 
 
-def get_devices():
+def get_devices() -> dict:
     # enforce instantiation of the devices a single time (i.e. singleton function)
-    return {"pixels": pixels, "sensor": sensor}
+    # if irrelevant, this function can return an empty dict: {}
+    return {motor_name_1: motor, sensor_name: sensor, motor_name_2: motor2}
 
 
 def validate_inputs(parameters, devices=None):
     # don't allow access to hardware if any input values are out of bounds
-    r, g, b = [parameters[key] for key in ["R", "G", "B"]]
-    atime = parameters.get("atime", 100)
-    astep = parameters.get("astep", 999)
-    gain = parameters.get("gain", 128)
-
-    if not isinstance(r, int):
-        raise ValueError(f"R must be an integer, not {type(r)} ({r})")
-    if not isinstance(g, int):
-        raise ValueError(f"G must be an integer, not {type(g)} ({g})")
-    if not isinstance(b, int):
-        raise ValueError(f"B must be an integer, not {type(b)} ({b})")
-    if not isinstance(atime, int):
-        raise ValueError(f"atime must be an integer, not {type(atime)} ({atime})")
-    if not isinstance(astep, int):
-        raise ValueError(f"astep must be an integer, not {type(astep)} ({astep})")
-    if not isinstance(gain, int) and gain != 0.5:
-        if gain not in [0.5, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512]:
-            raise ValueError(f"gain must be an integer, not {type(gain)} ({gain})")
-    if r < 0 or r > 255:
-        raise ValueError(f"R value {r} out of range (0..255)")
-    if g < 0 or g > 255:
-        raise ValueError(f"G value {g} out of range (0..255)")
-    if b < 0 or b > 255:
-        raise ValueError(f"B value {b} out of range (0..255)")
-    if atime < 0 or atime > 255:
-        raise ValueError(f"atime value {atime} out of range (0..255)")
-    if astep < 0 or astep > 65535:
-        raise ValueError(f"astep value {astep} out of range (0..65535)")
-    if gain < 0.5 or gain > 512:
-        raise ValueError(f"gain value {gain} out of range (0.5..512)")
+    # check input parameters. If invalid, raise an error
+    # For example:
+    # if parameters["temperature_K"] > 1000:
+    #     raise ValueError("Temperature too high!")
+    pass
 
 
 def run_experiment(parameters, devices=None):
     if devices is None:
         devices = get_devices()
 
-    pixels = devices["pixels"]
-    sensor = devices["sensor"]
+    motor1 = devices[motor_name_1]
+    motor2 = devices[motor_name_2]
+    sensor = devices[sensor_name]
 
-    r, g, b = [parameters[key] for key in ["R", "G", "B"]]
-    atime = parameters.get("atime", 100)
-    astep = parameters.get("astep", 999)
-    gain = parameters.get("gain", 128)
+    # enter code that will run the experiment and return sensor data
 
-    pixels[0] = (r, g, b)
-    pixels.write()
-
-    sensor._atime = atime
-    sensor._astep = astep
-    sensor._gain = gain
-    sensor_data = sensor.all_channels
-
-    CHANNEL_NAMES = [
-        "ch410",
-        "ch440",
-        "ch470",
-        "ch510",
-        "ch550",
-        "ch583",
-        "ch620",
-        "ch670",
-    ]
-
-    sensor_data = {ch: datum for ch, datum in zip(CHANNEL_NAMES, sensor_data)}
+    # dummy sensor data
+    sensor_data = {"sensor_output_A": 1.0, "sensor_output_B": 2.5}
     return sensor_data
 
 
 def reset_experiment(parameters, devices=None):
-    if devices is None:
-        devices = get_devices()
+    # for example, turn off the motors, home a stage, etc.
+    # sometimes it might make sense to perform the resetting of the experiment during
+    # the run_experiment function: for example, when rinsing out a chamber, since the
+    # rinse time and power might be one of the input parameters that gets tracked
+    pass
 
-    pixels = devices["pixels"]
 
-    # Turn off the LED
-    pixels[0] = (0, 0, 0)
-    pixels.write()
+def emergency_shutdown(devices=None):
+    # if reset_experiment causes an error, then this function will be called
+    # for example, shut off the main power
+    # this function can be the same as reset_experiment if needed
+    pass
 
 
 ######################################
@@ -159,11 +127,6 @@ devices = get_devices()
 onboard_led = get_onboard_led()
 buzzer = PWM(Pin(18))
 sdcard_ready = initialize_sdcard()
-
-
-# MQTT Resources:
-# https://gist.github.com/sammachin/b67cc4f395265bccd9b2da5972663e6d
-# http://www.steves-internet-guide.com/into-mqtt-python-client/
 
 
 def on_connect(client, userdata, flags, rc):
@@ -188,7 +151,6 @@ def callback(topic, msg):
             emergency_shutdown_fn=reset_experiment,
             devices=devices,
             buzzer=buzzer,
-            sdcard_ready=sdcard_ready,
         )
         payload_data = experiment.try_experiment(msg)
 
@@ -226,7 +188,7 @@ client = MQTTClient(
     user=None,
     password=None,
     keepalive=30,
-    ssl=True,
+    ssl=False,
     ssl_params={},
 )
 try:
