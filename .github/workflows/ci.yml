@@ -75,6 +75,10 @@ jobs:
           pipx run tox
           --installpkg '${{ needs.prepare.outputs.wheel-distribution }}'
           -- -rFEx --durations 10 --color yes
+        env:
+          HIVEMQ_USERNAME: ${{ secrets.HIVEMQ_USERNAME }}
+          HIVEMQ_PASSWORD: ${{ secrets.HIVEMQ_PASSWORD }}
+          HIVEMQ_HOST: ${{ secrets.HIVEMQ_HOST }}
       - name: Generate coverage report
         run: pipx run coverage lcov -o coverage.lcov
       - name: Upload partial coverage report
