@@ -61,6 +61,7 @@ jobs:
         # - macos-latest
         # - windows-latest
     runs-on: ${{ matrix.platform }}
+    environment: pico-w-ids
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
