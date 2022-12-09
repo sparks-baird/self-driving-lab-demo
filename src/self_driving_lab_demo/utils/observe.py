@@ -175,9 +175,10 @@ def liquid_observe_sensor_data(
     session_id=None,
     timeout=3600,
     queue_timeout=60,
-    username=None,
-    password=None,
-    hostname="broker.hivemq.com",
+    username="sgbaird",
+    password="D.Pq5gYtejYbU#L",
+    hostname="248cc294c37642359297f75b7b023374.s2.eu.hivemq.cloud",
+    port=8883,
 ):
     if pico_id is None:
         _logger.warning(
@@ -214,7 +215,7 @@ def liquid_observe_sensor_data(
     # set username and password
     client.username_pw_set(username, password)
     # connect to HiveMQ Cloud on port 8883 (default for MQTT)
-    client.connect(hostname, 8883)
+    client.connect(hostname, port)
     client.subscribe(sensor_topic, qos=1)
 
     assert 0 <= atime <= 255, f"atime ({atime}) should be between 0 and 255"
