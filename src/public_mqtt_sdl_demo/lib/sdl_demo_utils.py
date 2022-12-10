@@ -184,9 +184,9 @@ class Experiment(object):
             payload_data["error"] = get_traceback(err)
 
         try:
-            payload_data["utc_timestamp"] = get_timestamp(timeout=2)
             payload_data["onboard_temperature_K"] = get_onboard_temperature(unit="K")
             payload_data["sd_card_ready"] = self.sdcard_ready
+            payload_data["utc_timestamp"] = get_timestamp(timeout=5)
         except OverflowError as e:
             print(get_traceback(e))
         except Exception as e:
@@ -227,6 +227,7 @@ class Experiment(object):
         device_nickname: str,
         trunc_device_id: str,
         verbose: bool = True,
+        retries: int = 2,
     ):
         try:
             payload_data["device_nickname"] = device_nickname
@@ -240,6 +241,7 @@ class Experiment(object):
                 database_name=database_name,
                 collection_name=collection_name,
                 verbose=verbose,
+                retries=retries,
             )
         except Exception as e:
             print(f"Failed to log to MongoDB backend: {get_traceback(e)}")
