@@ -30,6 +30,7 @@ import time
 
 import network
 import rp2
+from ubinascii import hexlify
 
 
 def connectWiFi(ssid, password, country=None, wifi_energy_saver=False):
@@ -40,6 +41,10 @@ def connectWiFi(ssid, password, country=None, wifi_energy_saver=False):
     if not wifi_energy_saver:
         wlan.config(pm=0xA11140)  # avoid the energy-saving WiFi mode
     wlan.active(True)
+
+    mac = hexlify(network.WLAN().config("mac"), ":").decode()
+    print(f"MAC address: {mac}")
+
     wlan.connect(ssid, password)
     # Wait for connect or fail
     max_wait = 10
