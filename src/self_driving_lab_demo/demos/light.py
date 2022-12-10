@@ -148,6 +148,7 @@ class SelfDrivingLabDemoLight(SelfDrivingLabDemo):
                 )
             else:
                 raise ValueError(f"unknown parameter {nm}")
+        return parameters
 
     @property
     def channel_names(self):
