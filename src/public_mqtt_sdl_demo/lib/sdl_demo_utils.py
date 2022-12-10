@@ -1,6 +1,6 @@
 import json
 import sys
-from time import sleep, ticks_diff, ticks_ms  # type: ignore
+from time import localtime, sleep, ticks_diff, ticks_ms  # type: ignore
 
 import uos
 from data_logging import (
@@ -186,6 +186,7 @@ class Experiment(object):
         try:
             payload_data["onboard_temperature_K"] = get_onboard_temperature(unit="K")
             payload_data["sd_card_ready"] = self.sdcard_ready
+            payload_data["local_timestamp"] = localtime()
             payload_data["utc_timestamp"] = get_timestamp(timeout=5)
         except OverflowError as e:
             print(get_traceback(e))
