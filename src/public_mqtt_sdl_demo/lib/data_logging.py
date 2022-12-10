@@ -1,5 +1,5 @@
 import sys
-import time
+from time import gmtime, localtime, time
 
 import machine
 import ntptime
@@ -124,11 +124,29 @@ def log_to_mongodb(
                 print(e)
 
 
-def get_timestamp(timeout=2):
+def get_timestamp(timeout=2, return_str=False):
     ntptime.timeout = timeout  # type: ignore
-    utc_tuple = time.gmtime(ntptime.time())
+    time_int = ntptime.time()
+    utc_tuple = gmtime(time_int)
     year, month, mday, hour, minute, second, weekday, yearday = utc_tuple
-    return f"{year}-{month}-{mday} {hour:02}:{minute:02}:{second:02}"
+
+    time_str = f"{year}-{month}-{mday} {hour:02}:{minute:02}:{second:02}"
+
+    if return_str:
+        return time_int, time_str
+
+    return time_int
+
+
+def get_local_timestamp(return_str=False):
+    t = time()
+    year, month, mday, hour, minute, second, _, _ = localtime(t)
+    time_str = f"{year}-{month}-{mday} {hour:02}:{minute:02}:{second:02}"
+
+    if return_str:
+        return t, time_str
+
+    return t
 
 
 def get_onboard_temperature(unit="K"):
