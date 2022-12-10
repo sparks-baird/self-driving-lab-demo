@@ -10,12 +10,14 @@ from queue import Empty, Queue
 
 # from ray.util.queue import Queue
 from time import time
+from typing import Optional
 from uuid import uuid4
 
 import numpy as np
-import paho.mqtt.client as mqtt
+import paho.mqtt.client as paho
 import requests
 import serial
+from paho import mqtt
 
 from self_driving_lab_demo.utils.channel_info import CHANNEL_NAMES
 
@@ -31,11 +33,15 @@ def mqtt_observe_sensor_data(
     atime: int = 100,
     astep: int = 999,
     gain: int = 128,
-    pico_id=None,
-    session_id=None,
-    timeout=3600,
-    queue_timeout=60,
-    hostname="test.mosquitto.org",
+    pico_id: Optional[str] = None,
+    session_id: Optional[str] = None,
+    timeout: int = 3600,
+    queue_timeout: int = 60,
+    username: Optional[str] = "sgbaird",
+    password: Optional[str] = "D.Pq5gYtejYbU#L",
+    hostname="248cc294c37642359297f75b7b023374.s2.eu.hivemq.cloud",
+    port=8883,
+    tls=True,
 ):
     if pico_id is None:
         _logger.warning(
@@ -50,24 +56,9 @@ def mqtt_observe_sensor_data(
     neopixel_topic = prefix + "GPIO/28"
     sensor_topic = prefix + "as7341/"
 
-    def on_message(client, userdata, msg):
-        sensor_data_queue.put(json.loads(msg.payload))
-
-    # The callback for when the client receives a CONNACK response from the server.
-    def on_connect(client, userdata, flags, rc):
-        if rc != 0:
-            print("Connected with result code " + str(rc))
-        # Subscribing in on_connect() means that if we lose the connection and
-        # reconnect then subscriptions will be renewed.
-        client.subscribe(sensor_topic, qos=1)
-
     # NOTE: don't pass client_id=session_id, otherwise you might run into issues with
     # running multiple experiments simultaneously with overlapping client_id-s
-    client = mqtt.Client()  # create new instance
-    client.on_connect = on_connect
-    client.on_message = on_message
-    client.connect(hostname)  # connect to broker
-    client.subscribe(sensor_topic, qos=1)
+    client = get_paho_client(username, password, hostname, port, sensor_topic, tls=tls)
 
     assert 0 <= atime <= 255, f"atime ({atime}) should be between 0 and 255"
     assert 0 <= astep <= 65534, f"astep ({astep}) should be between 0 and 65534"
@@ -129,8 +120,34 @@ def mqtt_observe_sensor_data(
             client.loop_stop()
             sensor_data.pop("_input_message")  # remove the input message
             return sensor_data
-        # except Empty:
-        #     pass
+
+
+def get_paho_client(username, password, hostname, port, sensor_topic, tls=True):
+    client = paho.Client(protocol=paho.MQTTv5)  # create new instance
+
+    def on_message(client, userdata, msg):
+        sensor_data_queue.put(json.loads(msg.payload))
+
+    # The callback for when the client receives a CONNACK response from the server.
+    def on_connect(client, userdata, flags, rc, properties=None):
+        if rc != 0:
+            print("Connected with result code " + str(rc))
+        # Subscribing in on_connect() means that if we lose the connection and
+        # reconnect then subscriptions will be renewed.
+        client.subscribe(sensor_topic, qos=1)
+
+    client.on_connect = on_connect
+    client.on_message = on_message
+
+    # enable TLS for secure connection
+    if tls:
+        client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
+    # set username and password
+    client.username_pw_set(username, password)
+    # connect to HiveMQ Cloud on port 8883 (default for MQTT)
+    client.connect(hostname, port)
+    client.subscribe(sensor_topic, qos=1)
+    return client
 
 
 def liquid_observe_sensor_data(
@@ -148,7 +165,11 @@ def liquid_observe_sensor_data(
     session_id=None,
     timeout=3600,
     queue_timeout=60,
-    hostname="test.mosquitto.org",
+    username="sgbaird",
+    password="D.Pq5gYtejYbU#L",
+    hostname="248cc294c37642359297f75b7b023374.s2.eu.hivemq.cloud",
+    port=8883,
+    tls=True,
 ):
     if pico_id is None:
         _logger.warning(
@@ -163,24 +184,9 @@ def liquid_observe_sensor_data(
     neopixel_topic = prefix + "GPIO/28"
     sensor_topic = prefix + "as7341/"
 
-    def on_message(client, userdata, msg):
-        sensor_data_queue.put(json.loads(msg.payload))
-
-    # The callback for when the client receives a CONNACK response from the server.
-    def on_connect(client, userdata, flags, rc):
-        if rc != 0:
-            print("Connected with result code " + str(rc))
-        # Subscribing in on_connect() means that if we lose the connection and
-        # reconnect then subscriptions will be renewed.
-        client.subscribe(sensor_topic, qos=1)
-
     # NOTE: don't pass client_id=session_id, otherwise you might run into issues with
     # running multiple experiments simultaneously with overlapping client_id-s
-    client = mqtt.Client()  # create new instance
-    client.on_connect = on_connect
-    client.on_message = on_message
-    client.connect(hostname)  # connect to broker
-    client.subscribe(sensor_topic, qos=1)
+    client = get_paho_client(username, password, hostname, port, sensor_topic, tls=tls)
 
     assert 0 <= atime <= 255, f"atime ({atime}) should be between 0 and 255"
     assert 0 <= astep <= 65534, f"astep ({astep}) should be between 0 and 65534"
@@ -342,3 +348,17 @@ def nonwireless_pico_observe_sensor_data(
 #     "ch510": 1441,
 #     "ch620": 1490,
 # }
+
+# if (
+#     port is None
+#     and username is None
+#     and password is None
+#     and hostname == "broker.hivemq.com"
+# ):
+#     tls = False
+#     port = 1883
+# elif port is None and tls is None:
+#     port = 8883
+#     tls = True
+# else:
+#     raise (ValueError("Invalid port and tls combination"))

@@ -1,14 +1,10 @@
 """Run a self-driving lab on a Raspberry Pi Pico W."""
 import json
 from secrets import PASSWORD, SSID
-
-try:
-    from secrets import DEVICE_NICKNAME, MONGODB_API_KEY, MONGODB_COLLECTION_NAME
-except Exception as e:
-    print(e)
-
 from time import sleep
 
+import ntptime
+import ussl
 from as7341_sensor import Sensor
 from data_logging import initialize_sdcard
 from machine import PWM, Pin, unique_id
@@ -25,6 +21,34 @@ from sdl_demo_utils import (
 from ubinascii import hexlify
 from umqtt.simple import MQTTClient
 
+try:
+    from secrets import DEVICE_NICKNAME, MONGODB_API_KEY, MONGODB_COLLECTION_NAME
+except Exception as e:
+    print(get_traceback(e))
+
+try:
+    from secrets import HIVEMQ_HOST, HIVEMQ_PASSWORD, HIVEMQ_USERNAME
+
+    port = 8883
+
+except Exception as e:
+    print(get_traceback(e))
+    HIVEMQ_USERNAME = None
+    HIVEMQ_PASSWORD = None
+    HIVEMQ_HOST = "broker.hivemq.com"
+    port = 1883
+    print(
+        "-----------------------------------------------------------------------------------"
+    )
+    print(
+        f"***WARNING*** Defaulting to public HiveMQ broker ({HIVEMQ_HOST}) on port {port}***"
+    )
+    print(
+        "-----------------------------------------------------------------------------------"
+    )
+    print("sleeping for 5 seconds in case you want to exit..")
+    sleep(5.0)
+
 # https://medium.com/@johnlpage/introduction-to-microcontrollers-and-the-pi-pico-w-f7a2d9ad1394
 # you can request a MongoDB collection specific to you by emailing
 # sterling.baird@utah.edu
@@ -33,24 +57,31 @@ mongodb_url = f"https://data.mongodb-api.com/app/{mongodb_app_name}/endpoint/dat
 mongodb_cluster_name = "sparks-materials-informatics"
 mongodb_database_name = "clslab-light-mixing"
 
-connectWiFi(SSID, PASSWORD, country="US")
-
 my_id = hexlify(unique_id()).decode()
 my_encrypted_id = encrypt_id(my_id, verbose=True)
 trunc_device_id = str(my_encrypted_id)[0:10]
 prefix = f"sdl-demo/picow/{my_id}/"
-mqtt_host = "test.mosquitto.org"
 
 print(f"Unencrypted PICO ID (keep private): {my_id}")
 print(f"Encrypted PICO ID (OK to share publicly): {my_encrypted_id}")
 print(f"Truncated, encrypted PICO ID (OK to share publicly): {trunc_device_id}")
 print(f"MQTT prefix: {prefix}")
 
+connectWiFi(SSID, PASSWORD, country="US")
+
 sdcard_backup_fpath = "/sd/experiments.txt"
 
+# To validate certificates, a valid time is required
+ntptime.host = "de.pool.ntp.org"
+ntptime.settime()
+
+print("Obtaining CA Certificate")
+with open("hivemq-com-chain.der", "rb") as f:
+    cacert = f.read()
+f.close()
 
 ######################################
-##### END USER-DEFINED FUNCTIONS #####
+#### BEGIN USER-DEFINED FUNCTIONS ####
 ######################################
 
 # at minimum, the following functions should be defined:
@@ -212,6 +243,7 @@ def callback(topic, msg):
             device_nickname=DEVICE_NICKNAME,
             trunc_device_id=trunc_device_id,
             verbose=True,
+            retries=2,
         )
 
 
@@ -222,12 +254,19 @@ def on_message(client, userdata, msg):
 
 client = MQTTClient(
     prefix,
-    mqtt_host,
-    user=None,
-    password=None,
+    HIVEMQ_HOST,
+    user=HIVEMQ_USERNAME,
+    password=HIVEMQ_PASSWORD,
     keepalive=30,
     ssl=True,
-    ssl_params={},
+    ssl_params={
+        "server_side": False,
+        "key": None,
+        "cert": None,
+        "cert_reqs": ussl.CERT_REQUIRED,
+        "cadata": cacert,
+        "server_hostname": HIVEMQ_HOST,
+    },
 )
 try:
     client.connect()

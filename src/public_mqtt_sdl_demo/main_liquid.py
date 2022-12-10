@@ -58,11 +58,12 @@ sdcard_backup_fpath = "/sd/experiments.txt"
 
 PUMP_PINS = {"R": 0, "Y": 1, "B": 2, "water": 3}
 pumps = {name: PWM(Pin(i)) for name, i in PUMP_PINS.items()}
+white_led = Pin(9, mode=Pin.OUT)
 sensor = Sensor()
 
 
 def get_devices():
-    return {"pumps": pumps, "sensor": sensor}
+    return {"pumps": pumps, "sensor": sensor, "white_led": white_led}
 
 
 def validate_inputs(parameters, devices=None):
@@ -188,7 +189,9 @@ def measure_sensors(parameters, devices=None):
     if devices is None:
         devices = get_devices()
 
+    white_led = devices["white_led"]
     sensor = devices["sensor"]
+    white_led.on()
 
     atime = parameters.get("atime", 100)
     astep = parameters.get("astep", 999)
@@ -225,6 +228,9 @@ def reset_experiment(parameters, devices=None):
         devices = get_devices()
 
     pumps = devices["pumps"]
+    white_led = devices["white_led"]
+
+    white_led.off()
 
     # Turn off the pumps
     [run_pump(pump, 0.0) for pump in pumps.values()]
@@ -236,6 +242,9 @@ def emergency_shutdown(devices=None):
         devices = get_devices()
 
     pumps = devices["pumps"]
+    white_led = devices["white_led"]
+
+    white_led.off()
 
     # Turn off the pumps
     [run_pump(pump, 0.0) for pump in pumps.values()]

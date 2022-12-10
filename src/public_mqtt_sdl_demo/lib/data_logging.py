@@ -80,6 +80,7 @@ def log_to_mongodb(
     database_name: str,
     collection_name: str,
     verbose: bool = True,
+    retries: int = 2,
 ):
     # based on https://medium.com/@johnlpage/introduction-to-microcontrollers-and-the-pi-pico-w-f7a2d9ad1394
     headers = {"api-key": api_key}
@@ -93,19 +94,34 @@ def log_to_mongodb(
 
     if verbose:
         print(f"sending document to {cluster_name}:{database_name}:{collection_name}")
-    response = urequests.post(url, headers=headers, json=insertPayload)
 
-    if verbose:
-        print(
-            "Response: (" + str(response.status_code) + "), msg = " + str(response.text)
-        )
-        if response.status_code == 201:
-            print("Added Successfully")
-        else:
-            print("Error")
+    for _ in range(retries):
+        if _ > 0:
+            print(f"retrying... ({_} of {retries})")
 
-    # Always close response objects so we don't leak memory
-    response.close()
+        try:
+            response = urequests.post(url, headers=headers, json=insertPayload)
+
+            if verbose:
+                print(
+                    "Response: ("
+                    + str(response.status_code)
+                    + "), msg = "
+                    + str(response.text)
+                )
+                if response.status_code == 201:
+                    print("Added Successfully")
+                    break
+                else:
+                    print("Error")
+
+            # Always close response objects so we don't leak memory
+            response.close()
+        except Exception as e:
+            if _ == retries - 1:
+                raise e
+            else:
+                print(e)
 
 
 def get_timestamp(timeout=2):
