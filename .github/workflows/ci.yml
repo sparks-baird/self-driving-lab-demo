@@ -33,6 +33,8 @@ jobs:
         with: {fetch-depth: 0}  # deep clone for setuptools-scm
       - uses: actions/setup-python@v4
         with: {python-version: "3.10"}
+      - name: Force earlier version of tox
+        run: pipx inject tox 'tox<4.0.0'
       - name: Run static analysis and format checkers
         run: pipx run pre-commit run --all-files --show-diff-on-failure
       - name: Build package distribution files
