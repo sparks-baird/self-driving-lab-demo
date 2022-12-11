@@ -118,4 +118,21 @@ jobs:
           TWINE_REPOSITORY: pypi
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
-        run: pipx run tox -e publish
+          run: pipx run tox -e publish
+      - name: Prepare device code zip file
+        run: |
+          mkdir release
+          cp -r src/sdl_demo/public_mqtt_sdl_demo/lib/ release/
+          cp src/sdl_demo/public_mqtt_sdl_demo/main.py release/
+          cp src/sdl_demo/public_mqtt_sdl_demo/main.py release/
+          cp src/sdl_demo/public_mqtt_sdl_demo/hivemq-com-chain.der release/
+          mv public_mqtt_sdl_demo sdl_demo
+          mv sdl_demo/sample_secrets.py sdl_demo/secrets.py
+          zip -r sdl_demo.zip release
+          
+      - name: Create Release # https://github.com/softprops/action-gh-release
+        uses: softprops/action-gh-release@v1
+        with:
+          body: ${{steps.build_changelog.outputs.changelog}}
+          files: |
+            sdl_demo.zip
