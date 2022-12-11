@@ -19,7 +19,7 @@ from sdl_demo_utils import (
     sign_of_life,
 )
 from ubinascii import hexlify
-from umqtt.simple import MQTTClient
+from umqtt.robust import MQTTClient
 
 try:
     from secrets import DEVICE_NICKNAME, MONGODB_API_KEY, MONGODB_COLLECTION_NAME
@@ -59,6 +59,11 @@ mongodb_database_name = "clslab-light-mixing"
 
 my_id = hexlify(unique_id()).decode()
 my_encrypted_id = encrypt_id(my_id, verbose=True)
+
+# # aside: for sgbaird's public test demo only
+# my_id = "test"
+# my_encrypted_id = "test"
+
 trunc_device_id = str(my_encrypted_id)[0:10]
 prefix = f"sdl-demo/picow/{my_id}/"
 
@@ -72,6 +77,7 @@ connectWiFi(SSID, PASSWORD, country="US")
 sdcard_backup_fpath = "/sd/experiments.txt"
 
 # To validate certificates, a valid time is required
+ntptime.timeout = 5  # type: ignore
 ntptime.host = "de.pool.ntp.org"
 ntptime.settime()
 
@@ -111,6 +117,13 @@ def run_experiment(parameters, devices=None):
     atime = parameters.get("atime", 100)
     astep = parameters.get("astep", 999)
     gain = parameters.get("gain", 128)
+
+    assert 0 <= r <= 255, f"Invalid R: {r} (must be between 0 and 255)"
+    assert 0 <= g <= 255, f"Invalid G: {g} (must be between 0 and 255)"
+    assert 0 <= b <= 255, f"Invalid B: {b} (must be between 0 and 255)"
+    assert 0 <= atime <= 255, f"Invalid atime: {atime} (must be between 0 and 255)"
+    assert 0 <= astep <= 65536, f"Invalid astep: {astep} (must be between 0 and 65536)"
+    assert 0.5 <= gain <= 512, f"Invalid gain: {gain} (must be between 0.5 and 512)"
 
     pixels[0] = (r, g, b)
     pixels.write()
@@ -162,29 +175,30 @@ sdcard_ready = initialize_sdcard()
 # http://www.steves-internet-guide.com/into-mqtt-python-client/
 
 
-def on_connect(client, userdata, flags, rc):
-    print("Connected with result code " + str(rc))
-    # Subscribing in on_connect() means that if we lose the connection and
-    # reconnect then subscriptions will be renewed.
+# def on_connect(client, userdata, flags, rc):
+#     print("Connected with result code " + str(rc))
+#     # Subscribing in on_connect() means that if we lose the connection and
+#     # reconnect then subscriptions will be renewed.
 
-    # prefer qos=2, but not implemented
-    client.subscribe(prefix + "GPIO/#", qos=0)
+#     # prefer qos=2, but not implemented
+#     client.subscribe(prefix + "GPIO/#", qos=0)
 
 
-def callback(topic, msg):
+experiment = Experiment(
+    run_experiment_fn=run_experiment,
+    reset_experiment_fn=reset_experiment,
+    emergency_shutdown_fn=reset_experiment,
+    devices=devices,
+    buzzer=buzzer,
+    sdcard_ready=sdcard_ready,
+)
+
+
+def callback(topic, msg, retain=None, dup=None):
     t = topic.decode("utf-8").lstrip(prefix)
     print(t)
 
     if t[:5] == "GPIO/":
-
-        experiment = Experiment(
-            run_experiment_fn=run_experiment,
-            reset_experiment_fn=reset_experiment,
-            emergency_shutdown_fn=reset_experiment,
-            devices=devices,
-            buzzer=buzzer,
-            sdcard_ready=sdcard_ready,
-        )
         payload_data = experiment.try_experiment(msg)
 
         payload = json.dumps(payload_data)
@@ -211,9 +225,9 @@ def callback(topic, msg):
         )
 
 
-# The callback for when a PUBLISH message is received from the server.
-def on_message(client, userdata, msg):
-    print(msg.topic + " " + str(msg.payload))
+# # The callback for when a PUBLISH message is received from the server.
+# def on_message(client, userdata, msg):
+#     print(msg.topic + " " + str(msg.payload))
 
 
 client = MQTTClient(
@@ -232,6 +246,7 @@ client = MQTTClient(
         "server_hostname": HIVEMQ_HOST,
     },
 )
+del cacert
 try:
     client.connect()
 except OSError as e:
@@ -241,8 +256,8 @@ except OSError as e:
     client.connect()
 
 client.set_callback(callback)
-client.on_connect = on_connect  # type: ignore
-client.on_message = on_message  # type: ignore
+# client.on_connect = on_connect  # type: ignore
+# client.on_message = on_message  # type: ignore
 client.subscribe(prefix + "GPIO/#")
 
 heartbeat(client, True)
