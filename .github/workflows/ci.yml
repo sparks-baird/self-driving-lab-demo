@@ -61,6 +61,7 @@ jobs:
         # - macos-latest
         # - windows-latest
     runs-on: ${{ matrix.platform }}
+    environment: pico-w-ids
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
@@ -76,6 +77,10 @@ jobs:
           -- -rFEx --durations 10 --color yes
       - name: Ensure main Jupyter notebook runs without error
         run: pipx run jupyter run notebooks/4.2-paho-mqtt-colab-sdl-demo-test.ipynb
+        env:
+          HIVEMQ_USERNAME: ${{ secrets.HIVEMQ_USERNAME }}
+          HIVEMQ_PASSWORD: ${{ secrets.HIVEMQ_PASSWORD }}
+          HIVEMQ_HOST: ${{ secrets.HIVEMQ_HOST }}
       - name: Generate coverage report
         run: pipx run coverage lcov -o coverage.lcov
       - name: Upload partial coverage report
