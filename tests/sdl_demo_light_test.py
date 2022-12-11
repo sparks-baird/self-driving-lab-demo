@@ -4,8 +4,9 @@ from time import time
 from uuid import uuid4
 
 import numpy as np
-import paho.mqtt.client as mqtt
+import paho.mqtt.client as paho
 from numpy.testing import assert_allclose, assert_almost_equal
+from paho import mqtt
 
 from self_driving_lab_demo import SelfDrivingLabDemoLight, SensorSimulatorLight
 from self_driving_lab_demo.utils.observe import mqtt_observe_sensor_data
@@ -13,7 +14,9 @@ from self_driving_lab_demo.utils.observe import mqtt_observe_sensor_data
 sensor_data_queue: "Queue[dict]" = Queue()
 timeout = 30
 
-hostname = "test.mosquitto.org"
+HIVEMQ_USERNAME = "sgbaird"
+HIVEMQ_PASSWORD = "D.Pq5gYtejYbU#L"
+HIVEMQ_HOST = "248cc294c37642359297f75b7b023374.s2.eu.hivemq.cloud"
 
 prefix = "sdl-demo/picow/test/"
 neopixel_topic = prefix + "GPIO/NaN"
@@ -21,7 +24,7 @@ sensor_topic = prefix + "as7341/"
 
 
 # The callback for when the client receives a CONNACK response from the server.
-def on_connect(client, userdata, flags, rc):
+def on_connect(client, userdata, flags, rc, properties=None):
     if rc != 0:
         print("Connected with result code " + str(rc))
     # Subscribing in on_connect() means that if we lose the connection and
@@ -115,20 +118,16 @@ def test_public_demo():
 
 
 def test_bad_payload_values():
-    R = -11
-    G = -12
-    B = -13
+    R = 11
+    G = 12
+    B = 13
     atime = None
     astep = dict()
     gain = []
     session_id = str(uuid4())
     experiment_id = str(uuid4())
 
-    client = mqtt.Client()  # create new instance
-    client.on_connect = on_connect
-    client.on_message = on_message
-    client.connect(hostname)  # connect to broker
-    client.subscribe(sensor_topic, qos=1)
+    client = get_client()
 
     # ensures double quotes for JSON compatiblity
     payload = json.dumps(
@@ -146,6 +145,47 @@ def test_bad_payload_values():
     client.publish(neopixel_topic, payload, qos=2)
 
     client.loop_start()
+    assert_error(session_id, experiment_id, client)
+
+
+def test_bad_rgb_payload_values():
+    R = -11
+    G = -12
+    B = -13
+    session_id = str(uuid4())
+    experiment_id = str(uuid4())
+
+    client = get_client()
+
+    # ensures double quotes for JSON compatiblity
+    payload = json.dumps(
+        dict(
+            R=R,
+            G=G,
+            B=B,
+            _session_id=session_id,
+            _experiment_id=experiment_id,
+        )
+    )
+    client.publish(neopixel_topic, payload, qos=2)
+
+    client.loop_start()
+    assert_error(session_id, experiment_id, client)
+
+
+def get_client():
+    client = paho.Client(protocol=paho.MQTTv5)  # create new instance
+    client.on_connect = on_connect
+    client.on_message = on_message
+
+    client.username_pw_set(HIVEMQ_USERNAME, HIVEMQ_PASSWORD)
+    client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
+    client.connect(HIVEMQ_HOST, 8883)  # connect to broker
+    client.subscribe(sensor_topic, qos=1)
+    return client
+
+
+def assert_error(session_id, experiment_id, client):
     t0 = time()
     while True:
         if time() - t0 > timeout:
@@ -170,10 +210,13 @@ def test_bad_payload_values():
 
 
 def test_bad_json_payload():
-    client = mqtt.Client()  # create new instance
+    client = paho.Client(protocol=paho.MQTTv5)  # create new instance
     client.on_connect = on_connect
     client.on_message = on_message
-    client.connect(hostname)  # connect to broker
+
+    client.username_pw_set(HIVEMQ_USERNAME, HIVEMQ_PASSWORD)
+    client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
+    client.connect(HIVEMQ_HOST, 8883)  # connect to broker
     client.subscribe(sensor_topic, qos=1)
 
     payload = "This (bad) payload should be a JSON-formatted string via e.g. json.dumps(...)"  # noqa: E501
