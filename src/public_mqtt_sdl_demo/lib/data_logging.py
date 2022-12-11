@@ -96,6 +96,7 @@ def log_to_mongodb(
         print(f"sending document to {cluster_name}:{database_name}:{collection_name}")
 
     for _ in range(retries):
+        response = None
         if _ > 0:
             print(f"retrying... ({_} of {retries})")
 
@@ -118,6 +119,8 @@ def log_to_mongodb(
             # Always close response objects so we don't leak memory
             response.close()
         except Exception as e:
+            if response is not None:
+                response.close()
             if _ == retries - 1:
                 raise e
             else:
