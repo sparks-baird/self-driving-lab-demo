@@ -118,7 +118,7 @@ jobs:
           TWINE_REPOSITORY: pypi
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
-          run: pipx run tox -e publish
+        run: pipx run tox -e publish
       - name: Prepare device code zip file
         run: |
           mkdir release
