@@ -36,7 +36,7 @@ jobs:
       - name: Run static analysis and format checkers
         run: pipx run pre-commit run --all-files --show-diff-on-failure
       - name: Build package distribution files
-        run: pipx run tox -e clean,build
+        run: pipx run --spec tox==3.27.1 tox -e clean,build
       - name: Record the path of wheel distribution
         id: wheel-distribution
         run: echo "::set-output name=path::$(ls dist/*.whl)"
@@ -72,9 +72,11 @@ jobs:
         with: {name: python-distribution-files, path: dist/}
       - name: Run tests
         run: >-
-          pipx run tox
+          pipx run --spec tox==3.27.1 tox
           --installpkg '${{ needs.prepare.outputs.wheel-distribution }}'
           -- -rFEx --durations 10 --color yes
+      - name: Ensure main Jupyter notebook runs without error
+        run: pipx run jupyter run notebooks/4.2-paho-mqtt-colab-sdl-demo-test.ipynb
         env:
           HIVEMQ_USERNAME: ${{ secrets.HIVEMQ_USERNAME }}
           HIVEMQ_PASSWORD: ${{ secrets.HIVEMQ_PASSWORD }}
@@ -118,7 +120,7 @@ jobs:
           TWINE_REPOSITORY: pypi
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
-        run: pipx run tox -e publish
+        run: pipx run --spec tox==3.27.1 tox -e publish
       - name: Prepare device code zip file
         run: |
           mkdir release
@@ -129,7 +131,7 @@ jobs:
           mv public_mqtt_sdl_demo sdl_demo
           mv sdl_demo/sample_secrets.py sdl_demo/secrets.py
           zip -r sdl_demo.zip release
-          
+
       - name: Create Release # https://github.com/softprops/action-gh-release
         uses: softprops/action-gh-release@v1
         with:

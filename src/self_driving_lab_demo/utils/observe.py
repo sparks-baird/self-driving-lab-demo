@@ -10,7 +10,7 @@ from queue import Empty, Queue
 
 # from ray.util.queue import Queue
 from time import time
-from typing import Optional
+from typing import Optional, Union
 from uuid import uuid4
 
 import numpy as np
@@ -32,11 +32,12 @@ def mqtt_observe_sensor_data(
     B: int,
     atime: int = 100,
     astep: int = 999,
-    gain: int = 128,
+    gain: Union[int, float] = 128,
     pico_id: Optional[str] = None,
     session_id: Optional[str] = None,
     timeout: int = 3600,
     queue_timeout: int = 60,
+    client=None,
     username: Optional[str] = "sgbaird",
     password: Optional[str] = "D.Pq5gYtejYbU#L",
     hostname="248cc294c37642359297f75b7b023374.s2.eu.hivemq.cloud",
@@ -58,13 +59,16 @@ def mqtt_observe_sensor_data(
 
     # NOTE: don't pass client_id=session_id, otherwise you might run into issues with
     # running multiple experiments simultaneously with overlapping client_id-s
-    client = get_paho_client(username, password, hostname, port, sensor_topic, tls=tls)
+    if client is None:
+        client = get_paho_client(
+            username, password, hostname, port, sensor_topic, tls=tls
+        )
 
     assert 0 <= atime <= 255, f"atime ({atime}) should be between 0 and 255"
     assert 0 <= astep <= 65534, f"astep ({astep}) should be between 0 and 65534"
     assert 0.5 <= gain <= 512, f"gain ({gain}) should be between 0.5 and 512"
 
-    integration_time = (astep + 1) * (atime + 1) * 2.78 / 1000  # as7341.py
+    integration_time_s = (astep + 1) * (atime + 1) * 2.78 / 1e6  # as7341.py
 
     # ensures double quotes for JSON compatiblity
     payload = json.dumps(
@@ -74,8 +78,8 @@ def mqtt_observe_sensor_data(
             B=int(np.round(B)),
             atime=int(np.round(atime)),
             astep=int(np.round(astep)),
-            integration_time=integration_time,
-            gain=int(np.round(gain)),
+            integration_time_s=integration_time_s,
+            gain=float(gain),
             _session_id=session_id,
             _experiment_id=experiment_id,
         )
@@ -91,7 +95,7 @@ def mqtt_observe_sensor_data(
             sensor_data = sensor_data_queue.get(True, queue_timeout)
         except Empty as e:
             raise Empty(
-                "Sensor data retrieval timed out ({queue_timeout} seconds)"
+                f"Sensor data retrieval timed out ({queue_timeout} seconds)"
             ) from e
         inp = sensor_data["_input_message"]
 
@@ -160,7 +164,7 @@ def liquid_observe_sensor_data(
     runtime: float = 5.0,
     atime: int = 100,
     astep: int = 999,
-    gain: int = 128,
+    gain: Union[int, float] = 128,
     pico_id=None,
     session_id=None,
     timeout=3600,
@@ -192,7 +196,7 @@ def liquid_observe_sensor_data(
     assert 0 <= astep <= 65534, f"astep ({astep}) should be between 0 and 65534"
     assert 0.5 <= gain <= 512, f"gain ({gain}) should be between 0.5 and 512"
 
-    integration_time = (astep + 1) * (atime + 1) * 2.78 / 1000  # as7341.py
+    integration_time_s = (astep + 1) * (atime + 1) * 2.78 / 1e6  # as7341.py
 
     # ensures double quotes for JSON compatiblity
     payload = json.dumps(
@@ -206,8 +210,8 @@ def liquid_observe_sensor_data(
             runtime=float(runtime),
             atime=int(np.round(atime)),
             astep=int(np.round(astep)),
-            integration_time=integration_time,
-            gain=int(np.round(gain)),
+            integration_time_s=integration_time_s,
+            gain=float(gain),
             _session_id=session_id,
             _experiment_id=experiment_id,
         )

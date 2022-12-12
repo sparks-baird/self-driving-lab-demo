@@ -1,5 +1,5 @@
 import sys
-import time
+from time import gmtime, localtime, time
 
 import machine
 import ntptime
@@ -96,6 +96,7 @@ def log_to_mongodb(
         print(f"sending document to {cluster_name}:{database_name}:{collection_name}")
 
     for _ in range(retries):
+        response = None
         if _ > 0:
             print(f"retrying... ({_} of {retries})")
 
@@ -118,17 +119,37 @@ def log_to_mongodb(
             # Always close response objects so we don't leak memory
             response.close()
         except Exception as e:
+            if response is not None:
+                response.close()
             if _ == retries - 1:
                 raise e
             else:
                 print(e)
 
 
-def get_timestamp(timeout=2):
+def get_timestamp(timeout=2, return_str=False):
     ntptime.timeout = timeout  # type: ignore
-    utc_tuple = time.gmtime(ntptime.time())
+    time_int = ntptime.time()
+    utc_tuple = gmtime(time_int)
     year, month, mday, hour, minute, second, weekday, yearday = utc_tuple
-    return f"{year}-{month}-{mday} {hour:02}:{minute:02}:{second:02}"
+
+    time_str = f"{year}-{month}-{mday} {hour:02}:{minute:02}:{second:02}"
+
+    if return_str:
+        return time_int, time_str
+
+    return time_int
+
+
+def get_local_timestamp(return_str=False):
+    t = time()
+    year, month, mday, hour, minute, second, _, _ = localtime(t)
+    time_str = f"{year}-{month}-{mday} {hour:02}:{minute:02}:{second:02}"
+
+    if return_str:
+        return t, time_str
+
+    return t
 
 
 def get_onboard_temperature(unit="K"):

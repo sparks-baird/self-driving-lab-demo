@@ -143,11 +143,24 @@ class SelfDrivingLabDemoLight(SelfDrivingLabDemo):
                         name=nm,
                         type="choice",
                         is_ordered=True,
-                        values=[0.5, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512],
+                        values=[
+                            0.5,
+                            1.0,
+                            2.0,
+                            4.0,
+                            8.0,
+                            16.0,
+                            32.0,
+                            64.0,
+                            128.0,
+                            256.0,
+                            512.0,
+                        ],
                     )
                 )
             else:
                 raise ValueError(f"unknown parameter {nm}")
+        return parameters
 
     @property
     def channel_names(self):
