@@ -131,7 +131,7 @@ jobs:
           mv public_mqtt_sdl_demo sdl_demo
           mv sdl_demo/sample_secrets.py sdl_demo/secrets.py
           zip -r sdl_demo.zip release
-          
+
       - name: Create Release # https://github.com/softprops/action-gh-release
         uses: softprops/action-gh-release@v1
         with:
