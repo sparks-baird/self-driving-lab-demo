@@ -9,7 +9,7 @@
 [![Twitter](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&label=Twitter)](https://twitter.com/self-driving-lab-demo)
 -->
 
-**Check out [the notebooks](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/notebooks/README.md) for some tutorials and demonstrations! See also [the manuscript published in Matter](https://doi.org/10.1016/j.matt.2022.11.007) [[postprint](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/self_driving_optics_demo-rev1.pdf)], [the hackaday page](https://hackaday.io/project/186289-autonomous-research-laboratories), and [the WIP liquid spectrophotometry demo](https://github.com/sparks-baird/self-driving-lab-demo/discussions/89). NOTE: the 14 AWG requirement for the sculpting wire is the total outer diameter including insulation. One of the DigiKey order links in the manuscript will be corrected.**
+**Check out [the notebooks](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/notebooks/README.md) for some tutorials and demonstrations! See also [the manuscript published in Matter](https://doi.org/10.1016/j.matt.2022.11.007) [[postprint](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/self_driving_optics_demo-rev1.pdf)], [the hackaday page](https://hackaday.io/project/186289-autonomous-research-laboratories), and [the WIP liquid spectrophotometry demo](https://github.com/sparks-baird/self-driving-lab-demo/discussions/89).**
 
 # self-driving-lab-demo [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sparks-baird/self-driving-lab-demo/blob/main/notebooks/4.2-paho-mqtt-colab-sdl-demo-test.ipynb)
 
