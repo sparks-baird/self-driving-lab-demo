@@ -1,6 +1,7 @@
 """Run a self-driving lab on a Raspberry Pi Pico W."""
 import json
-from secrets import PASSWORD, SSID
+import os
+from secrets import HIVEMQ_HOST, HIVEMQ_PASSWORD, HIVEMQ_USERNAME, PASSWORD, SSID
 from time import sleep
 
 import ntptime
@@ -26,28 +27,7 @@ try:
 except Exception as e:
     print(get_traceback(e))
 
-try:
-    from secrets import HIVEMQ_HOST, HIVEMQ_PASSWORD, HIVEMQ_USERNAME
-
-    port = 8883
-
-except Exception as e:
-    print(get_traceback(e))
-    HIVEMQ_USERNAME = None
-    HIVEMQ_PASSWORD = None
-    HIVEMQ_HOST = "broker.hivemq.com"
-    port = 1883
-    print(
-        "-----------------------------------------------------------------------------------"
-    )
-    print(
-        f"***WARNING*** Defaulting to public HiveMQ broker ({HIVEMQ_HOST}) on port {port}***"
-    )
-    print(
-        "-----------------------------------------------------------------------------------"
-    )
-    print("sleeping for 5 seconds in case you want to exit..")
-    sleep(5.0)
+port = 8883
 
 # https://medium.com/@johnlpage/introduction-to-microcontrollers-and-the-pi-pico-w-f7a2d9ad1394
 # you can request a MongoDB collection specific to you by emailing
@@ -175,15 +155,6 @@ sdcard_ready = initialize_sdcard()
 # http://www.steves-internet-guide.com/into-mqtt-python-client/
 
 
-# def on_connect(client, userdata, flags, rc):
-#     print("Connected with result code " + str(rc))
-#     # Subscribing in on_connect() means that if we lose the connection and
-#     # reconnect then subscriptions will be renewed.
-
-#     # prefer qos=2, but not implemented
-#     client.subscribe(prefix + "GPIO/#", qos=0)
-
-
 experiment = Experiment(
     run_experiment_fn=run_experiment,
     reset_experiment_fn=reset_experiment,
@@ -225,11 +196,6 @@ def callback(topic, msg, retain=None, dup=None):
         )
 
 
-# # The callback for when a PUBLISH message is received from the server.
-# def on_message(client, userdata, msg):
-#     print(msg.topic + " " + str(msg.payload))
-
-
 client = MQTTClient(
     prefix,
     HIVEMQ_HOST,
@@ -256,8 +222,6 @@ except OSError as e:
     client.connect()
 
 client.set_callback(callback)
-# client.on_connect = on_connect  # type: ignore
-# client.on_message = on_message  # type: ignore
 client.subscribe(prefix + "GPIO/#")
 
 heartbeat(client, True)
@@ -266,9 +230,17 @@ sign_of_life(onboard_led, True)
 print("Waiting for experiment requests...")
 
 while True:
-    client.check_msg()
-    heartbeat(client, False)
-    sign_of_life(onboard_led, False)
+    try:
+        client.check_msg()
+        heartbeat(client, False)
+        sign_of_life(onboard_led, False)
+    except Exception as e:
+        logfile = open("log.txt", "w")
+        # duplicate stdout and stderr to the log file
+        os.dupterm(logfile)
+        client.check_msg()
+        heartbeat(client, False)
+        sign_of_life(onboard_led, False)
 
 
 ## Code Graveyard
@@ -309,3 +281,18 @@ while True:
 # validate_inputs_fn=validate_inputs,
 
 # - validate_inputs (check that input parameters are valid)
+
+# def on_connect(client, userdata, flags, rc):
+#     print("Connected with result code " + str(rc))
+#     # Subscribing in on_connect() means that if we lose the connection and
+#     # reconnect then subscriptions will be renewed.
+
+#     # prefer qos=2, but not implemented
+#     client.subscribe(prefix + "GPIO/#", qos=0)
+
+# # The callback for when a PUBLISH message is received from the server.
+# def on_message(client, userdata, msg):
+#     print(msg.topic + " " + str(msg.payload))
+
+# client.on_connect = on_connect  # type: ignore
+# client.on_message = on_message  # type: ignore
