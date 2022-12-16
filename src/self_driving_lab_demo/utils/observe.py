@@ -160,7 +160,7 @@ def liquid_observe_sensor_data(
     B: float,
     water: float = 0.0,
     prerinse_power: float = 0.5,
-    prerinse_time: float = 5.0,
+    prerinse_time: float = 10.0,
     runtime: float = 5.0,
     atime: int = 100,
     astep: int = 999,
