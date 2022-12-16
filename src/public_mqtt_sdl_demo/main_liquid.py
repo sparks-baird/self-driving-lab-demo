@@ -1,19 +1,11 @@
-"""
-https://gist.github.com/sammachin/b67cc4f395265bccd9b2da5972663e6d
-http://www.steves-internet-guide.com/into-mqtt-python-client/
-"""
-
+"""Run a materials acceleration platform demo on a Raspberry Pi Pico W."""
 import json
-from secrets import PASSWORD, SSID
-from time import sleep, ticks_diff, ticks_ms  # type: ignore
+import os
+from secrets import HIVEMQ_HOST, HIVEMQ_PASSWORD, HIVEMQ_USERNAME, PASSWORD, SSID
+from time import sleep, ticks_diff, ticks_ms
 
-try:
-    from secrets import DEVICE_NICKNAME, MONGODB_API_KEY, MONGODB_COLLECTION_NAME
-except Exception as e:
-    print(e)
-
-from time import sleep
-
+import ntptime
+import ussl
 from as7341_sensor import Sensor
 from data_logging import initialize_sdcard
 from machine import PWM, Pin, unique_id
@@ -29,6 +21,13 @@ from sdl_demo_utils import (
 from ubinascii import hexlify
 from umqtt.simple import MQTTClient
 
+try:
+    from secrets import DEVICE_NICKNAME, MONGODB_API_KEY, MONGODB_COLLECTION_NAME
+except Exception as e:
+    print(get_traceback(e))
+
+port = 8883
+
 # https://medium.com/@johnlpage/introduction-to-microcontrollers-and-the-pi-pico-w-f7a2d9ad1394
 # you can request a MongoDB collection specific to you by emailing
 # sterling.baird@utah.edu
@@ -37,20 +36,34 @@ mongodb_url = f"https://data.mongodb-api.com/app/{mongodb_app_name}/endpoint/dat
 mongodb_cluster_name = "sparks-materials-informatics"
 mongodb_database_name = "clslab-liquid-mixing"
 
-connectWiFi(SSID, PASSWORD, country="US")
-
 my_id = hexlify(unique_id()).decode()
 my_encrypted_id = encrypt_id(my_id, verbose=True)
+
+# # aside: for sgbaird's public test demo only
+# my_id = "test"
+# my_encrypted_id = "test"
+
 trunc_device_id = str(my_encrypted_id)[0:10]
 prefix = f"sdl-demo/picow/{my_id}/"
-mqtt_host = "test.mosquitto.org"
 
 print(f"Unencrypted PICO ID (keep private): {my_id}")
 print(f"Encrypted PICO ID (OK to share publicly): {my_encrypted_id}")
 print(f"Truncated, encrypted PICO ID (OK to share publicly): {trunc_device_id}")
 print(f"MQTT prefix: {prefix}")
 
+connectWiFi(SSID, PASSWORD, country="US")
+
 sdcard_backup_fpath = "/sd/experiments.txt"
+
+# To validate certificates, a valid time is required
+ntptime.timeout = 5  # type: ignore
+ntptime.host = "de.pool.ntp.org"
+ntptime.settime()
+
+print("Obtaining CA Certificate")
+with open("hivemq-com-chain.der", "rb") as f:
+    cacert = f.read()
+f.close()
 
 ######################################
 #### BEGIN USER-DEFINED FUNCTIONS ####
@@ -67,75 +80,7 @@ def get_devices():
 
 
 def validate_inputs(parameters, devices=None):
-    # don't allow access to hardware if any input values are out of bounds
-    r, y, b, w = [parameters[key] for key in ["R", "Y", "B", "water"]]
-    runtime = parameters.get("runtime", 5.0)
-    prerinse_power = parameters.get("prerinse_power", 0.5)
-    prerinse_time = parameters.get("prerinse_time", 5.0)
-
-    atime = parameters.get("atime", 100)
-    astep = parameters.get("astep", 999)
-    gain = parameters.get("gain", 128)
-
-    if not isinstance(r, float):
-        raise ValueError(f"R must be a float, not {type(r)} ({r})")
-
-    if not isinstance(y, float):
-        raise ValueError(f"Y must be a float, not {type(y)} ({y})")
-
-    if not isinstance(b, float):
-        raise ValueError(f"B must be a float, not {type(b)} ({b})")
-
-    if not isinstance(w, float):
-        raise ValueError(f"water must be a float, not {type(w)} ({w})")
-
-    if not isinstance(atime, int):
-        raise ValueError(f"atime must be an integer, not {type(atime)} ({atime})")
-
-    if not isinstance(astep, int):
-        raise ValueError(f"astep must be an integer, not {type(astep)} ({astep})")
-
-    if not isinstance(gain, int) and gain != 0.5:
-        if gain not in [0.5, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512]:
-            raise ValueError(f"gain must be an integer, not {type(gain)} ({gain})")
-
-    if not isinstance(runtime, float):
-        raise ValueError(f"runtime must be a float, not {type(runtime)} ({runtime})")
-
-    if not isinstance(prerinse_time, float):
-        raise ValueError(
-            f"prerinse_time must be a float, not {type(prerinse_time)} ({prerinse_time})"
-        )
-
-    if r < 0 or r > 1:
-        raise ValueError(f"R value {r} out of range (0..1)")
-
-    if y < 0 or y > 1:
-        raise ValueError(f"G value {y} out of range (0..1)")
-
-    if b < 0 or b > 1:
-        raise ValueError(f"B value {b} out of range (0..1)")
-
-    if w < 0 or w > 1:
-        raise ValueError(f"water value {w} out of range (0..1)")
-
-    if atime < 0 or atime > 255:
-        raise ValueError(f"atime value {atime} out of range (0..255)")
-
-    if astep < 0 or astep > 65535:
-        raise ValueError(f"astep value {astep} out of range (0..65535)")
-
-    if gain < 0.5 or gain > 512:
-        raise ValueError(f"gain value {gain} out of range (0.5..512)")
-
-    if runtime < 1 or runtime > 20:
-        raise ValueError(f"runtime value {runtime} out of range (1..100)")
-
-    if prerinse_power < 0 or prerinse_power > 1:
-        raise ValueError(f"prerinse_power value {prerinse_power} out of range (0..1)")
-
-    if prerinse_time < 1 or prerinse_time > 20:
-        raise ValueError(f"prerinse_time value {prerinse_time} out of range (1..100)")
+    pass
 
 
 def run_pump(pump, power):
@@ -149,7 +94,7 @@ def run_pumps(pumps, powers, runtime):
 
     for pump, power in zip(pumps, powers):
         pump.freq(20000)
-        pump.duty_u16(round(65535 * power))
+        pump.duty_u16(int(round(65535 * power)))
 
     while True:
         if ticks_diff(ticks_ms(), t0) > runtime_ms:
@@ -265,30 +210,21 @@ sdcard_ready = initialize_sdcard()
 # https://gist.github.com/sammachin/b67cc4f395265bccd9b2da5972663e6d
 # http://www.steves-internet-guide.com/into-mqtt-python-client/
 
+experiment = Experiment(
+    run_experiment_fn=run_experiment,
+    reset_experiment_fn=reset_experiment,
+    emergency_shutdown_fn=reset_experiment,
+    devices=devices,
+    buzzer=buzzer,
+    sdcard_ready=sdcard_ready,
+)
 
-def on_connect(client, userdata, flags, rc):
-    print("Connected with result code " + str(rc))
-    # Subscribing in on_connect() means that if we lose the connection and
-    # reconnect then subscriptions will be renewed.
 
-    # prefer qos=2, but not implemented
-    client.subscribe(prefix + "GPIO/#", qos=0)
-
-
-def callback(topic, msg):
+def callback(topic, msg, retain=None, dup=None):
     t = topic.decode("utf-8").lstrip(prefix)
     print(t)
 
     if t[:5] == "GPIO/":
-
-        experiment = Experiment(
-            validate_inputs_fn=validate_inputs,
-            run_experiment_fn=run_experiment,
-            reset_experiment_fn=reset_experiment,
-            emergency_shutdown_fn=reset_experiment,
-            devices=devices,
-            buzzer=buzzer,
-        )
         payload_data = experiment.try_experiment(msg)
 
         payload = json.dumps(payload_data)
@@ -311,23 +247,27 @@ def callback(topic, msg):
             device_nickname=DEVICE_NICKNAME,
             trunc_device_id=trunc_device_id,
             verbose=True,
+            retries=2,
         )
-
-
-# The callback for when a PUBLISH message is received from the server.
-def on_message(client, userdata, msg):
-    print(msg.topic + " " + str(msg.payload))
 
 
 client = MQTTClient(
     prefix,
-    mqtt_host,
-    user=None,
-    password=None,
+    HIVEMQ_HOST,
+    user=HIVEMQ_USERNAME,
+    password=HIVEMQ_PASSWORD,
     keepalive=30,
     ssl=True,
-    ssl_params={},
+    ssl_params={
+        "server_side": False,
+        "key": None,
+        "cert": None,
+        "cert_reqs": ussl.CERT_REQUIRED,
+        "cadata": cacert,
+        "server_hostname": HIVEMQ_HOST,
+    },
 )
+del cacert
 try:
     client.connect()
 except OSError as e:
@@ -337,8 +277,6 @@ except OSError as e:
     client.connect()
 
 client.set_callback(callback)
-client.on_connect = on_connect  # type: ignore
-client.on_message = on_message  # type: ignore
 client.subscribe(prefix + "GPIO/#")
 
 heartbeat(client, True)
@@ -347,6 +285,100 @@ sign_of_life(onboard_led, True)
 print("Waiting for experiment requests...")
 
 while True:
-    client.check_msg()
-    heartbeat(client, False)
-    sign_of_life(onboard_led, False)
+    try:
+        client.check_msg()
+        heartbeat(client, False)
+        sign_of_life(onboard_led, False)
+    except Exception as e:
+        logfile = open("log.txt", "w")
+        # duplicate stdout and stderr to the log file
+        os.dupterm(logfile)
+        client.check_msg()
+        heartbeat(client, False)
+        sign_of_life(onboard_led, False)
+
+
+# %% Code Graveyard
+
+# def validate_inputs(parameters, devices=None):
+#     # don't allow access to hardware if any input values are out of bounds
+#     r, y, b, w = [parameters[key] for key in ["R", "Y", "B", "water"]]
+#     runtime = parameters.get("runtime", 5.0)
+#     prerinse_power = parameters.get("prerinse_power", 0.5)
+#     prerinse_time = parameters.get("prerinse_time", 5.0)
+
+#     atime = parameters.get("atime", 100)
+#     astep = parameters.get("astep", 999)
+#     gain = parameters.get("gain", 128)
+
+#     assert 0 <= r <= 1, f"R must be between 0 and 1, not {r}"
+#     assert 0 <= y <= 1, f"Y must be between 0 and 1, not {y}"
+#     assert 0 <= b <= 1, f"B must be between 0 and 1, not {b}"
+#     assert 0 <= w <= 1, f"water must be between 0 and 1, not {w}"
+#     assert 0 <= runtime <= 5, f"runtime must be between 0 and 20, not {runtime}"
+#     assert (
+#         0 <= prerinse_power <= 1
+#     ), f"prerinse_power must be between 0 and 1, not {prerinse_power}"  # noqa: E501
+#     assert (
+#         0 <= prerinse_time <= 5
+#     ), f"prerinse_time must be between 0 and 20, not {prerinse_time}"  # noqa: E501
+#     assert 0 <= atime <= 255, f"Invalid atime: {atime} (must be between 0 and 255)"
+#     assert 0 <= astep <= 65536, f"Invalid astep: {astep} (must be between 0 and 65536)"
+#     assert 0.5 <= gain <= 512, f"Invalid gain: {gain} (must be between 0.5 and 512)"
+
+#     if not isinstance(r, float):
+#         raise ValueError(f"R must be a float, not {type(r)} ({r})")
+
+#     if not isinstance(y, float):
+#         raise ValueError(f"Y must be a float, not {type(y)} ({y})")
+
+#     if not isinstance(b, float):
+#         raise ValueError(f"B must be a float, not {type(b)} ({b})")
+
+#     if not isinstance(w, float):
+#         raise ValueError(f"water must be a float, not {type(w)} ({w})")
+
+#     if not isinstance(atime, int):
+#         raise ValueError(f"atime must be an integer, not {type(atime)} ({atime})")
+
+#     if not isinstance(astep, int):
+#         raise ValueError(f"astep must be an integer, not {type(astep)} ({astep})")
+
+#     if not isinstance(gain, int) and gain != 0.5:
+#         if gain not in [0.5, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512]:
+#             raise ValueError(f"gain must be an integer, not {type(gain)} ({gain})")
+
+#     if not isinstance(runtime, float):
+#         raise ValueError(f"runtime must be a float, not {type(runtime)} ({runtime})")
+
+#     if not isinstance(prerinse_time, float):
+#         raise ValueError(
+#             f"prerinse_time must be a float, not {type(prerinse_time)} ({prerinse_time})"
+#         )
+
+
+# def validate_inputs(parameters, devices=None):
+#     # don't allow access to hardware if any input values are out of bounds
+#     r, y, b, w = [parameters[key] for key in ["R", "Y", "B", "water"]]
+#     runtime = parameters.get("runtime", 5.0)
+#     prerinse_power = parameters.get("prerinse_power", 0.5)
+#     prerinse_time = parameters.get("prerinse_time", 5.0)
+
+#     atime = parameters.get("atime", 100)
+#     astep = parameters.get("astep", 999)
+#     gain = parameters.get("gain", 128)
+
+#     assert 0 <= r <= 1, f"R must be between 0 and 1, not {r}"
+#     assert 0 <= y <= 1, f"Y must be between 0 and 1, not {y}"
+#     assert 0 <= b <= 1, f"B must be between 0 and 1, not {b}"
+#     assert 0 <= w <= 1, f"water must be between 0 and 1, not {w}"
+#     assert 0 <= runtime <= 5, f"runtime must be between 0 and 20, not {runtime}"
+#     assert (
+#         0 <= prerinse_power <= 1
+#     ), f"prerinse_power must be between 0 and 1, not {prerinse_power}"  # noqa: E501
+#     assert (
+#         0 <= prerinse_time <= 5
+#     ), f"prerinse_time must be between 0 and 20, not {prerinse_time}"  # noqa: E501
+#     assert 0 <= atime <= 255, f"Invalid atime: {atime} (must be between 0 and 255)"
+#     assert 0 <= astep <= 65536, f"Invalid astep: {astep} (must be between 0 and 65536)"
+#     assert 0.5 <= gain <= 512, f"Invalid gain: {gain} (must be between 0.5 and 512)"
