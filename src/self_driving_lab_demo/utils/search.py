@@ -44,6 +44,7 @@ def ax_bayesian_optimization(sdl, num_iter, objective_name="frechet"):
         )
         # Ax doesn't like the nested dictionary nor a flattened dict with string data
         results.pop("_input_message", None)
+        results.pop("utc_time_str", None)
         return results
 
     bounds = dict(R=sdl.bounds["R"], G=sdl.bounds["G"], B=sdl.bounds["B"])
