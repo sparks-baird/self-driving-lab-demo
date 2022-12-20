@@ -29,6 +29,10 @@ except Exception as e:
 
 port = 8883
 
+logfile = open("log.txt", "a")
+# duplicate stdout and stderr to the log file
+os.dupterm(logfile)
+
 # https://medium.com/@johnlpage/introduction-to-microcontrollers-and-the-pi-pico-w-f7a2d9ad1394
 # you can request a MongoDB collection specific to you by emailing
 # sterling.baird@utah.edu
@@ -235,64 +239,6 @@ while True:
         heartbeat(client, False)
         sign_of_life(onboard_led, False)
     except Exception as e:
-        logfile = open("log.txt", "w")
-        # duplicate stdout and stderr to the log file
-        os.dupterm(logfile)
         client.check_msg()
         heartbeat(client, False)
         sign_of_life(onboard_led, False)
-
-
-## Code Graveyard
-
-# def validate_inputs(parameters, devices=None):
-#     # don't allow access to hardware if any input values are out of bounds
-#     r, g, b = [parameters[key] for key in ["R", "G", "B"]]
-#     atime = parameters.get("atime", 100)
-#     astep = parameters.get("astep", 999)
-#     gain = parameters.get("gain", 128)
-
-#     if not isinstance(r, int):
-#         raise ValueError(f"R must be an integer, not {type(r)} ({r})")
-#     if not isinstance(g, int):
-#         raise ValueError(f"G must be an integer, not {type(g)} ({g})")
-#     if not isinstance(b, int):
-#         raise ValueError(f"B must be an integer, not {type(b)} ({b})")
-#     if not isinstance(atime, int):
-#         raise ValueError(f"atime must be an integer, not {type(atime)} ({atime})")
-#     if not isinstance(astep, int):
-#         raise ValueError(f"astep must be an integer, not {type(astep)} ({astep})")
-#     if not isinstance(gain, int) and gain != 0.5:
-#         if gain not in [0.5, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512]:
-#             raise ValueError(f"gain must be an integer, not {type(gain)} ({gain})")
-#     if r < 0 or r > 255:
-#         raise ValueError(f"R value {r} out of range (0..255)")
-#     if g < 0 or g > 255:
-#         raise ValueError(f"G value {g} out of range (0..255)")
-#     if b < 0 or b > 255:
-#         raise ValueError(f"B value {b} out of range (0..255)")
-#     if atime < 0 or atime > 255:
-#         raise ValueError(f"atime value {atime} out of range (0..255)")
-#     if astep < 0 or astep > 65535:
-#         raise ValueError(f"astep value {astep} out of range (0..65535)")
-#     if gain < 0.5 or gain > 512:
-#         raise ValueError(f"gain value {gain} out of range (0.5..512)")
-
-# validate_inputs_fn=validate_inputs,
-
-# - validate_inputs (check that input parameters are valid)
-
-# def on_connect(client, userdata, flags, rc):
-#     print("Connected with result code " + str(rc))
-#     # Subscribing in on_connect() means that if we lose the connection and
-#     # reconnect then subscriptions will be renewed.
-
-#     # prefer qos=2, but not implemented
-#     client.subscribe(prefix + "GPIO/#", qos=0)
-
-# # The callback for when a PUBLISH message is received from the server.
-# def on_message(client, userdata, msg):
-#     print(msg.topic + " " + str(msg.payload))
-
-# client.on_connect = on_connect  # type: ignore
-# client.on_message = on_message  # type: ignore
