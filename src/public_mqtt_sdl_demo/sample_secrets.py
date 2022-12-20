@@ -3,7 +3,10 @@ SSID = "Enter your SSID here"
 PASSWORD = "Enter your WiFi password here"
 
 MONGODB_API_KEY = "Enter your Mongo DB API Key (optional)"
+MONGODB_CLUSTER_NAME = "sparks-materials-informatics"
+MONGODB_DATABASE_NAME = "clslab-light-mixing"
 MONGODB_COLLECTION_NAME = "Enter the name of the Mongo DB collection (optional)"
+MONGODB_APP_NAME = "data-sarkl"
 DEVICE_NICKNAME = "For MongoDB, enter whatever name you want here (optional)"
 
 HIVEMQ_USERNAME = "sgbaird"

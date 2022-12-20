@@ -23,7 +23,14 @@ from ubinascii import hexlify
 from umqtt.robust import MQTTClient
 
 try:
-    from secrets import DEVICE_NICKNAME, MONGODB_API_KEY, MONGODB_COLLECTION_NAME
+    from secrets import (
+        DEVICE_NICKNAME,
+        MONGODB_API_KEY,
+        MONGODB_APP_NAME,
+        MONGODB_CLUSTER_NAME,
+        MONGODB_COLLECTION_NAME,
+        MONGODB_DATABASE_NAME,
+    )
 except Exception as e:
     print(get_traceback(e))
 
@@ -36,10 +43,7 @@ os.dupterm(logfile)
 # https://medium.com/@johnlpage/introduction-to-microcontrollers-and-the-pi-pico-w-f7a2d9ad1394
 # you can request a MongoDB collection specific to you by emailing
 # sterling.baird@utah.edu
-mongodb_app_name = "data-sarkl"
-mongodb_url = f"https://data.mongodb-api.com/app/{mongodb_app_name}/endpoint/data/v1/action/insertOne"  # noqa: E501
-mongodb_cluster_name = "sparks-materials-informatics"
-mongodb_database_name = "clslab-light-mixing"
+mongodb_url = f"https://data.mongodb-api.com/app/{MONGODB_APP_NAME}/endpoint/data/v1/action/insertOne"  # noqa: E501
 
 my_id = hexlify(unique_id()).decode()
 my_encrypted_id = encrypt_id(my_id, verbose=True)
@@ -190,8 +194,8 @@ def callback(topic, msg, retain=None, dup=None):
             payload_data,
             url=mongodb_url,
             api_key=MONGODB_API_KEY,
-            cluster_name=mongodb_cluster_name,
-            database_name=mongodb_database_name,
+            cluster_name=MONGODB_CLUSTER_NAME,
+            database_name=MONGODB_DATABASE_NAME,
             collection_name=MONGODB_COLLECTION_NAME,
             device_nickname=DEVICE_NICKNAME,
             trunc_device_id=trunc_device_id,
