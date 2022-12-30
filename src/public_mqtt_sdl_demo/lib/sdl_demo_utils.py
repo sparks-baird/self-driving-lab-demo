@@ -6,7 +6,6 @@ import uos
 from data_logging import (
     get_local_timestamp,
     get_onboard_temperature,
-    log_to_mongodb,
     write_payload_backup,
 )
 from machine import PWM, Pin
@@ -206,47 +205,40 @@ class Experiment(object):
 
         return payload_data
 
-    def write_to_sd_card(self, payload, fpath="/sd/experiments.txt"):
+    def write_to_sd_card(self, payload_data, fpath="/sd/experiments.txt"):
         try:
-            write_payload_backup(payload, fpath=fpath)
+            write_payload_backup(payload_data, fpath=fpath)
         except Exception as e:
-            payload_data = json.loads(payload)
             w = f"Failed to write to SD card: {get_traceback(e)}"
             print(w)
             payload_data["warning"] = w
-            payload = json.dumps(payload_data)
 
         return payload
 
-    def log_to_mongodb(
-        self,
-        payload_data,
-        api_key: str,
-        url: str,
-        cluster_name: str,
-        database_name: str,
-        collection_name: str,
-        device_nickname: str,
-        trunc_device_id: str,
-        verbose: bool = True,
-        retries: int = 2,
-    ):
-        try:
-            payload_data["device_nickname"] = device_nickname
-            payload_data["encrypted_device_id_truncated"] = trunc_device_id
-
-            log_to_mongodb(
-                payload_data,
-                url=url,
-                api_key=api_key,
-                cluster_name=cluster_name,
-                database_name=database_name,
-                collection_name=collection_name,
-                verbose=verbose,
-                retries=retries,
-            )
-        except Exception as e:
-            print(f"Failed to log to MongoDB backend: {get_traceback(e)}")
+    # def log_to_mongodb(
+    #     self,
+    #     payload_data,
+    #     api_key: str,
+    #     url: str,
+    #     cluster_name: str,
+    #     database_name: str,
+    #     collection_name: str,
+    #     verbose: bool = True,
+    #     retries: int = 2,
+    # ):
+    #     try:
+    #         log_to_mongodb(
+    #             payload_data,
+    #             url=url,
+    #             api_key=api_key,
+    #             cluster_name=cluster_name,
+    #             database_name=database_name,
+    #             collection_name=collection_name,
+    #             verbose=verbose,
+    #             retries=retries,
+    #         )
+    #     except Exception as e:
+    #         print(f"Failed to log to MongoDB backend: {get_traceback(e)}")
 
 
 def heartbeat(client, first, ping_interval_ms=15000):
