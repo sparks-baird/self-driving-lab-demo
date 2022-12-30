@@ -1,5 +1,6 @@
 """Run a self-driving lab on a Raspberry Pi Pico W."""
 
+import gc
 import json
 import os
 from secrets import HIVEMQ_HOST, HIVEMQ_PASSWORD, HIVEMQ_USERNAME, PASSWORD, SSID
@@ -39,6 +40,7 @@ except Exception as e:
 sleep(5.0)
 
 try:
+    gc.collect()
     port = 8883
 
     logfile = open("log.txt", "w")
@@ -202,11 +204,11 @@ try:
 
             # prefer qos=1, but causes recursion error if too many messages in short period
             # of time
-            parameters = json.loads(msg)
             payload_data["device_nickname"] = DEVICE_NICKNAME
             payload_data["encrypted_device_id_truncated"] = trunc_device_id
-            if parameters.get("mongodb", True):
-                try:
+            try:
+                parameters = json.loads(msg)
+                if parameters.get("mongodb", True):
                     log_to_mongodb(
                         payload_data,
                         url=mongodb_url,
@@ -218,9 +220,11 @@ try:
                         retries=2,
                     )
                     payload_data["logged_to_mongodb"] = True
-                except Exception as e:
+                else:
                     payload_data["logged_to_mongodb"] = False
-                    print(get_traceback(e))
+            except Exception as e:
+                payload_data["logged_to_mongodb"] = False
+                print(get_traceback(e))
 
             payload = json.dumps(payload_data)
             print(payload)
