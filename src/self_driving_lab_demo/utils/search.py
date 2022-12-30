@@ -55,6 +55,9 @@ def ax_bayesian_optimization(sdl, num_iter, objective_name="frechet"):
             "onboard_temperature_K",
             "ch620",
             "ch583",
+            "frechet",
+            "rmse",
+            "mae",
         }
         drop_keys = list(set(results.keys()) - keep_keys)
         [results.pop(key, None) for key in drop_keys]
