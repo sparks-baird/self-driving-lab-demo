@@ -115,8 +115,8 @@ class SDLSimulation(SelfDrivingLabDemo):
         super().__init__(*args, **kwargs)
         self.target_data = self.observe_target_results()
 
-    def observe_sensor_data(self, R, G, B, atime=100, astep=999, gain=128):
-        return super().observe_sensor_data(R, G, B, atime=atime, astep=astep, gain=gain)
+    def observe_sensor_data(self, parameters):
+        return super().observe_sensor_data(parameters)
 
 
 # %% Code Graveyard

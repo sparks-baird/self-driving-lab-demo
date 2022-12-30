@@ -1,3 +1,4 @@
+import json
 import sys
 from time import gmtime, localtime, time
 
@@ -66,7 +67,8 @@ def initialize_sdcard(
         return False
 
 
-def write_payload_backup(payload: str, fpath: str = "/sd/experiments.txt"):
+def write_payload_backup(payload_data: str, fpath: str = "/sd/experiments.txt"):
+    payload = json.dumps(payload_data)
     with open(fpath, "a") as file:
         # line = ",".join([str(payload[key]) for key in payload.keys()])
         file.write(f"{payload}\r\n")
@@ -102,14 +104,11 @@ def log_to_mongodb(
 
         try:
             response = urequests.post(url, headers=headers, json=insertPayload)
+            txt = str(response.text)
+            status_code = response.status_code
 
             if verbose:
-                print(
-                    "Response: ("
-                    + str(response.status_code)
-                    + "), msg = "
-                    + str(response.text)
-                )
+                print(f"Response: ({status_code}), msg = {txt}")
                 if response.status_code == 201:
                     print("Added Successfully")
                     break

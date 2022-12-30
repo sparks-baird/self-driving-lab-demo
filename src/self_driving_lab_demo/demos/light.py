@@ -183,8 +183,8 @@ class SelfDrivingLabDemoLight(SelfDrivingLabDemo):
         if results.get("error", None) is not None:
             raise ValueError(results["error"])
 
-        target_data = [self.target_results[ch] for ch in self.channel_names]
-        data = [results[ch] for ch in self.channel_names]
+        target_data = [float(self.target_results[ch]) for ch in self.channel_names]
+        data = [float(results[ch]) for ch in self.channel_names]
 
         results["mae"] = mean_absolute_error(target_data, data)
         results["rmse"] = mean_squared_error(target_data, data, squared=False)

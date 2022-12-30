@@ -109,23 +109,23 @@ class SelfDrivingLabDemoLiquid(SelfDrivingLabDemo):
     def get_random_inputs(self, rng=None):
         rng = self.random_rng if rng is None else rng
         # 1.0 is really bright, so no more than `max_brightness`
-        R, Y, B = 255 * rng.random(3) * self.max_power
-        return {"R": int(R), "Y": int(Y), "B": int(B)}
+        R, Y, B = rng.random(3) * self.max_power
+        return {"R": R, "Y": Y, "B": B}
 
     @property
     def bounds(self):
-        mx = self.max_power
+        mx = float(self.max_power)
         return dict(
-            R=[0, mx],
-            G=[0, mx],
-            B=[0, mx],
-            w=[0, mx],
-            prerinse_power=[0, mx],
-            prerinse_time=[1, 20],
-            runtime=[1, 20],
+            R=[0.0, mx],
+            Y=[0.0, mx],
+            B=[0.0, mx],
+            w=[0.0, mx],
+            prerinse_power=[0.0, mx],
+            prerinse_time=[1.0, 20.0],
+            runtime=[1.0, 20.0],
             atime=[0, 255],
             astep=[0, 65534],
-            gain=[0.5, 512],
+            gain=[0.5, 512.0],
         )
 
     @property
@@ -134,7 +134,7 @@ class SelfDrivingLabDemoLiquid(SelfDrivingLabDemo):
         for nm, bnd in self.bounds.items():
             if nm in [
                 "R",
-                "G",
+                "Y",
                 "B",
                 "w",
                 "prerinse_power",
@@ -150,11 +150,24 @@ class SelfDrivingLabDemoLiquid(SelfDrivingLabDemo):
                         name=nm,
                         type="choice",
                         is_ordered=True,
-                        values=[0.5, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512],
+                        values=[
+                            0.5,
+                            1.0,
+                            2.0,
+                            4.0,
+                            8.0,
+                            16.0,
+                            32.0,
+                            64.0,
+                            128.0,
+                            256.0,
+                            512.0,
+                        ],
                     )
                 )
             else:
                 raise ValueError(f"unknown parameter {nm}")
+        return parameters
 
     @property
     def channel_names(self):
@@ -177,8 +190,13 @@ class SelfDrivingLabDemoLiquid(SelfDrivingLabDemo):
         if results.get("error", None) is not None:
             raise ValueError(results["error"])
 
-        target_data = [self.target_results[ch] for ch in self.channel_names]
-        data = [results[ch] for ch in self.channel_names]
+        target_data = [
+            float(self.target_results[ch] - self.target_results["background"][ch])
+            for ch in self.channel_names
+        ]
+        data = [
+            float(results[ch] - results["background"][ch]) for ch in self.channel_names
+        ]
 
         results["mae"] = mean_absolute_error(target_data, data)
         results["rmse"] = mean_squared_error(target_data, data, squared=False)
@@ -189,4 +207,4 @@ class SelfDrivingLabDemoLiquid(SelfDrivingLabDemo):
         return results
 
     def clear(self):
-        self.observe_sensor_data(dict(R=0, G=0, B=0))
+        self.observe_sensor_data(dict(R=0, Y=0, B=0))
