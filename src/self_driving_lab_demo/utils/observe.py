@@ -38,11 +38,13 @@ def mqtt_observe_sensor_data(
     timeout: int = 3600,
     queue_timeout: int = 60,
     client=None,
-    username: Optional[str] = "sgbaird",
-    password: Optional[str] = "D.Pq5gYtejYbU#L",
-    hostname="248cc294c37642359297f75b7b023374.s2.eu.hivemq.cloud",
+    username: Optional[str] = None,
+    password: Optional[str] = None,
+    hostname=None,
     port=8883,
     tls=True,
+    mongodb=True,
+    extra_info: Optional[dict] = None,
 ):
     if pico_id is None:
         _logger.warning(
@@ -61,7 +63,12 @@ def mqtt_observe_sensor_data(
     # running multiple experiments simultaneously with overlapping client_id-s
     if client is None:
         client = get_paho_client(
-            username, password, hostname, port, sensor_topic, tls=tls
+            sensor_topic,
+            username=username,
+            password=password,
+            hostname=hostname,
+            port=port,
+            tls=tls,
         )
 
     assert 0 <= atime <= 255, f"atime ({atime}) should be between 0 and 255"
@@ -70,20 +77,22 @@ def mqtt_observe_sensor_data(
 
     integration_time_s = (astep + 1) * (atime + 1) * 2.78 / 1e6  # as7341.py
 
-    # ensures double quotes for JSON compatiblity
-    payload = json.dumps(
-        dict(
-            R=int(np.round(R)),
-            G=int(np.round(G)),
-            B=int(np.round(B)),
-            atime=int(np.round(atime)),
-            astep=int(np.round(astep)),
-            integration_time_s=integration_time_s,
-            gain=float(gain),
-            _session_id=session_id,
-            _experiment_id=experiment_id,
-        )
+    payload_data = dict(
+        R=int(np.round(R)),
+        G=int(np.round(G)),
+        B=int(np.round(B)),
+        atime=int(np.round(atime)),
+        astep=int(np.round(astep)),
+        integration_time_s=integration_time_s,
+        gain=float(gain),
+        mongodb=mongodb,
+        _session_id=session_id,
+        _experiment_id=experiment_id,
     )
+    if extra_info is not None:
+        payload_data["extra_info"] = extra_info  # type: ignore
+    # ensures double quotes for JSON compatiblity
+    payload = json.dumps(payload_data)
     client.publish(neopixel_topic, payload, qos=2)
 
     client.loop_start()
@@ -126,7 +135,16 @@ def mqtt_observe_sensor_data(
             return sensor_data
 
 
-def get_paho_client(username, password, hostname, port, sensor_topic, tls=True):
+def get_paho_client(
+    sensor_topic, username=None, password=None, hostname=None, port=8883, tls=True
+):
+    if username is None:
+        username = "sgbaird"
+    if password is None:
+        password = "D.Pq5gYtejYbU#L"
+    if hostname is None:
+        hostname = "248cc294c37642359297f75b7b023374.s2.eu.hivemq.cloud"
+
     client = paho.Client(protocol=paho.MQTTv5)  # create new instance
 
     def on_message(client, userdata, msg):
@@ -160,8 +178,8 @@ def liquid_observe_sensor_data(
     B: float,
     water: float = 0.0,
     prerinse_power: float = 0.5,
-    prerinse_time: float = 10.0,
-    runtime: float = 5.0,
+    prerinse_time: float = 20.0,
+    runtime: float = 10.0,
     atime: int = 100,
     astep: int = 999,
     gain: Union[int, float] = 128,
@@ -169,9 +187,10 @@ def liquid_observe_sensor_data(
     session_id=None,
     timeout=3600,
     queue_timeout=60,
-    username="sgbaird",
-    password="D.Pq5gYtejYbU#L",
-    hostname="248cc294c37642359297f75b7b023374.s2.eu.hivemq.cloud",
+    client=None,
+    username: Optional[str] = None,
+    password: Optional[str] = None,
+    hostname=None,
     port=8883,
     tls=True,
 ):
@@ -190,7 +209,15 @@ def liquid_observe_sensor_data(
 
     # NOTE: don't pass client_id=session_id, otherwise you might run into issues with
     # running multiple experiments simultaneously with overlapping client_id-s
-    client = get_paho_client(username, password, hostname, port, sensor_topic, tls=tls)
+    if client is None:
+        client = get_paho_client(
+            sensor_topic,
+            username=username,
+            password=password,
+            hostname=hostname,
+            port=port,
+            tls=tls,
+        )
 
     assert 0 <= atime <= 255, f"atime ({atime}) should be between 0 and 255"
     assert 0 <= astep <= 65534, f"astep ({astep}) should be between 0 and 65534"
@@ -243,20 +270,26 @@ def liquid_observe_sensor_data(
                 )
 
             # input checking
-            assert inp["R"] == R, f"red value mismatch {inp['R']} != {R}"
-            assert inp["Y"] == Y, f"green value mismatch {inp['Y']} != {Y}"
-            assert inp["B"] == B, f"blue value mismatch {inp['B']} != {B}"
-            assert (
-                inp["water"] == water
+            assert round(inp["R"], 4) == round(
+                R, 4
+            ), f"red value mismatch {inp['R']} != {R}"
+            assert round(inp["Y"], 4) == round(
+                Y, 4
+            ), f"green value mismatch {inp['Y']} != {Y}"
+            assert round(inp["B"], 4) == round(
+                B, 4
+            ), f"blue value mismatch {inp['B']} != {B}"
+            assert round(inp["water"], 4) == round(
+                water, 4
             ), f"water value mismatch {inp['water']} != {water}"
-            assert (
-                inp["prerinse_power"] == prerinse_power
+            assert round(inp["prerinse_power"], 4) == round(
+                prerinse_power, 4
             ), f"prerinse_power value mismatch {inp['prerinse_power']} != {prerinse_power}"  # noqa: E501
-            assert (
-                inp["prerinse_time"] == prerinse_time
+            assert round(inp["prerinse_time"], 4) == round(
+                prerinse_time, 4
             ), f"prerinse_time value mismatch {inp['prerinse_time']} != {prerinse_time}"
-            assert (
-                inp["runtime"] == runtime
+            assert round(inp["runtime"], 4) == round(
+                runtime, 4
             ), f"runtime value mismatch {inp['runtime']} != {runtime}"
             assert (
                 inp["atime"] == atime
