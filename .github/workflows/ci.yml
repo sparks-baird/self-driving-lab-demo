@@ -75,12 +75,6 @@ jobs:
           pipx run --spec tox==3.27.1 tox
           --installpkg '${{ needs.prepare.outputs.wheel-distribution }}'
           -- -rFEx --durations 10 --color yes
-      - name: Ensure main Jupyter notebook runs without error
-        run: pipx run jupyter run notebooks/4.2-paho-mqtt-colab-sdl-demo-test.ipynb
-        env:
-          HIVEMQ_USERNAME: ${{ secrets.HIVEMQ_USERNAME }}
-          HIVEMQ_PASSWORD: ${{ secrets.HIVEMQ_PASSWORD }}
-          HIVEMQ_HOST: ${{ secrets.HIVEMQ_HOST }}
       - name: Generate coverage report
         run: pipx run coverage lcov -o coverage.lcov
       - name: Upload partial coverage report
@@ -112,6 +106,12 @@ jobs:
       - name: Retrieve pre-built distribution files
         uses: actions/download-artifact@v3
         with: {name: python-distribution-files, path: dist/}
+      - name: Ensure main Jupyter notebook runs without error
+        run: pipx run jupyter run notebooks/4.2-paho-mqtt-colab-sdl-demo-test.ipynb
+        env:
+          HIVEMQ_USERNAME: ${{ secrets.HIVEMQ_USERNAME }}
+          HIVEMQ_PASSWORD: ${{ secrets.HIVEMQ_PASSWORD }}
+          HIVEMQ_HOST: ${{ secrets.HIVEMQ_HOST }}
       - name: Publish Package
         env:
           # TODO: Set your PYPI_TOKEN as a secret using GitHub UI
