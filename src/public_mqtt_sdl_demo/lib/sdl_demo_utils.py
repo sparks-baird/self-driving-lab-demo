@@ -213,7 +213,7 @@ class Experiment(object):
             print(w)
             payload_data["warning"] = w
 
-        return payload
+        return payload_data
 
     # def log_to_mongodb(
     #     self,
