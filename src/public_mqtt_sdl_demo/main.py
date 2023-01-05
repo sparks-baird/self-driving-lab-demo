@@ -11,7 +11,6 @@ import ussl
 from as7341_sensor import Sensor
 from data_logging import initialize_sdcard, log_to_mongodb
 from machine import PWM, Pin, reset, unique_id
-from neopixel import NeoPixel
 from netman import connectWiFi
 from sdl_demo_utils import (
     Experiment,
@@ -35,6 +34,11 @@ try:
     )
 except Exception as e:
     print(get_traceback(e))
+
+##### BEGIN USER-DEFINED IMPORTS #####
+from neopixel import NeoPixel
+
+##### END USER-DEFINED IMPORTS #####
 
 # sleep to avoid KeyboardInterrupt overwriting log.txt when opening in Thonny
 sleep(5.0)
@@ -277,7 +281,8 @@ try:
             client.set_callback(callback)
             client.subscribe(prefix + "GPIO/#")
 except Exception as e:
-    logfile = open("error.txt", "w")
+    fname = "error.txt"
+    logfile = open(fname, "w")
     logfile.write(get_traceback(e))
     logfile.close()
     reset()

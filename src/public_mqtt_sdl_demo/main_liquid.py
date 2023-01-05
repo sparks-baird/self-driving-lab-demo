@@ -1,14 +1,15 @@
 """Run a materials acceleration platform demo on a Raspberry Pi Pico W."""
+import gc
 import json
 import os
 from secrets import HIVEMQ_HOST, HIVEMQ_PASSWORD, HIVEMQ_USERNAME, PASSWORD, SSID
-from time import sleep, ticks_diff, ticks_ms
+from time import sleep
 
 import ntptime
 import ussl
 from as7341_sensor import Sensor
 from data_logging import initialize_sdcard, log_to_mongodb
-from machine import PWM, Pin, unique_id
+from machine import PWM, Pin, reset, unique_id
 from netman import connectWiFi
 from sdl_demo_utils import (
     Experiment,
@@ -19,7 +20,7 @@ from sdl_demo_utils import (
     sign_of_life,
 )
 from ubinascii import hexlify
-from umqtt.simple import MQTTClient  # robust takes up too much mem (ENOMEM for MongoDB)
+from umqtt.simple import MQTTClient
 
 try:
     from secrets import (
@@ -33,7 +34,16 @@ try:
 except Exception as e:
     print(get_traceback(e))
 
+##### BEGIN USER-DEFINED IMPORTS #####
+from time import ticks_diff, ticks_ms
+
+##### END USER-DEFINED IMPORTS #####
+
+# sleep to avoid KeyboardInterrupt overwriting log.txt when opening in Thonny
+sleep(5.0)
+
 try:
+    gc.collect()
     port = 8883
 
     logfile = open("log.txt", "w")
@@ -287,11 +297,11 @@ try:
 
             # prefer qos=1, but causes recursion error if too many messages in short period
             # of time
-            parameters = json.loads(msg)
             payload_data["device_nickname"] = DEVICE_NICKNAME
             payload_data["encrypted_device_id_truncated"] = trunc_device_id
-            if parameters.get("mongodb", True):
-                try:
+            try:
+                parameters = json.loads(msg)
+                if parameters.get("mongodb", True):
                     log_to_mongodb(
                         payload_data,
                         url=mongodb_url,
@@ -303,9 +313,11 @@ try:
                         retries=2,
                     )
                     payload_data["logged_to_mongodb"] = True
-                except Exception as e:
+                else:
                     payload_data["logged_to_mongodb"] = False
-                    print(get_traceback(e))
+            except Exception as e:
+                payload_data["logged_to_mongodb"] = False
+                print(get_traceback(e))
 
             payload = json.dumps(payload_data)
             print(payload)
@@ -358,7 +370,8 @@ try:
             client.set_callback(callback)
             client.subscribe(prefix + "GPIO/#")
 except Exception as e:
-    logfile = open("error.txt", "w")
+    fname = "error.txt"
+    logfile = open(fname, "w")
     logfile.write(get_traceback(e))
     logfile.close()
     reset()
