@@ -458,10 +458,3 @@ def asm_pio_encode(instr: str, sideset_count: int, sideset_opt=False) -> Any:
 
 def const(value: Any) -> Any: ...
 def country(*args, **kwargs) -> Any: ...
-def dht_readinto(*args, **kwargs) -> Any:
-    """
-    Reads the temperature and humidity from the DHT sensor.
-
-    (this function is also the redirection target of dth.dth_readinto() on the rp2040)
-    """
-    ...
