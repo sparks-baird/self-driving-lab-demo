@@ -15,7 +15,7 @@ dependencies:
   - click
   - ipython
   # VISUALIZATION
-  # - matplotlib
+  - matplotlib
   # - ipympl  # interactive matplotlib plots
   # - seaborn
   # - altair
@@ -42,6 +42,7 @@ dependencies:
      # add here only pip-packages that are not available in conda/conda-forge! E.g.:
      - blinkt
      - adafruit-circuitpython-as7341
+     - acrylic
      # - icecream
      # - jax
      # - numpyro

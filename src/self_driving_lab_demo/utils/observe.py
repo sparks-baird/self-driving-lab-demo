@@ -304,6 +304,34 @@ def liquid_observe_sensor_data(
             return sensor_data
 
 
+def liquid_dummy_observe_sensor_data(R, Y, B, **kwargs):
+    # return a fixed set of values (no interaction with real hardware)
+    return {
+        "utc_timestamp": 1671675884,
+        "background": {
+            "ch470": 21288,
+            "ch410": 5835,
+            "ch440": 65535,
+            "ch510": 21632,
+            "ch550": 6760,
+            "ch670": 8970,
+            "ch620": 2901,
+            "ch583": 2057,
+        },
+        "ch470": 21288,
+        "ch410": 5835,
+        "ch440": 65535,
+        "sd_card_ready": False,
+        "ch510": 21632,
+        "ch550": 6760,
+        "ch670": 8970,
+        "utc_time_str": "2022-12-22 02:24:44",
+        "onboard_temperature_K": 297.8537,
+        "ch620": 2901,
+        "ch583": 2057,
+    }
+
+
 def pico_server_observe_sensor_data(
     R: int,
     G: int,
