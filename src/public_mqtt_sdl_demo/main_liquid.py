@@ -99,6 +99,8 @@ try:
     white_led = Pin(9, mode=Pin.OUT)
     sensor = Sensor()
 
+    white_led.on()
+
     def get_devices():
         return {"pumps": pumps, "sensor": sensor, "white_led": white_led}
 
@@ -153,9 +155,7 @@ try:
         if devices is None:
             devices = get_devices()
 
-        white_led = devices["white_led"]
         sensor = devices["sensor"]
-        white_led.on()
 
         atime = parameters.get("atime", 100)
         astep = parameters.get("astep", 999)
@@ -186,10 +186,10 @@ try:
 
         pumps = devices["pumps"]
         water_pump = pumps["water"]
-        white_led = devices["white_led"]
+        # white_led = devices["white_led"]
         sensor = devices["sensor"]
 
-        white_led.on()
+        # white_led.on()
 
         CHANNEL_NAMES = [
             "ch410",
@@ -201,6 +201,12 @@ try:
             "ch620",
             "ch670",
         ]
+
+        sleep(1.0)
+        prerinse_background_data = sensor.all_channels
+        prerinse_background_data = {
+            ch: datum for ch, datum in zip(CHANNEL_NAMES, prerinse_background_data)
+        }
 
         atime = parameters.get("atime", 100)
         astep = parameters.get("astep", 999)
@@ -216,6 +222,7 @@ try:
         run_pump(water_pump, prerinse_power)
         sleep(prerinse_time)
 
+        sleep(1.0)
         background_data = sensor.all_channels
         background_data = {
             ch: datum for ch, datum in zip(CHANNEL_NAMES, background_data)
@@ -229,9 +236,11 @@ try:
             runtime,
         )
 
+        sleep(1.0)
         sensor_data = sensor.all_channels
-        white_led.off()
+        # white_led.off()
         sensor_data = {ch: datum for ch, datum in zip(CHANNEL_NAMES, sensor_data)}
+        sensor_data["prerinse_background"] = prerinse_background_data
         sensor_data["background"] = background_data
         return sensor_data
 
@@ -240,9 +249,9 @@ try:
             devices = get_devices()
 
         pumps = devices["pumps"]
-        white_led = devices["white_led"]
+        # white_led = devices["white_led"]
 
-        white_led.off()
+        # white_led.off()
 
         # Turn off the pumps
         [run_pump(pump, 0.0) for pump in pumps.values()]
@@ -253,9 +262,9 @@ try:
             devices = get_devices()
 
         pumps = devices["pumps"]
-        white_led = devices["white_led"]
+        # white_led = devices["white_led"]
 
-        white_led.off()
+        # white_led.off()
 
         # Turn off the pumps
         [run_pump(pump, 0.0) for pump in pumps.values()]
