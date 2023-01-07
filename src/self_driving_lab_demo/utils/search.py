@@ -43,22 +43,7 @@ def ax_bayesian_optimization(sdl, num_iter, objective_name="frechet"):
             dict(R=parameters["R"], G=parameters["G"], B=parameters["B"])
         )
         # Ax doesn't like the nested dictionary nor a flattened dict with string data
-        keep_keys = {
-            "utc_timestamp",
-            "ch470",
-            "ch410",
-            "ch440",
-            "sd_card_ready",
-            "ch510",
-            "ch550",
-            "ch670",
-            "onboard_temperature_K",
-            "ch620",
-            "ch583",
-            "frechet",
-            "rmse",
-            "mae",
-        }
+        keep_keys = {"frechet", "rmse", "mae"}
         drop_keys = list(set(results.keys()) - keep_keys)
         [results.pop(key, None) for key in drop_keys]
         return results
