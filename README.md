@@ -99,6 +99,16 @@ https://youtu.be/GVdfJCsQ8vk
 
 ## Advanced Installation
 
+### PyPI
+
+```python
+conda create -n self-driving-lab-demo python=3.9.*
+conda activate self-driving-lab-demo
+pip install self-driving-lab-demo
+```
+
+### Local
+
 In order to set up the necessary environment:
 
 1. review and uncomment what you need in `environment.yml` and create an environment `self-driving-lab-demo` with the help of [conda]:
