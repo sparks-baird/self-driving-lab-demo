@@ -37,6 +37,7 @@ mqtt_topic = "test/topic"
 # Use this topic if you'd like to connect to io.adafruit.com
 # mqtt_topic = secrets["aio_username"] + '/feeds/temperature'
 
+
 ### Code ###
 # Define callback methods which are called when events occur
 # pylint: disable=unused-argument, redefined-outer-name

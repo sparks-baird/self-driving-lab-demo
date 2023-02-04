@@ -143,7 +143,6 @@ def callback(topic, msg):
     print(t)
 
     if t[:5] == "GPIO/":
-
         experiment = Experiment(
             validate_inputs_fn=validate_inputs,
             run_experiment_fn=run_experiment,

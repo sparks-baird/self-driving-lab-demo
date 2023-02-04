@@ -14,7 +14,6 @@ def on_message(client, userdata, msg):
 
 
 def observe_sensor_data(R, G, B, pico_id=PICO_ID, hostname="test.mosquitto.org"):
-
     prefix = f"sdl-demo/picow/{pico_id}/"
     neopixel_topic = prefix + "GPIO/28"
     sensor_topic = prefix + "as7341/"

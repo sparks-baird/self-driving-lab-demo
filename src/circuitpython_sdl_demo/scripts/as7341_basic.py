@@ -13,7 +13,6 @@ def bar_graph(read_value):
 
 
 while True:
-
     print("F1 - 415nm/Violet  %s" % bar_graph(sensor.channel_415nm))
     print("F2 - 445nm//Indigo %s" % bar_graph(sensor.channel_445nm))
     print("F3 - 480nm//Blue   %s" % bar_graph(sensor.channel_480nm))

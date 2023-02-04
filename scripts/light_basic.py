@@ -8,8 +8,9 @@ from self_driving_lab_demo.utils.observe import (
 with open("scripts/secrets.json", "r") as f:
     secrets = json.load(f)
 
-pico_id = "test"
+# pico_id = "test"
 # pico_id = secrets["SPARKS_LAB"]
+pico_id = secrets["SPARKS_1"]
 sensor_topic = f"sdl-demo/picow/{pico_id}/as7341/"
 
 client = get_paho_client(sensor_topic)

@@ -2,7 +2,6 @@ from ufastrsa.rsa import RSA, genrsa
 
 
 def main():
-
     bits = 512
     print("RSA bits", bits)
     r = RSA(*genrsa(bits, e=65537))

@@ -37,7 +37,6 @@ def construct_inputs_qNIPV(
     sampler: Optional[MCSampler] = None,
     **kwargs: Any,
 ) -> Dict[str, Any]:
-
     if model.num_outputs == 1:
         objective = None
 

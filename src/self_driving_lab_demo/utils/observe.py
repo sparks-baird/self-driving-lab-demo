@@ -358,7 +358,6 @@ def pico_server_observe_sensor_data(
 def nonwireless_pico_observe_sensor_data(
     R, G, B, astep=100, atime=999, gain=128, com=None
 ):
-
     # If on Windows, might not be COM3, check device manager --> Ports
     # https://www.tomshardware.com/how-to/detect-com-port-windows-serial-port-notifier
     # or take a look at the bottom-RHS of Thonny when connected to the RPi

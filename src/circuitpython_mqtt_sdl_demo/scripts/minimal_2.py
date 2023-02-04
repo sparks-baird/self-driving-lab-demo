@@ -25,6 +25,7 @@ print("Connected to %s!" % secrets["ssid"])
 # Use this topic if you'd like to connect to a standard MQTT broker
 mqtt_topic = "test/topic"
 
+
 ### Code ###
 # Define callback methods which are called when events occur
 # pylint: disable=unused-argument, redefined-outer-name

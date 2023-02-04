@@ -59,7 +59,6 @@ class SensorSimulatorLiquid(SensorSimulator):
     def _simulate_sensor_data(
         self, wavelengths, R, Y, B, atime=100, astep=999, gain=128
     ):
-
         # TODO: sample based on Gaussian distributions instead of discrete wavelengths
         wavelengths = np.array(wavelengths)[:, 0]
 
