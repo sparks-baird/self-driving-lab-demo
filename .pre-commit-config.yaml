@@ -21,7 +21,7 @@ repos:
 
 # If you want to avoid flake8 errors due to unused vars or imports:
 - repo: https://github.com/myint/autoflake
-  rev: v2.0.0
+  rev: v2.0.1
   hooks:
   - id: autoflake
     args: [
@@ -31,19 +31,19 @@ repos:
     ]
 
 - repo: https://github.com/pycqa/isort
-  rev: 5.11.4
+  rev: 5.12.0
   hooks:
   - id: isort
 
 - repo: https://github.com/psf/black
-  rev: 22.12.0
+  rev: 23.1.0
   hooks:
   - id: black
     language_version: python3
 
 # If like to embrace black styles even in the docs:
 - repo: https://github.com/asottile/blacken-docs
-  rev: v1.12.1
+  rev: 1.13.0
   hooks:
   - id: blacken-docs
     name: blacken-docs
