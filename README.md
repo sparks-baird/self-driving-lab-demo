@@ -78,7 +78,7 @@ https://youtu.be/GVdfJCsQ8vk
 
 ### Purchase the hardware
 1. [Pico W Bill of Materials](http://www.adafruit.com/wishlists/553992) or [DigiKey](https://www.digikey.com/short/045j7502)
-  1. As of 2022-09-09, you will likely need to buy a RPi Pico W + loose headers from a separate supplier (see the [list of official suppliers](https://www.raspberrypi.com/products/raspberry-pi-pico/?variant=raspberry-pi-pico-w and the DigiKey cart linked above) and then solder the headers yourself (or ask a friend or go to a local makerspace or similar). You may wish to sign up for stock notifications for the Pico W at e.g. PiShop. DigiKey has many in stock (2022-09-19) and a quantity limit of 2 Pico W's. CanaKit seems to have them in stock without quantity restrictions, albeit with higher shipping fees.
+  1. As of 2022-09-09, you will likely need to buy a RPi Pico W + loose headers from a separate supplier (see the [list of official suppliers](https://www.raspberrypi.com/products/raspberry-pi-pico/?variant=raspberry-pi-pico-w) and the DigiKey cart linked above) and then solder the headers yourself (or ask a friend or go to a local makerspace or similar). You may wish to sign up for stock notifications for the Pico W at e.g. PiShop. DigiKey has many in stock (2022-09-19) and a quantity limit of 2 Pico W's. CanaKit seems to have them in stock without quantity restrictions, albeit with higher shipping fees.
 1. 14 gauge (**outer thickness including insulation**) sculpting wire (preferably insulated), e.g. [20 gauge electrical wire at DigiKey](https://www.digikey.com/en/products/detail/remington-industries/20UL1007SLDBLA/11615372) or [14 gauge sculpting wire at Amazon](https://a.co/d/7rxgOeR)
 
 ### Pico W setup
