@@ -102,7 +102,7 @@ https://youtu.be/GVdfJCsQ8vk
 ### PyPI
 
 ```python
-conda create -n self-driving-lab-demo python=3.9.*
+conda create -n self-driving-lab-demo python=3.10.*
 conda activate self-driving-lab-demo
 pip install self-driving-lab-demo
 ```
