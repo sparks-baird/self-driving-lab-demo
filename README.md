@@ -27,12 +27,12 @@ width=750>
 ### Liquid-mixing
 <img
 src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/cls-labs-liquid-summary.png"
-width=750>
+width=650>
 
 ### Solid-mixing
 <img
 src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/cls-lab-solid-summary.png"
-width=750>
+width=650>
 
 ## Hardware
 
