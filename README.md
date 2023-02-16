@@ -13,23 +13,31 @@
 
 # self-driving-lab-demo [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sparks-baird/self-driving-lab-demo/blob/main/notebooks/4.2-paho-mqtt-colab-sdl-demo-test.ipynb)
 
-> Software and instructions for setting up and running an autonomous (self-driving) laboratory optics demo using dimmable RGB LEDs, an 8-channel spectrophotometer, a microcontroller, and an adaptive design algorithm.
-
-Self-driving labs are the future; however, the capital and expertise required can be daunting. We introduce the idea of an experimental optimization task for less than $100, a square foot of desk space, and an hour of total setup time from the shopping cart to the first "autonomous drive." We use optics rather than chemistry for our demo; after all, light is easier to move than matter. While not strictly materials-based, importantly, several core principles of a self-driving materials discovery lab are retained in this cross-domain example: sending commands to hardware to adjust physical parameters, receiving measured objective properties, decision-making via active learning, and utilizing cloud-based simulations. The demo is accessible, extensible, modular, and repeatable, making it an ideal candidate for both low-cost experimental adaptive design prototyping and learning the principles of self-driving laboratories in a low-risk setting.
+> Software and instructions for setting up and running an autonomous (self-driving) laboratory optics demo using dimmable RGB LEDs, an 8-channel spectrophotometer, a microcontroller, and an adaptive design algorithm, as well as extensions to liquid- and solid-based color matching demos.
 
 ## Overview
 
+This repository covers three tasks: light-mixing, liquid-mixing, and solid-mixing color matching demos.
+
 ### Light-mixing
+
+Self-driving labs are the future; however, the capital and expertise required can be daunting. We introduce the idea of an experimental optimization task for less than $100, a square foot of desk space, and an hour of total setup time from the shopping cart to the first "autonomous drive." For our first demo, we use optics rather than chemistry; after all, light is easier to move than matter. While not strictly materials-based, importantly, several core principles of a self-driving materials discovery lab are retained in this cross-domain example: sending commands to hardware to adjust physical parameters, receiving measured objective properties, decision-making via active learning, and utilizing cloud-based simulations. The demo is accessible, extensible, modular, and repeatable, making it an ideal candidate for both low-cost experimental adaptive design prototyping and learning the principles of self-driving laboratories in a low-risk setting.
 <img
 src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/abstract-white-background.png"
 width=750>
 
 ### Liquid-mixing
+
+We extend the light-mixing demo to a color-matching materials optimization problem using dilute colored dyes. This optimization task costs less than 300 USD, requires less than three square feet of desk space, and less than three hours of total setup time from the shopping cart to the first “autonomous drive.” The demo is modular and extensible; additional peristaltic pump channels can be added, the dye reservoirs can be increased, and chemically sensitive parts can be replaced with chemically resistant ones.
+
 <img
 src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/cls-labs-liquid-summary.png"
 width=650>
 
 ### Solid-mixing
+
+There are few to no examples of a low-cost demo platform involving the handling of solid-state materials (i.e., powders, pellets). For this demo, we propose using red, yellow, and blue powdered wax as a replacement for the liquid colored dyes. The demo is more expensive due to the need for robotics. The demo involves using tealight candle holders, transferring them to a rotating stage via a robotic arm, dispensing a combination of powders, melting the wax via an incandescent light bulb, measuring a discrete color spectrum, and moving the completed sample to a separate sample storage area.
+
 <img
 src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/cls-lab-solid-summary.png"
 width=650>
