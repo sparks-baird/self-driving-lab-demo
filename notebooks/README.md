@@ -14,12 +14,12 @@ then using Internet-of-things-style communication to remotely control the PicoW
 the Pico using a nonwireless option (i.e. compatible when WiFi is not available /
 difficult to connect to or when nonwireless Pico is being used).
 
-## 1.* Blinkt! Getting Started (deprecated, but still informative)
+## 1.* ~~Blinkt! Getting Started~~ (deprecated, but still informative)
 
 - [`1.0-sgb-blinkt-as7341-basic.ipynb`](1.0-sgb-blinkt-as7341-basic.ipynb)
   - > Let's flash the LED and print out the sensor data!
 
-## 2.* Search Algorithms using Blinkt! (deprecated, but still informative)
+## 2.* ~~Search Algorithms using Blinkt!~~ (deprecated, but still informative)
 
 - [`2.0-random-search.ipynb`](2.0-random-search.ipynb)
   - > 🚗 Let's run a test drive of 100 random search iterations! 🚗
