@@ -6,7 +6,7 @@ source = self_driving_lab_demo
 
 [paths]
 source =
-    src/
+    src/self_driving_lab_demo/
     */site-packages/
 
 [report]

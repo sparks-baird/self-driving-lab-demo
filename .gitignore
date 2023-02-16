@@ -84,6 +84,10 @@ notebooks/escience/temp-plot.html
 src/public_mqtt_sdl_demo/lib/rsa/**/*
 src/public_mqtt_sdl_demo/scripts/rsa_basic.py
 reports/~WRL0003.tmp
+reports/hardwarex-sdl-demo.aux
+reports/hardwarex-sdl-demo.out
+reports/hardwarex-sdl-demo.pdf
+reports/hardwarex-sdl-demo.synctex.gz
 src/public_mqtt_sdl_demo/lib/umqtt/robust2.py
 src/public_mqtt_sdl_demo/lib/umqtt/simple2.py
 reports/~$llPress_STARProtocols.docx
