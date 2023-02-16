@@ -19,7 +19,18 @@ Self-driving labs are the future; however, the capital and expertise required ca
 
 ## Overview
 
-<img src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/abstract.png?a" width=750>
+### Light-mixing
+<img
+src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/abstract-white-background.png"
+width=750>
+
+### Liquid-mixing
+<img
+src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/cls-labs-liquid-summary.png">
+
+### Solid-mixing
+<img
+src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/cls-lab-solid-summary.png">
 
 ## Hardware
 
