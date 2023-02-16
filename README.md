@@ -17,7 +17,7 @@
 
 ## Overview
 
-This repository covers three tasks: light-mixing, liquid-mixing, and solid-mixing color matching demos.
+This repository covers three teaching and prototyping demos for self-driving laboratories in the fields of optics (light-mixing), chemistry (liquid-mixing), and solid-state materials science (solid-mixing).
 
 ### Light-mixing
 
