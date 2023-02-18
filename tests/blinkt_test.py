@@ -1,8 +1,11 @@
 from numpy.testing import assert_allclose, assert_almost_equal
-from self_driving_lab_demo_blinkt.core import (
+
+from extra.self_driving_lab_demo_blinkt.core import (
     SelfDrivingLabDemo as SelfDrivingLabDemoBlinkt,
 )
-from self_driving_lab_demo_blinkt.core import SensorSimulator as SensorSimulatorBlinkt
+from extra.self_driving_lab_demo_blinkt.core import (
+    SensorSimulator as SensorSimulatorBlinkt,
+)
 
 
 def test_blinkt_simulator():
