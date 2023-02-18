@@ -1,5 +1,4 @@
 from numpy.testing import assert_allclose, assert_almost_equal
-
 from self_driving_lab_demo_blinkt.core import (
     SelfDrivingLabDemo as SelfDrivingLabDemoBlinkt,
 )
