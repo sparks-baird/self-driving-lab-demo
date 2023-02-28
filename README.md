@@ -42,6 +42,12 @@ There are few to no examples of a low-cost demo platform involving the handling 
 src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/cls-lab-solid-summary.png"
 width=650>
 
+## Current Users
+(listed with permission)
+- [Ian Foster](https://www.linkedin.com/in/ianfoster)
+- [Tonio Buonassisi](https://www.linkedin.com/in/tonio-buonassisi-7854543)
+- [Ben Blaiszik](https://www.linkedin.com/in/benblaiszik)
+
 ## Hardware
 
 <img src="reports/figures/required-wishlist-pico.png" width=600>
