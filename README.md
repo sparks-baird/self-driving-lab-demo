@@ -48,6 +48,14 @@ width=650>
 - [Tonio Buonassisi](https://www.linkedin.com/in/tonio-buonassisi-7854543)
 - [Ben Blaiszik](https://www.linkedin.com/in/benblaiszik)
 
+Total verified users: 12
+
+University instructors utilizing CLSLab-Light during Spring 2023: 4 (~40 kits in total)
+
+[GroupGets round 1 campaign](https://groupgets.com/campaigns/1112): funded and fulfilled (19 kits)
+
+[GroupGets round 2 campaign](https://groupgets.com/campaigns/1129): running (current 8 kits)
+
 ## Hardware
 
 <img src="reports/figures/required-wishlist-pico.png" width=600>
