@@ -54,7 +54,7 @@ University instructors utilizing CLSLab-Light during Spring 2023: 4 (~40 kits in
 
 [GroupGets round 1 campaign](https://groupgets.com/campaigns/1112): funded and fulfilled (19 kits)
 
-[GroupGets round 2 campaign](https://groupgets.com/campaigns/1129): running (current 8 kits)
+[GroupGets round 2 campaign](https://groupgets.com/campaigns/1129): running (current 20 kits)
 
 ## Hardware
 
