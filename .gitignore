@@ -96,3 +96,6 @@ reports/github-accelerators/2022-12-20 18.21.09 Sterling Baird's Personal Meetin
 reports/github-accelerators/2022-12-20 18.21.09 Sterling Baird's Personal Meeting Room/recording.conf
 notebooks/escience/2.8.2-ax_service_existing_data_saasbo_multi_objective_batch_debug.ipynb
 .vscode/settings.json
+src/extra/nonwireless/lib/data_logging.py
+src/extra/nonwireless/lib/sdl_demo_utils.py
+src/extra/nonwireless/main-2.py
