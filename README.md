@@ -102,7 +102,7 @@ RPi Pico W (see https://github.com/sparks-baird/self-driving-lab-demo/issues/8),
 - [x] write unit tests for Blinkt! and 10-channel sensor (simulations)
 - [x] write script/library to integrate components
 - [x] "first drive" using random search
-- [ ] multi-fidelity optimization
+- [x] multi-fidelity optimization
 - [ ] bluesky example
 - [ ] network of cloud-based SDLs
 - [ ] initial hackathon
@@ -114,7 +114,7 @@ https://youtu.be/GVdfJCsQ8vk
 ### Purchase the hardware
 1. See the "DigiKey Order" <img src=https://user-images.githubusercontent.com/45469701/222923388-160889f9-30c1-4fe0-a2a0-fdd78c33725e.png width=90>
  link along the left column of [the Hackaday Page](https://hackaday.io/project/186289-autonomous-research-laboratories) for a standalone order or [the Pico W Bill of Materials Wishlist on Adafruit](http://www.adafruit.com/wishlists/553992)
-  1. As of 2023-03-04, PiShop sells a Pico W with presoldered headers, which can circumvent the need for a soldering kit. See also the [list of official suppliers](https://www.raspberrypi.com/products/raspberry-pi-pico/?variant=raspberry-pi-pico-w). If you purchase a Pico W with separate headers, then solder the headers yourself (or ask a friend or go to a local makerspace or similar).
+  1. As of 2023-03-04, PiShop sells [a Pico W with presoldered headers](https://www.pishop.us/product/raspberry-pi-pico-w-with-pre-soldered-headers/), which can circumvent the need for a soldering kit. See also the [list of official suppliers](https://www.raspberrypi.com/products/raspberry-pi-pico/?variant=raspberry-pi-pico-w). If you purchase a Pico W with separate headers, then solder the headers yourself (or ask a friend or go to a local makerspace or similar).
 1. 14 gauge (**outer thickness including insulation**) sculpting wire (preferably insulated), e.g. [20 gauge electrical wire at DigiKey](https://www.digikey.com/en/products/detail/remington-industries/20UL1007SLDBLA/11615372) or [14 gauge sculpting wire at Amazon](https://a.co/d/7rxgOeR)
 
 ### Pico W setup
@@ -131,7 +131,7 @@ https://youtu.be/GVdfJCsQ8vk
 
 #### Running the optimizations
 
-1. If you choose the `public_mqtt_sdl_demo`, you can control your SDL-Demo remotely from anywhere. Colab notebook WIP
+1. If you choose the `public_mqtt_sdl_demo`, you can control your SDL-Demo remotely from anywhere. The Jupyter notebook tutorial for this is found at https://github.com/sparks-baird/self-driving-lab-demo/blob/main/notebooks/4.2-paho-mqtt-colab-sdl-demo-test.ipynb.
 
 ## Advanced Installation
 
@@ -223,7 +223,7 @@ See https://github.com/sparks-baird/self-driving-lab-demo/discussions/89 for dis
   - AS7341 Light Sensor
   - USB-A to micro-USB-B cable
   - 5V USB-A wall adapter
-  - 20 AWG sculpting wire
+  - 18 AWG sculpting wire
 - Plant drip bag (large) x2
 - Party drink drip bag (small) x3
 - Spectrophotometer cuvette
