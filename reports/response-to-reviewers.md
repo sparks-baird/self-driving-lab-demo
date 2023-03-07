@@ -51,8 +51,7 @@ think it needs to follow the key resource table format.
 
 > - The images for example in steps 8-10 are very grainy and poor quality.
 
-This may be difficult given that they're often screenshots of very small portions of the
-screen. The images have been shrunk to try to mitigate the tacky, grainy appearance.
+The image resolution has been increased where feasible.
 
 > - For Bayesian optimization, is the code for this included?
 
