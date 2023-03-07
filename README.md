@@ -42,6 +42,20 @@ There are few to no examples of a low-cost demo platform involving the handling 
 src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/cls-lab-solid-summary.png"
 width=650>
 
+## Current Users
+(listed with permission)
+- [Ian Foster](https://www.linkedin.com/in/ianfoster)
+- [Tonio Buonassisi](https://www.linkedin.com/in/tonio-buonassisi-7854543)
+- [Ben Blaiszik](https://www.linkedin.com/in/benblaiszik)
+
+Total verified users: 12
+
+University instructors utilizing CLSLab-Light during Spring 2023: 4 (~40 kits in total)
+
+[GroupGets round 1 campaign](https://groupgets.com/campaigns/1112): funded and fulfilled (19 kits)
+
+[GroupGets round 2 campaign](https://groupgets.com/campaigns/1129): running (current 8 kits)
+
 ## Hardware
 
 <img src="reports/figures/required-wishlist-pico.png" width=600>
@@ -98,8 +112,9 @@ RPi Pico W (see https://github.com/sparks-baird/self-driving-lab-demo/issues/8),
 https://youtu.be/GVdfJCsQ8vk
 
 ### Purchase the hardware
-1. [Pico W Bill of Materials](http://www.adafruit.com/wishlists/553992) or [DigiKey](https://www.digikey.com/short/nth8fzb2)
-  1. As of 2022-09-09, you will likely need to buy a RPi Pico W + loose headers from a separate supplier (see the [list of official suppliers](https://www.raspberrypi.com/products/raspberry-pi-pico/?variant=raspberry-pi-pico-w) and the DigiKey cart linked above) and then solder the headers yourself (or ask a friend or go to a local makerspace or similar). You may wish to sign up for stock notifications for the Pico W at e.g. PiShop. DigiKey has many in stock (2022-09-19) and a quantity limit of 2 Pico W's. CanaKit seems to have them in stock without quantity restrictions, albeit with higher shipping fees.
+1. See the "DigiKey Order" <img src=https://user-images.githubusercontent.com/45469701/222923388-160889f9-30c1-4fe0-a2a0-fdd78c33725e.png width=90>
+ link along the left column of [the Hackaday Page](https://hackaday.io/project/186289-autonomous-research-laboratories) for a standalone order or [the Pico W Bill of Materials Wishlist on Adafruit](http://www.adafruit.com/wishlists/553992)
+  1. As of 2023-03-04, PiShop sells a Pico W with presoldered headers, which can circumvent the need for a soldering kit. See also the [list of official suppliers](https://www.raspberrypi.com/products/raspberry-pi-pico/?variant=raspberry-pi-pico-w). If you purchase a Pico W with separate headers, then solder the headers yourself (or ask a friend or go to a local makerspace or similar).
 1. 14 gauge (**outer thickness including insulation**) sculpting wire (preferably insulated), e.g. [20 gauge electrical wire at DigiKey](https://www.digikey.com/en/products/detail/remington-industries/20UL1007SLDBLA/11615372) or [14 gauge sculpting wire at Amazon](https://a.co/d/7rxgOeR)
 
 ### Pico W setup
