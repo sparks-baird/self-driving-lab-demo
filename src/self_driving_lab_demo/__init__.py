@@ -25,6 +25,7 @@ from self_driving_lab_demo.demos.liquid import (
     SensorSimulatorLiquid,
 )
 from self_driving_lab_demo.utils.observe import (
+    get_paho_client,
     liquid_observe_sensor_data,
     mqtt_observe_sensor_data,
     pico_server_observe_sensor_data,
@@ -48,4 +49,5 @@ __all__ = [
     "grid_search",
     "random_search",
     "ax_bayesian_optimization",
+    "get_paho_client",
 ]
