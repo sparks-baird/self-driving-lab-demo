@@ -109,7 +109,8 @@ jobs:
       - name: Ensure main Jupyter notebook runs without error
         run: |
           pipx install nbconvert
-          pipx run jupyter nbconvert --to notebook --execute notebooks/4.2-paho-mqtt-colab-sdl-demo-test.ipynb --installpkg '${{ needs.prepare.outputs.wheel-distribution }}'
+          pipx install -e .
+          pipx run jupyter nbconvert --to notebook --execute notebooks/4.2-paho-mqtt-colab-sdl-demo-test.ipynb
         env:
           HIVEMQ_USERNAME: ${{ secrets.HIVEMQ_USERNAME }}
           HIVEMQ_PASSWORD: ${{ secrets.HIVEMQ_PASSWORD }}
