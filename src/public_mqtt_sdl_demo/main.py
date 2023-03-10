@@ -69,6 +69,10 @@ try:
     trunc_device_id = str(my_encrypted_id)[0:10]
     prefix = f"sdl-demo/picow/{my_id}/"
 
+    print("")
+    print(f"PICO_ID: {my_id}")
+    print("")
+
     print(f"Unencrypted PICO ID (keep private): {my_id}")
     print(f"Encrypted PICO ID (OK to share publicly): {my_encrypted_id}")
     print(f"Truncated, encrypted PICO ID (OK to share publicly): {trunc_device_id}")
@@ -269,7 +273,9 @@ try:
     heartbeat(client, True)
     sign_of_life(onboard_led, True)
 
+    print("")
     print("Waiting for experiment requests...")
+    print("")
 
     while True:
         try:
