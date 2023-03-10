@@ -63,6 +63,9 @@ try:
     # my_id = "test"
     # my_encrypted_id = "test"
 
+    with open("pico_id.txt", "w") as f:
+        f.write(my_id)
+
     trunc_device_id = str(my_encrypted_id)[0:10]
     prefix = f"sdl-demo/picow/{my_id}/"
 
@@ -281,6 +284,7 @@ try:
             client.set_callback(callback)
             client.subscribe(prefix + "GPIO/#")
 except Exception as e:
+    print(get_traceback(e))
     fname = "error.txt"
     logfile = open(fname, "w")
     logfile.write(get_traceback(e))
