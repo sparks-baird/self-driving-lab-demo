@@ -59,6 +59,6 @@ repos:
   rev: 6.0.0
   hooks:
   - id: flake8
-    exclude: ^src/(circuitpython_sdl_demo|micropython_sdl_demo|adafruit_io_sdl_demo|nonwireless|public_mqtt_sdl_demo|circuitpython_mqtt_sdl_demo|extra)/
+    exclude: (^src/(circuitpython_sdl_demo|micropython_sdl_demo|adafruit_io_sdl_demo|nonwireless|public_mqtt_sdl_demo|circuitpython_mqtt_sdl_demo|extra)/|scripts/sikuli/)
   ## You can add flake8 plugins via `additional_dependencies`:
   #  additional_dependencies: [flake8-bugbear]
