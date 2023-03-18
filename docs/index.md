@@ -8,16 +8,16 @@ Software and instructions for setting up and running an autonomous (self-driving
 [![PyPI -
 Downloads](https://img.shields.io/pypi/dm/xtal2png)](https://pypi.org/project/xtal2png)
 
-<a class="github-button" href="https://github.com/sparks-baird/xtal2png"
+<a class="github-button" href="https://github.com/sparks-baird/self-driving-lab-demo"
 data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star
-sparks-baird/xtal2png on GitHub">Star</a>
+sparks-baird/self-driving-lab-demo on GitHub">Star</a>
 <a class="github-button"
 href="https://github.com/sgbaird" data-size="large" data-show-count="true"
 aria-label="Follow @sgbaird on GitHub">Follow @sgbaird</a>
-<a class="github-button" href="https://github.com/sparks-baird/xtal2png/issues"
+<a class="github-button" href="https://github.com/sparks-baird/self-driving-lab-demo/issues"
 data-icon="octicon-issue-opened" data-size="large" data-show-count="true"
-aria-label="Issue sparks-baird/xtal2png on GitHub">Issue</a>
-<a class="github-button" href="https://github.com/sparks-baird/xtal2png/discussions" data-icon="octicon-comment-discussion" data-size="large" aria-label="Discuss sparks-baird/xtal2png on GitHub">Discuss</a>
+aria-label="Issue sparks-baird/self-driving-lab-demo on GitHub">Issue</a>
+<a class="github-button" href="https://github.com/sparks-baird/self-driving-lab-demo/discussions" data-icon="octicon-comment-discussion" data-size="large" aria-label="Discuss sparks-baird/self-driving-lab-demo on GitHub">Discuss</a>
 <br><br>
 
 
