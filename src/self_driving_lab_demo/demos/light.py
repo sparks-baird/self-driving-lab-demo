@@ -123,19 +123,19 @@ class SelfDrivingLabDemoLight(SelfDrivingLabDemo):
     def bounds(self):
         mx = int(np.round(self.max_power * 255))
         return dict(
-            R=[0, mx],
-            G=[0, mx],
-            B=[0, mx],
-            atime=[0, 255],
-            astep=[0, 65534],
-            gain=[0.5, 512],
+            R=(0, mx),
+            G=(0, mx),
+            B=(0, mx),
+            atime=(0, 255),
+            astep=(0, 65534),
+            gain=(0.5, 512),
         )
 
     @property
     def parameters(self):
         parameters = []
         for nm, bnd in self.bounds.items():
-            if nm in ["R", "G", "B", "w", "atime", "astep"]:
+            if nm in ["R", "G", "B", "atime", "astep"]:
                 parameters.append(dict(name=nm, type="range", bounds=bnd))
             elif nm in ["gain"]:
                 parameters.append(
