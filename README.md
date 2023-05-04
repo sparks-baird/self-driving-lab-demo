@@ -60,7 +60,7 @@ University instructors utilizing CLSLab-Light during Spring 2023: 4 (~40 kits in
 
 <img src="reports/figures/required-wishlist-pico.png" width=600>
 
-Since the Pico WH is difficult to source (2022-09-15), you will likely need to purchase a Pico W (see [Raspberry Pi Official Resellers](https://www.raspberrypi.com/products/raspberry-pi-pico/?variant=raspberry-pi-pico-w)) and solder [male header pins](https://www.adafruit.com/product/5584) onto it.
+Since the Pico WH is difficult to source (2022-09-15), you will likely need to purchase a [Pico W with presoldered headers](https://www.pishop.us/product/raspberry-pi-pico-w-with-pre-soldered-headers/) or purchase a Pico W (see [Raspberry Pi Official Resellers](https://www.raspberrypi.com/products/raspberry-pi-pico/?variant=raspberry-pi-pico-w)) and solder [male header pins](https://www.adafruit.com/product/5584) onto it.
 
 <img src="reports/figures/materials-annotated.png" width=350>
 <sup>Hardware parts</sup>
