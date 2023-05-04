@@ -47,7 +47,8 @@ def mqtt_observe_sensor_data(
     extra_info: Optional[dict] = None,
 ):
     if pico_id is None:
-        _logger.warning(
+        # _logger.warning(
+        raise ValueError(
             "No pico_id provided, but should be provided. On Pico, run the following to get your pico_id. from machine import unique_id; from ubinascii import hexlify; print(hexlify(unique_id()).decode()). Or change pico_id to whatever you want, but make it match between the Pico main.py and this mqtt_observe_sensor_data kwarg."  # noqa: E501
         )
     if session_id is None:
