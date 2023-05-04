@@ -135,7 +135,7 @@ class SelfDrivingLabDemoLight(SelfDrivingLabDemo):
     def parameters(self):
         parameters = []
         for nm, bnd in self.bounds.items():
-            if nm in ["R", "G", "B", "w", "atime", "astep"]:
+            if nm in ["R", "G", "B", "atime", "astep"]:
                 parameters.append(dict(name=nm, type="range", bounds=bnd))
             elif nm in ["gain"]:
                 parameters.append(
