@@ -33,6 +33,7 @@ License <license>
 Authors <authors>
 Changelog <changelog>
 Module Reference <api/modules>
+GitHub Source <https://github.com/sparks-baird/self-driving-lab-demo>
 ```
 
 ## Indices and tables
