@@ -11,25 +11,25 @@ def line(error_y_mode=None, **kwargs):
 
     Example
     -------
-    import plotly.express as px
-    import pandas
-
-    df = px.data.gapminder().query('continent=="Americas"')
-    df = df[df['country'].isin({'Argentina','Brazil','Colombia'})]
-    df['lifeExp std'] = df['lifeExp']*.1 # Invent some error data...
-
-    for error_y_mode in {'band', 'bar'}:
-        fig = line(
-            data_frame = df,
-            x = 'year',
-            y = 'lifeExp',
-            error_y = 'lifeExp std',
-            error_y_mode = error_y_mode,
-            color = 'country',
-            title = f'Using error {error_y_mode}',
-            markers = '.',
-        )
-        fig.show()
+    >>> import plotly.express as px
+    >>> import pandas
+    >>>
+    >>> df = px.data.gapminder().query('continent=="Americas"')
+    >>> df = df[df['country'].isin({'Argentina','Brazil','Colombia'})]
+    >>> df['lifeExp std'] = df['lifeExp']*.1 # Invent some error data...
+    >>>
+    >>> for error_y_mode in {'band', 'bar'}:
+    >>>     fig = line(
+    >>>         data_frame = df,
+    >>>         x = 'year',
+    >>>         y = 'lifeExp',
+    >>>         error_y = 'lifeExp std',
+    >>>         error_y_mode = error_y_mode,
+    >>>         color = 'country',
+    >>>         title = f'Using error {error_y_mode}',
+    >>>         markers = '.',
+    >>>     )
+    >>>     fig.show()
     """
     ERROR_MODES = {"bar", "band", "bars", "bands", None}
     if error_y_mode not in ERROR_MODES:

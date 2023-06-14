@@ -20,6 +20,7 @@ References:
     - https://pip.pypa.io/en/stable/reference/pip_install
 """
 import logging
+import sys
 from time import sleep
 
 import numpy as np
@@ -117,6 +118,40 @@ class SDLSimulation(SelfDrivingLabDemo):
 
     def observe_sensor_data(self, parameters):
         return super().observe_sensor_data(parameters)
+
+
+# ---- CLI ----
+
+
+def fib(n):
+    """Fibonacci example function
+
+    This isn't actually used in this package; it's just for
+    demonstration purposes (e.g., running tests, CLI).
+
+    Args:
+      n (int): integer
+
+    Returns:
+      int: n-th Fibonacci number
+    """
+    assert n > 0
+    a, b = 1, 1
+    for _i in range(n - 1):
+        a, b = b, a + b
+    return a
+
+
+def setup_logging(loglevel):
+    """Setup basic logging
+
+    Args:
+      loglevel (int): minimum loglevel for emitting messages
+    """
+    logformat = "[%(asctime)s] %(levelname)s:%(name)s:%(message)s"
+    logging.basicConfig(
+        level=loglevel, stream=sys.stdout, format=logformat, datefmt="%Y-%m-%d %H:%M:%S"
+    )
 
 
 # %% Code Graveyard

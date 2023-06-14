@@ -102,3 +102,5 @@ src/extra/nonwireless/main-2.py
 reports/star-protocols/STAR-PROTOCOLS-D-23-00017_R1.pdf
 sdl_demo/**/*
 sdl_demo.zip
+scripts/discrete_fidelity_debug.py
+reports/users.txt

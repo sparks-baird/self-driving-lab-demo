@@ -35,7 +35,7 @@ while True:
     click("1678399573235.png")
     click("Pico W / Pico WH")
     click("1678399873957.png")
-    wait(Pattern("1678414306280.png").similar(0.85), 60)
+    wait(Pattern("1678414306280.png").similar(0.85), 30)
     # wait("Done!", 60)
     sleep(2.0)
     click(Pattern("1678400018710.png").similar(0.85))
@@ -79,7 +79,7 @@ while True:
     type(Key.TAB, Key.ALT)
 
     # replace the Pico ID
-    click(Pattern("1678426304901.png").similar(0.80).targetOffset(0, 11))
+    click(Pattern("1679637694679.png").similar(0.74).targetOffset(0, 0))
     type("a", Key.CTRL)
     type(pico_id)
 

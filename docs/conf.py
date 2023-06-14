@@ -78,6 +78,7 @@ extensions = [
     "sphinx_copybutton",
     "nbsphinx",
     "nbsphinx_link",
+    "sphinx_gallery.load_style",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -182,10 +183,10 @@ html_theme = "sphinx_rtd_theme"
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-html_theme_options = {
-    "sidebar_width": "300px",
-    "page_width": "1200px"
-}
+# html_theme_options = {
+#     "sidebar_width": "300px",
+#     "page_width": "1200px"
+# }
 
 # Add any paths that contain custom themes here, relative to this directory.
 # html_theme_path = []
@@ -270,7 +271,13 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-    ("index", "user_guide.tex", "self-driving-lab-demo Documentation", "sgbaird", "manual")
+    (
+        "index",
+        "user_guide.tex",
+        "self-driving-lab-demo Documentation",
+        "sgbaird",
+        "manual",
+    )
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
