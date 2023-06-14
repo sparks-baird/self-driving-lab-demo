@@ -20,7 +20,6 @@ Since they are instructive and show parts of the behind-the-scenes development p
 ```
 
 ```{nbgallery}
-notebooks/test
 notebooks/4.2-paho-mqtt-colab-sdl-demo-test
 ```
 
