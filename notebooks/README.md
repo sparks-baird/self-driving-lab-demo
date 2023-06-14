@@ -11,16 +11,16 @@ then using Internet-of-things-style communication to remotely control the PicoW
 the Pico using a nonwireless option (i.e. compatible when WiFi is not available /
 difficult to connect to or when nonwireless Pico is being used). -->
 
+```{nbgallery}
+notebooks/4.2-paho-mqtt-colab-sdl-demo-test
+```
+
 ```{note}
 The 1.\*, 2.\*, and 3.\* tutorials are deprecated due to changes in hardware and
 software design of
 the demo (i.e., dropping "Blinkt!" in favor of built-in RGB LED on Maker Pi Pico base,
 and dropping a web server interface in favor of MQTT).
 Since they are instructive and show parts of the behind-the-scenes development process, they are kept here for reference and provenance.
-```
-
-```{nbgallery}
-notebooks/4.2-paho-mqtt-colab-sdl-demo-test
 ```
 
 <!-- notebooks/escience/1.0-traditional-doe-vs-bayesian.ipynb
@@ -119,7 +119,7 @@ notebooks/7.3-benchmark-dataset-generation.ipynb -->
   > 📊 Read data from MongoDB 📊
 - [`7.2-robust-data-logging.ipynb`](https://github.com/sparks-baird/self-driving-lab-demo/tree/main/notebooks/7.2-robust-data-logging.ipynb) (WIP)
   > 📊 Robust data logging 📊
-- [`7.2.1-hivemq-openssl-certificate`](https://github.com/sparks-baird/self-driving-lab-demo/tree/main/notebooks/7.2.1-hivemq-openssl-certificate.ipynb)
+- [`7.2.1-hivemq-openssl-certificate.ipynb`](https://github.com/sparks-baird/self-driving-lab-demo/tree/main/notebooks/7.2.1-hivemq-openssl-certificate.ipynb)
   > 📊 Generate an OpenSSL certificate for HiveMQ 📊
 - [`7.3-benchmark-dataset-generation.ipynb`](https://github.com/sparks-baird/self-driving-lab-demo/tree/main/notebooks/7.3-benchmark-dataset-generation.ipynb)
   > 📊 Generate a benchmark dataset 📊
