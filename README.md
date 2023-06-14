@@ -42,13 +42,13 @@ There are few to no examples of a low-cost demo platform involving the handling 
 src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/cls-lab-solid-summary.png"
 width=650>
 
-## Current Users
+## Community Usage
 (listed with permission)
 - [Ian Foster](https://www.linkedin.com/in/ianfoster)
 - [Tonio Buonassisi](https://www.linkedin.com/in/tonio-buonassisi-7854543)
 - [Ben Blaiszik](https://www.linkedin.com/in/benblaiszik)
 
-Total verified users: 12
+<!-- Total verified users: 12 -->
 
 University instructors utilizing CLSLab-Light during Spring 2023: 4 (~40 kits in total)
 
@@ -56,25 +56,28 @@ University instructors utilizing CLSLab-Light during Spring 2023: 4 (~40 kits in
 
 [GroupGets round 2 campaign](https://groupgets.com/campaigns/1129): running (current 20 kits)
 
-It is now [stocked in the GroupGets Store](https://store.groupgets.com/products/closed-loop-spectroscopy-lab-light-mixing-demo-kit), albeit with a higher GroupGets fee. If you don't want to wait for new rounds, and you'd rather order a pre-built kit, this is the best option right now.
+It is now [stocked in the GroupGets
+Store](https://store.groupgets.com/products/closed-loop-spectroscopy-lab-light-mixing-demo-kit),
+albeit with a higher GroupGets fee (only GroupGets sees this extra profit). If you don't want to wait for new rounds, and you'd
+rather order a pre-built kit, this is the best option right now.
 
 ## Hardware
 
-<img src="reports/figures/required-wishlist-pico.png" width=600>
+<img src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/required-wishlist-pico.png" width=600>
 
 Since the Pico WH is difficult to source (2022-09-15), you will likely need to purchase a [Pico W with presoldered headers](https://www.pishop.us/product/raspberry-pi-pico-w-with-pre-soldered-headers/) or purchase a Pico W (see [Raspberry Pi Official Resellers](https://www.raspberrypi.com/products/raspberry-pi-pico/?variant=raspberry-pi-pico-w)) and solder [male header pins](https://www.adafruit.com/product/5584) onto it.
 
-<img src="reports/figures/materials-annotated.png" width=350>
+<img src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/materials-annotated.png" width=350>
 <sup>Hardware parts</sup>
 
 ## Assembled
 
-<img src="notebooks/sdl-demo-test.jpg" width=350>
+<img src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/notebooks/sdl-demo-test.jpg" width=350>
 <sup>assembled SDL-Demo</sup>
 
 ## Assembled (annotated)
 
-<img src="reports/figures/sdl-demo-annotated.png" width=350>
+<img src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/sdl-demo-annotated.png" width=350>
 <sup>assembled SDL-Demo (annotated)</sup>
 
 ## See Also
@@ -202,10 +205,10 @@ Then take a look into the `scripts` and `notebooks` folders.
 
 - [Adafruit required bill of materials (RPi Zero 2 W build)](http://www.adafruit.com/wishlists/551817)
 
-  <img src="reports/figures/required-wishlist.png" width=500>
+  <img src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/required-wishlist.png" width=500>
 - [Adafruit optional bill of materials (RPi Zero 2 W build)](http://www.adafruit.com/wishlists/551821)
 
-  <img src="reports/figures/optional-wishlist.png" width=500>
+  <img src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/optional-wishlist.png" width=500>
 - [Adafruit bill of materials](https://www.adafruit.com/wishlists/551334) (my original one that I ordered and am planning to prototype with)
 
 ## Closed-loop Spectroscopy Laboratory: Liquid
