@@ -27,6 +27,7 @@ aria-label="Issue sparks-baird/self-driving-lab-demo on GitHub">Issue</a>
 :maxdepth: 2
 
 Overview <readme>
+Tutorials <tutorials>
 Contributions & Help <contributing>
 License <license>
 Authors <authors>
