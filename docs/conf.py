@@ -78,10 +78,11 @@ extensions = [
     "sphinx_copybutton",
     "nbsphinx",
     "nbsphinx_link",
+    "sphinx_gallery.load_style",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ["_templates"]
+templates_path = ["_templates"] 
 
 
 # Enable markdown
