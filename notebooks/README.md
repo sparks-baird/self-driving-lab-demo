@@ -13,6 +13,15 @@ difficult to connect to or when nonwireless Pico is being used). -->
 
 ```{nbgallery}
 notebooks/4.2-paho-mqtt-colab-sdl-demo-test
+notebooks/escience/1.0-traditional-doe-vs-bayesian.ipynb
+notebooks/6.1-multi-objective.ipynb
+notebooks/6.2.1-multi-fidelity-continuous.ipynb
+notebooks/6.2.2-multi-fidelity-discrete.ipynb
+notebooks/escience/2.7.1-multi_task.ipynb
+notebooks/6.3-batch-optimization.ipynb
+notebooks/escience/2.8.2-ax_service_existing_data_saasbo_multi_objective.ipynb
+notebooks/escience/2.11-predefined-candidates.ipynb
+notebooks/7.3-benchmark-dataset-generation.ipynb
 ```
 
 ```{note}
@@ -22,16 +31,6 @@ the demo (i.e., dropping "Blinkt!" in favor of built-in RGB LED on Maker Pi Pico
 and dropping a web server interface in favor of MQTT).
 Since they are instructive and show parts of the behind-the-scenes development process, they are kept here for reference and provenance.
 ```
-
-<!-- notebooks/escience/1.0-traditional-doe-vs-bayesian.ipynb
-notebooks/6.1-multi-objective.ipynb
-notebooks/6.2.1-multi-fidelity-continuous.ipynb
-notebooks/6.2.2-multi-fidelity-discrete.ipynb
-notebooks/escience/2.7.1-multi_task.ipynb
-notebooks/6.3-batch-optimization.ipynb
-notebooks/escience/2.8.2-ax_service_existing_data_saasbo_multi_objective.ipynb
-notebooks/escience/2.11-predefined-candidates.ipynb
-notebooks/7.3-benchmark-dataset-generation.ipynb -->
 
 <details close>
 <summary>1. <s>Blinkt! Getting Started</s> (deprecated)</summary>
