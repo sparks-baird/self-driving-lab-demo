@@ -17,7 +17,7 @@
 
 <p align="center"> <a href="https://self-driving-lab-demo.readthedocs.io/en/latest/">Documentation</a> </p>
 
-## Overview
+## Demos
 
 This repository covers three teaching and prototyping demos for self-driving laboratories in the fields of optics (light-mixing), chemistry (liquid-mixing), and solid-state materials science (solid-mixing).
 
