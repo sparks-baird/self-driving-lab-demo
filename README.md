@@ -19,35 +19,20 @@
 
 This repository covers three teaching and prototyping demos for self-driving laboratories in the fields of optics (light-mixing), chemistry (liquid-mixing), and solid-state materials science (solid-mixing).
 
-### Light-mixing
+### CLSLab:Light
 
-- [White paper](https://doi.org/10.1016/j.matt.2022.11.007) [[postprint](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/self_driving_optics_demo-rev1.pdf)]
-- [Build instructions manuscript](https://doi.org/10.1016/j.xpro.2023.102329)
-- [YouTube build instructions](https://youtu.be/GVdfJCsQ8vk)
+| [White paper](https://doi.org/10.1016/j.matt.2022.11.007) [[postprint](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/self_driving_optics_demo-rev1.pdf)] | [Build instructions manuscript](https://doi.org/10.1016/j.xpro.2023.102329) | [YouTube build instructions](https://youtu.be/GVdfJCsQ8vk) | [Purchase](https://store.groupgets.com/products/closed-loop-spectroscopy-lab-light-mixing-demo-kit)* |
+| --- | --- | --- | --- |
 
 Self-driving labs are the future; however, the capital and expertise required can be daunting. We introduce the idea of an experimental optimization task for less than $100, a square foot of desk space, and an hour of total setup time from the shopping cart to the first "autonomous drive." For our first demo, we use optics rather than chemistry; after all, light is easier to move than matter. While not strictly materials-based, importantly, several core principles of a self-driving materials discovery lab are retained in this cross-domain example: sending commands to hardware to adjust physical parameters, receiving measured objective properties, decision-making via active learning, and utilizing cloud-based simulations. The demo is accessible, extensible, modular, and repeatable, making it an ideal candidate for both low-cost experimental adaptive design prototyping and learning the principles of self-driving laboratories in a low-risk setting.
-<img
+<!---- <img
 src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/abstract-white-background.png"
-width=750>
+width=750> --->
+| Summary | Unassembled | Assembled |
+| --- | --- | --- |
+| ![](https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/abstract-white-background.png) | ![](https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/materials-annotated.png) | ![](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/groupgets/iloveimg-resized-product-images/orthographic-perspective-background-removed-adobe.png)
 
-### Liquid-mixing
-
-We extend the light-mixing demo to a color-matching materials optimization problem using dilute colored dyes. This optimization task costs less than 300 USD, requires less than three square feet of desk space, and less than three hours of total setup time from the shopping cart to the first “autonomous drive.” The demo is modular and extensible; additional peristaltic pump channels can be added, the dye reservoirs can be increased, and chemically sensitive parts can be replaced with chemically resistant ones.
-
-<img
-src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/cls-labs-liquid-summary.png"
-width=650>
-
-### Solid-mixing
-
-There are few to no examples of a low-cost demo platform involving the handling of solid-state materials (i.e., powders, pellets). For this demo, we propose using red, yellow, and blue powdered wax as a replacement for the liquid colored dyes. The demo is more expensive due to the need for robotics. The demo involves using tealight candle holders, transferring them to a rotating stage via a robotic arm, dispensing a combination of powders, melting the wax via an incandescent light bulb, measuring a discrete color spectrum, and moving the completed sample to a separate sample storage area.
-
-<img
-src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/cls-lab-solid-summary.png"
-width=650>
-
-## Community Usage
-(listed with permission)
+#### Users
 - [Ian Foster](https://www.linkedin.com/in/ianfoster)
 - [Tonio Buonassisi](https://www.linkedin.com/in/tonio-buonassisi-7854543)
 - [Ben Blaiszik](https://www.linkedin.com/in/benblaiszik)
@@ -56,14 +41,31 @@ width=650>
 
 University instructors utilizing CLSLab-Light during Spring 2023: 4 (~40 kits in total)
 
-[GroupGets round 1 campaign](https://groupgets.com/campaigns/1112): funded and fulfilled (19 kits)
+#### At-cost Commercialization
+- [GroupGets round 1](https://groupgets.com/campaigns/1112): funded and fulfilled (19 kits)
+- [GroupGets round 2](https://groupgets.com/campaigns/1129): funded and fulfilled (20 kits)
 
-[GroupGets round 2 campaign](https://groupgets.com/campaigns/1129): running (current 20 kits)
+<sup>*CLSLab:Light is <a href="https://store.groupgets.com/products/closed-loop-spectroscopy-lab-light-mixing-demo-kit">stocked in the GroupGets Store</a>. It has a higher GroupGets fee (only GroupGets sees the extra profit). If you don't want to wait for new rounds and you'd rather order a pre-built kit, this is the best option right now. </sup>
 
-It is now [stocked in the GroupGets
-Store](https://store.groupgets.com/products/closed-loop-spectroscopy-lab-light-mixing-demo-kit),
-albeit with a higher GroupGets fee (only GroupGets sees this extra profit). If you don't want to wait for new rounds, and you'd
-rather order a pre-built kit, this is the best option right now.
+### CLSLab:Liquid
+
+We extend the light-mixing demo to a color-matching materials optimization problem using dilute colored dyes. This optimization task costs less than 300 USD, requires less than three square feet of desk space, and less than three hours of total setup time from the shopping cart to the first “autonomous drive.” The demo is modular and extensible; additional peristaltic pump channels can be added, the dye reservoirs can be increased, and chemically sensitive parts can be replaced with chemically resistant ones.
+
+<!--- <img
+src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/cls-labs-liquid-summary.png"
+width=650> --->
+
+| Summary | Schematic | Assembled |
+| --- | --- | --- |
+![](https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/cls-labs-liquid-summary.png) | ![](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-liquid-schematic.png) | ![](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-liquid/clslab-liquid-annotated.png)
+
+### CLSLab:Solid
+
+There are few to no examples of a low-cost demo platform involving the handling of solid-state materials (i.e., powders, pellets). For this demo, we propose using red, yellow, and blue powdered wax as a replacement for the liquid colored dyes. The demo is more expensive due to the need for robotics. The demo involves using tealight candle holders, transferring them to a rotating stage via a robotic arm, dispensing a combination of powders, melting the wax via an incandescent light bulb, measuring a discrete color spectrum, and moving the completed sample to a separate sample storage area.
+
+<img
+src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/cls-lab-solid-summary.png"
+width=650>
 
 <!------
 
