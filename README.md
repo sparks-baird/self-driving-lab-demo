@@ -15,6 +15,8 @@
 
 > Software and instructions for setting up and running an autonomous (self-driving) laboratory optics demo using dimmable RGB LEDs, an 8-channel spectrophotometer, a microcontroller, and an adaptive design algorithm, as well as extensions to liquid- and solid-based color matching demos.
 
+<p align="center"> <a href="https://self-driving-lab-demo.readthedocs.io/en/latest/">Documentation</a> </p>
+
 ## Overview
 
 This repository covers three teaching and prototyping demos for self-driving laboratories in the fields of optics (light-mixing), chemistry (liquid-mixing), and solid-state materials science (solid-mixing).
