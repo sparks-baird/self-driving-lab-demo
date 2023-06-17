@@ -256,6 +256,8 @@ html_static_path = ["_static"]
 # Output file base name for HTML help builder.
 htmlhelp_basename = "self-driving-lab-demo-doc"
 
+# https://nbsphinx.readthedocs.io/en/0.8.2/prolog-and-epilog.html
+# nbsphinx_prolog = # (add Edit on GitHub button)
 
 # -- Options for LaTeX output ------------------------------------------------
 
