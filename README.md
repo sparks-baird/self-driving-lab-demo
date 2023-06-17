@@ -21,6 +21,10 @@ This repository covers three teaching and prototyping demos for self-driving lab
 
 ### Light-mixing
 
+- [White paper](https://doi.org/10.1016/j.matt.2022.11.007) [[postprint](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/self_driving_optics_demo-rev1.pdf)]
+- [Build instructions manuscript](https://doi.org/10.1016/j.xpro.2023.102329)
+- [YouTube build instructions](https://youtu.be/GVdfJCsQ8vk)
+
 Self-driving labs are the future; however, the capital and expertise required can be daunting. We introduce the idea of an experimental optimization task for less than $100, a square foot of desk space, and an hour of total setup time from the shopping cart to the first "autonomous drive." For our first demo, we use optics rather than chemistry; after all, light is easier to move than matter. While not strictly materials-based, importantly, several core principles of a self-driving materials discovery lab are retained in this cross-domain example: sending commands to hardware to adjust physical parameters, receiving measured objective properties, decision-making via active learning, and utilizing cloud-based simulations. The demo is accessible, extensible, modular, and repeatable, making it an ideal candidate for both low-cost experimental adaptive design prototyping and learning the principles of self-driving laboratories in a low-risk setting.
 <img
 src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/abstract-white-background.png"
@@ -61,6 +65,8 @@ Store](https://store.groupgets.com/products/closed-loop-spectroscopy-lab-light-m
 albeit with a higher GroupGets fee (only GroupGets sees this extra profit). If you don't want to wait for new rounds, and you'd
 rather order a pre-built kit, this is the best option right now.
 
+<!------
+
 ## Hardware
 
 <img src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/required-wishlist-pico.png" width=600>
@@ -80,6 +86,8 @@ Since the Pico WH is difficult to source (2022-09-15), you will likely need to p
 <img src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/sdl-demo-annotated.png" width=350>
 <sup>assembled SDL-Demo (annotated)</sup>
 
+---->
+
 ## See Also
 
 - [Journal of Brief Ideas submission](https://beta.briefideas.org/ideas/12372397dbaf594ca372f17ebbb8c2a3)
@@ -87,6 +95,7 @@ Since the Pico WH is difficult to source (2022-09-15), you will likely need to p
 - [Adafruit Forum: Developing a closed-loop feedback system via DotStar
 LEDs](https://forums.adafruit.com/viewtopic.php?f=8&t=192420&p=930915)
 
+<!-----
 Most of the build instructions will go into the Hackaday project page, probably with periodic updates to GitHub. GitHub will host the software that I develop.
 
 The BOM uses Raspberry Pi (RPi) in favor of Arduino to support running complex adaptive
@@ -136,7 +145,7 @@ https://youtu.be/GVdfJCsQ8vk
 
 #### Running the optimizations
 
-1. If you choose the `public_mqtt_sdl_demo`, you can control your SDL-Demo remotely from anywhere. The Jupyter notebook tutorial for this is found at https://github.com/sparks-baird/self-driving-lab-demo/blob/main/notebooks/4.2-paho-mqtt-colab-sdl-demo-test.ipynb.
+1. If you choose the `public_mqtt_sdl_demo`, you can control your SDL-Demo remotely from anywhere. The Jupyter notebook tutorial for this is found at https://github.com/sparks-baird/self-driving-lab-demo/blob/main/notebooks/4.2-paho-mqtt-colab-sdl-demo-test.ipynb. --->
 
 ## Advanced Installation
 
@@ -200,8 +209,8 @@ Then take a look into the `scripts` and `notebooks` folders.
    conda env update -f environment.lock.yml --prune
    ```
 
+<!---
 ## Other Builds
-
 
 - [Adafruit required bill of materials (RPi Zero 2 W build)](http://www.adafruit.com/wishlists/551817)
 
@@ -238,7 +247,7 @@ See https://github.com/sparks-baird/self-driving-lab-demo/discussions/89 for dis
 - tube connectors (which kind?)
 - double Wye connectors
 - silicone-to-glass glue or epoxy (to permanently fix a silicone lid to a cuvette)
--
+
 
 The plant and party IV-style drip bags can be replaced with medical-grade chemically resistant versions that are made up of e.g. polyethylene.
 
@@ -247,7 +256,8 @@ The plant and party IV-style drip bags can be replaced with medical-grade chemic
 - 2.4 GHz WiFi (needs to be simple SSID+PASSWORD login, no WPA-enterprise such as Eduroam without finagling https://github.com/sparks-baird/self-driving-lab-demo/discussions/83 https://github.com/sparks-baird/self-driving-lab-demo/discussions/88 https://github.com/sparks-baird/self-driving-lab-demo/issues/76)
 - Wire cutters (optional)
 - Scissors
-- Hole punch (might need to be leather hole punch + hammer instead of handheld hole punch)
+- Hole punch (might need to be leather hole punch + hammer instead of handheld hole punch) --->
+
 
 ## Project Organization
 
