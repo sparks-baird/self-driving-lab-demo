@@ -9,7 +9,7 @@
 [![Twitter](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&label=Twitter)](https://twitter.com/self-driving-lab-demo)
 -->
 
-<p align="center"> <b>If you're reading this on GitHub, navigate to <a href="https://self-driving-lab-demo.readthedocs.io/en/latest/">the documentation</a> for tutorials, APIs, and a better viewing experience</b> </p>
+<p align="center"> <b>If you're reading this on GitHub, navigate to <a href="https://self-driving-lab-demo.readthedocs.io/en/latest/">the documentation</a> for tutorials, APIs, and more </b> </p>
 
 # self-driving-lab-demo [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sparks-baird/self-driving-lab-demo/blob/main/notebooks/4.2-paho-mqtt-colab-sdl-demo-test.ipynb)
 
