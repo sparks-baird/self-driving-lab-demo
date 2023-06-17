@@ -38,7 +38,7 @@ width=750> --->
 
 | Summary | Unassembled | Assembled |
 | --- | --- | --- |
-| ![](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-light/abstract-white-background.png?raw=true) | ![](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-light/materials-annotated.png?raw=true) | ![](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-light/orthographic-perspective-background-removed-adobe.png?raw=true)
+| <a href="https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-light/abstract-white-background.png?raw=true"><img src="https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-light/abstract-white-background.png?raw=true"></a> | ![](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-light/materials-annotated.png?raw=true) | ![](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-light/orthographic-perspective-background-removed-adobe.png?raw=true)
 
 #### Users
 - [Ian Foster](https://www.linkedin.com/in/ianfoster)
