@@ -24,10 +24,18 @@ This repository covers three teaching and prototyping demos for self-driving lab
 | [White paper](https://doi.org/10.1016/j.matt.2022.11.007) [[postprint](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/self_driving_optics_demo-rev1.pdf)] | [Build instructions manuscript](https://doi.org/10.1016/j.xpro.2023.102329) | [YouTube build instructions](https://youtu.be/GVdfJCsQ8vk) | [Purchase](https://store.groupgets.com/products/closed-loop-spectroscopy-lab-light-mixing-demo-kit)* |
 | --- | --- | --- | --- |
 
-Self-driving labs are the future; however, the capital and expertise required can be daunting. We introduce the idea of an experimental optimization task for less than $100, a square foot of desk space, and an hour of total setup time from the shopping cart to the first "autonomous drive." For our first demo, we use optics rather than chemistry; after all, light is easier to move than matter. While not strictly materials-based, importantly, several core principles of a self-driving materials discovery lab are retained in this cross-domain example: sending commands to hardware to adjust physical parameters, receiving measured objective properties, decision-making via active learning, and utilizing cloud-based simulations. The demo is accessible, extensible, modular, and repeatable, making it an ideal candidate for both low-cost experimental adaptive design prototyping and learning the principles of self-driving laboratories in a low-risk setting.
+Self-driving labs are the future; however, the capital and expertise required can be daunting. We introduce the idea of an experimental optimization task for less than $100, a square foot of desk space, and an hour of total setup time from the shopping cart to the first "autonomous drive." For our first demo, we use optics rather than chemistry; after all, light is easier to move than matter. While not strictly materials-based, importantly, several core principles of a self-driving materials discovery lab are retained in this cross-domain example:
+- sending commands to hardware to adjust physical parameters
+- receiving measured objective properties
+- decision-making via active learning
+- utilizing cloud-based simulations
+
+The demo is accessible, extensible, modular, and repeatable, making it an ideal candidate for both low-cost experimental adaptive design prototyping and learning the principles of self-driving laboratories in a low-risk setting.
+
 <!---- <img
 src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/abstract-white-background.png"
 width=750> --->
+
 | Summary | Unassembled | Assembled |
 | --- | --- | --- |
 | ![](https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/abstract-white-background.png) | ![](https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/materials-annotated.png) | ![](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/groupgets/iloveimg-resized-product-images/orthographic-perspective-background-removed-adobe.png)
