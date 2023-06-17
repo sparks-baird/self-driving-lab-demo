@@ -9,13 +9,11 @@
 [![Twitter](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&label=Twitter)](https://twitter.com/self-driving-lab-demo)
 -->
 
-**Check out [the notebooks](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/notebooks/README.md) for some tutorials and demonstrations! See also [the manuscript published in Matter](https://doi.org/10.1016/j.matt.2022.11.007) [[postprint](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/self_driving_optics_demo-rev1.pdf)], [the build instructions](https://doi.org/10.1016/j.xpro.2023.102329), and [the discussions](https://github.com/sparks-baird/self-driving-lab-demo/discussions).**
+<p align="center"> <b>If you're reading this on GitHub, navigate to <a href="https://self-driving-lab-demo.readthedocs.io/en/latest/">the documentation</a> for tutorials, APIs, and a better viewing experience</b> </p>
 
 # self-driving-lab-demo [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sparks-baird/self-driving-lab-demo/blob/main/notebooks/4.2-paho-mqtt-colab-sdl-demo-test.ipynb)
 
 > Software and instructions for setting up and running an autonomous (self-driving) laboratory optics demo using dimmable RGB LEDs, an 8-channel spectrophotometer, a microcontroller, and an adaptive design algorithm, as well as extensions to liquid- and solid-based color matching demos.
-
-<p align="center"> <a href="https://self-driving-lab-demo.readthedocs.io/en/latest/">Documentation</a> </p>
 
 ## Demos
 
@@ -40,7 +38,7 @@ width=750> --->
 
 | Summary | Unassembled | Assembled |
 | --- | --- | --- |
-| ![](https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/abstract-white-background.png) | ![](https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/materials-annotated.png) | ![](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/groupgets/iloveimg-resized-product-images/orthographic-perspective-background-removed-adobe.png)
+| ![](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-light/abstract-white-background.png) | ![](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-light/materials-annotated.png) | ![](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-light/orthographic-perspective-background-removed-adobe.png)
 
 #### Users
 - [Ian Foster](https://www.linkedin.com/in/ianfoster)
@@ -67,14 +65,14 @@ width=650> --->
 
 | Summary | Schematic | Assembled |
 | --- | --- | --- |
-![](https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/cls-labs-liquid-summary.png) | ![](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-liquid-schematic.png) | ![](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-liquid/clslab-liquid-annotated.png)
+![](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-liquid/cls-lab-liquid-summary.png) | ![](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-liquid/clslab-liquid-schematic.png) | ![](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-liquid/clslab-liquid-annotated.png)
 
 ### CLSLab:Solid
 
 There are few to no examples of a low-cost demo platform involving the handling of solid-state materials (i.e., powders, pellets). For this demo, we propose using red, yellow, and blue powdered wax as a replacement for the liquid colored dyes. The demo is more expensive due to the need for robotics. The demo involves using tealight candle holders, transferring them to a rotating stage via a robotic arm, dispensing a combination of powders, melting the wax via an incandescent light bulb, measuring a discrete color spectrum, and moving the completed sample to a separate sample storage area.
 
 <img
-src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/cls-lab-solid-summary.png"
+src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/clslab-solid/cls-lab-solid-summary.png"
 width=650>
 
 <!------
@@ -85,7 +83,7 @@ width=650>
 
 Since the Pico WH is difficult to source (2022-09-15), you will likely need to purchase a [Pico W with presoldered headers](https://www.pishop.us/product/raspberry-pi-pico-w-with-pre-soldered-headers/) or purchase a Pico W (see [Raspberry Pi Official Resellers](https://www.raspberrypi.com/products/raspberry-pi-pico/?variant=raspberry-pi-pico-w)) and solder [male header pins](https://www.adafruit.com/product/5584) onto it.
 
-<img src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/materials-annotated.png" width=350>
+<img src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/clslab-solid/materials-annotated.png" width=350>
 <sup>Hardware parts</sup>
 
 ## Assembled
