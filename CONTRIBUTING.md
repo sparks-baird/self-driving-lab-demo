@@ -81,9 +81,7 @@ python3 -m http.server --directory 'docs/_build/html'
 
 ## Code Contributions
 
-`self-driving-lab-demo` has five core components: LED commands, reading spectrometer
-values, adaptive design, cloud-based simulations, and benchmarks. A top-level class is
-(will be) exposed to interact with each of the core components.
+The client code for the `self-driving-lab-demo` Python package (e.g., used in a Colab notebook) is contained in https://github.com/sparks-baird/self-driving-lab-demo/tree/main/src/self_driving_lab_demo. The host code (i.e., running on the Pico W microcontroller) is contained in https://github.com/sparks-baird/self-driving-lab-demo/tree/main/src/public_mqtt_sdl_demo. A great place to contribute is in [the notebook tutorials](https://github.com/sparks-baird/self-driving-lab-demo/tree/main/notebooks). Modifications to existing notebooks and the addition of new notebooks are welcome.
 
 ### Submit an issue
 
