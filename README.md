@@ -38,7 +38,7 @@ width=750> --->
 
 | Summary | Unassembled | Assembled |
 | --- | --- | --- |
-| <a href="https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-light/abstract-white-background.png?raw=true"><img src="https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-light/abstract-white-background.png?raw=true"></a> | ![](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-light/materials-annotated.png?raw=true) | ![](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-light/orthographic-perspective-background-removed-adobe.png?raw=true)
+| [![](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-light/abstract-white-background.png?raw=true)](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-light/abstract-white-background.png?raw=true) | [![](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-light/materials-annotated.png?raw=true)](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-light/materials-annotated.png?raw=true) | [![](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-light/orthographic-perspective-background-removed-adobe.png?raw=true)](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-light/orthographic-perspective-background-removed-adobe.png?raw=true)
 
 #### Users
 - [Ian Foster](https://www.linkedin.com/in/ianfoster)
@@ -65,17 +65,21 @@ width=650> --->
 
 | Summary | Schematic | Assembled |
 | --- | --- | --- |
-![](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-liquid/cls-lab-liquid-summary.png?raw=true) | ![](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-liquid/clslab-liquid-schematic.png?raw=true) | ![](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-liquid/clslab-liquid-annotated.png?raw=true)
+[![](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-liquid/cls-lab-liquid-summary.png?raw=true)](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-liquid/cls-lab-liquid-summary.png?raw=true) | [![](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-liquid/clslab-liquid-schematic.png?raw=true)](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-liquid/clslab-liquid-schematic.png?raw=true) | [![](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-liquid/clslab-liquid-annotated.png?raw=true)](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/figures/clslab-liquid/clslab-liquid-annotated.png?raw=true)
 
 ### CLSLab:Solid
 
 There are few to no examples of a low-cost demo platform involving the handling of solid-state materials (i.e., powders, pellets). For this demo, we propose using red, yellow, and blue powdered wax as a replacement for the liquid colored dyes. The demo is more expensive due to the need for robotics. The demo involves using tealight candle holders, transferring them to a rotating stage via a robotic arm, dispensing a combination of powders, melting the wax via an incandescent light bulb, measuring a discrete color spectrum, and moving the completed sample to a separate sample storage area.
 
+<!--- <a href="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/clslab-solid/cls-lab-solid-summary.png?raw=true"><img src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/clslab-solid/cls-lab-solid-summary.png?raw=true"></a> --->
+
+[![clslab:solid](https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/clslab-solid/cls-lab-solid-summary.png?raw=true)](https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/clslab-solid/cls-lab-solid-summary.png?raw=true)
+
+<!------
+
 <img
 src="https://github.com/sparks-baird/self-driving-lab-demo/raw/main/reports/figures/clslab-solid/cls-lab-solid-summary.png?raw=true"
 width=650>
-
-<!------
 
 ## Hardware
 
