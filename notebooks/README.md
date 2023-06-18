@@ -24,8 +24,9 @@ notebooks/escience/2.11-predefined-candidates.ipynb
 notebooks/7.3-benchmark-dataset-generation.ipynb
 ```
 
+
 ```{note}
-The 1.\*, 2.\*, and 3.\* tutorials are deprecated due to changes in hardware and
+Tutorials from sections 1, 2, and 3 are deprecated due to changes in hardware and
 software design of
 the demo (i.e., dropping "Blinkt!" in favor of built-in RGB LED on Maker Pi Pico base,
 and dropping a web server interface in favor of MQTT).
@@ -75,7 +76,7 @@ Since they are instructive and show parts of the behind-the-scenes development p
 
 <br>
 
-## 4. Controlling the Pico W Remotely (IoT-style)
+## IoT-style control of Pico W
 
 - [`4.0-paho-mqtt-colab-sdl-demo.ipynb`](https://github.com/sparks-baird/self-driving-lab-demo/tree/main/notebooks/4.0-paho-mqtt-colab-sdl-demo.ipynb) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sparks-baird/self-driving-lab-demo/blob/main/notebooks/4.0-paho-mqtt-colab-sdl-demo.ipynb)
   > 📡 Control the Pico W remotely using [MQTT (The Standard for IoT Messaging)](https://mqtt.org/) 📡
@@ -84,12 +85,12 @@ Since they are instructive and show parts of the behind-the-scenes development p
 - [`4.2-paho-mqtt-colab-sdl-demo-test.ipynb`](https://github.com/sparks-baird/self-driving-lab-demo/tree/main/notebooks/4.2-paho-mqtt-colab-sdl-demo-test.ipynb) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sparks-baird/self-driving-lab-demo/blob/main/notebooks/4.2-paho-mqtt-colab-sdl-demo-test.ipynb)
   > 🌎 Remotely access a free, public test demo from anywhere in the world 🌍
 
-## 5. Nonwireless Control of Pico
+## Wired control of Pico W
 
 - [`5.0-nonwireless-search.ipynb`](https://github.com/sparks-baird/self-driving-lab-demo/tree/main/notebooks/5.0-nonwireless-search.ipynb)
   > No PicoW? No problem! 🤖 Run the same algorithm comparison experiments using a nonwireless Pico! 🤖
 
-## 6. Advanced optimization
+## Advanced optimization
 
 - [`6.0-olympus-benchmarking-basic.ipynb`](https://github.com/sparks-baird/self-driving-lab-demo/tree/main/notebooks/6.0-olympus-benchmarking-basic.ipynb)
   > 🏋️ Let's run some benchmarking experiments using the Olympus simulator! 🏋️
@@ -110,7 +111,7 @@ Since they are instructive and show parts of the behind-the-scenes development p
   > 📦 Optimization using batches of samples. Don't forget to condition your batches!
   > (handled automatically via Ax platform 😁) 📦
 
-## 7. Data ecosystem
+## Data ecosystem
 
 - [`7.0-data-ecosystem.ipynb`](https://github.com/sparks-baird/self-driving-lab-demo/tree/main/notebooks/7.0-data-ecosystem.ipynb) (WIP)
   > 📊 Overview of notebooks in this section 📊
