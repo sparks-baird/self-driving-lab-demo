@@ -102,7 +102,7 @@ Since the Pico WH is difficult to source (2022-09-15), you will likely need to p
 
 ---->
 
-## See Also
+### See Also
 
 - [Journal of Brief Ideas submission](https://beta.briefideas.org/ideas/12372397dbaf594ca372f17ebbb8c2a3)
 - [Hackaday project page](https://hackaday.io/project/186289-self-driving-optics-demo)
@@ -160,6 +160,95 @@ https://youtu.be/GVdfJCsQ8vk
 #### Running the optimizations
 
 1. If you choose the `public_mqtt_sdl_demo`, you can control your SDL-Demo remotely from anywhere. The Jupyter notebook tutorial for this is found at https://github.com/sparks-baird/self-driving-lab-demo/blob/main/notebooks/4.2-paho-mqtt-colab-sdl-demo-test.ipynb. --->
+
+## Basic Usage
+
+I recommend going through [the introductory Colab notebook](https://colab.research.google.com/github/sparks-baird/self-driving-lab-demo/blob/main/notebooks/4.2-paho-mqtt-colab-sdl-demo-test.ipynb), but here is a shorter version of how an optimization comparison can be run between grid search, random search, and Bayesian optimization using a free public demo.
+
+### Basic Installation
+```python
+pip install self-driving-lab-demo
+```
+
+### Client Setup for Public Test Demo
+```python
+from self_driving_lab_demo import (
+    SelfDrivingLabDemoLight,
+    # SelfDrivingLabDemoLiquid,
+    mqtt_observe_sensor_data,
+    get_paho_client,
+)
+
+PICO_ID = "test"
+sensor_topic = f"sdl-demo/picow/{PICO_ID}/as7341/"  # to match with Pico W code
+
+# instantiate client once and reuse to avoid opening too many connections
+client = get_paho_client(sensor_topic)
+
+sdl = SelfDrivingLabDemoLight(
+    autoload=True,  # perform target data experiment automatically, default is False
+    observe_sensor_data_fn=mqtt_observe_sensor_data,  # default
+    observe_sensor_data_kwargs=dict(pico_id=PICO_ID, client=client),
+    simulation=False,  # default
+)
+```
+
+### Optimization Comparison
+```python
+from self_driving_lab_demo.utils.search import (
+    grid_search,
+    random_search,
+    ax_bayesian_optimization,
+)
+
+num_iter = 27
+
+grid, grid_data = grid_search(sdl, num_iter)
+random_inputs, random_data = random_search(sdl, num_iter)
+best_parameters, values, experiment, model = ax_bayesian_optimization(sdl, num_iter)
+```
+
+### Visualization
+```python
+import plotly.express as px
+import pandas as pd
+
+# grid
+grid_input_df = pd.DataFrame(grid)
+grid_output_df = pd.DataFrame(grid_data)[["frechet"]]
+grid_df = pd.concat([grid_input_df, grid_output_df], axis=1)
+grid_df["best_so_far"] = grid_df["frechet"].cummin()
+
+# random
+random_input_df = pd.DataFrame(random_inputs, columns=["R", "G", "B"])
+random_output_df = pd.DataFrame(random_data)[["frechet"]]
+random_df = pd.concat([random_input_df, random_output_df], axis=1)
+random_df["best_so_far"] = random_df["frechet"].cummin()
+
+# bayes
+trials = list(experiment.trials.values())
+bayes_input_df = pd.DataFrame([t.arm.parameters for t in trials])
+bayes_output_df = pd.Series(
+    [t.objective_mean for t in trials], name="frechet"
+).to_frame()
+bayes_df = pd.concat([bayes_input_df, bayes_output_df], axis=1)
+bayes_df["best_so_far"] = bayes_df["frechet"].cummin()
+
+# concatenation
+grid_df["type"] = "grid"
+random_df["type"] = "random"
+bayes_df["type"] = "bayesian"
+df = pd.concat([grid_df, random_df, bayes_df], axis=0)
+
+# plotting
+px.line(df, x=df.index, y="best_so_far", color="type").update_layout(
+    xaxis_title="iteration",
+    yaxis_title="Best error so far",
+)
+```
+
+### Example Output
+![](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/notebooks/mqtt-optimization-comparison.png?raw=1)
 
 ## Advanced Installation
 
