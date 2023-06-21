@@ -11,8 +11,6 @@ then using Internet-of-things-style communication to remotely control the PicoW
 the Pico using a nonwireless option (i.e. compatible when WiFi is not available /
 difficult to connect to or when nonwireless Pico is being used). -->
 
-## Hand-selected Tutorials
-
 ```{nbgallery}
 notebooks/4.2-paho-mqtt-colab-sdl-demo-test
 notebooks/escience/1.0-traditional-doe-vs-bayesian.ipynb
