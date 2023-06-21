@@ -180,7 +180,7 @@ from self_driving_lab_demo import (
 )
 
 PICO_ID = "test"
-sensor_topic = f"sdl-demo/picow/{PICO_ID}/as7341/" # to match with Pico W code
+sensor_topic = f"sdl-demo/picow/{PICO_ID}/as7341/"  # to match with Pico W code
 
 # instantiate client once and reuse to avoid opening too many connections
 client = get_paho_client(sensor_topic)
@@ -189,7 +189,7 @@ sdl = SelfDrivingLabDemoLight(
     autoload=True,  # perform target data experiment automatically, default is False
     observe_sensor_data_fn=mqtt_observe_sensor_data,  # default
     observe_sensor_data_kwargs=dict(pico_id=PICO_ID, client=client),
-    simulation=False, # default
+    simulation=False,  # default
 )
 ```
 
@@ -228,7 +228,9 @@ random_df["best_so_far"] = random_df["frechet"].cummin()
 # bayes
 trials = list(experiment.trials.values())
 bayes_input_df = pd.DataFrame([t.arm.parameters for t in trials])
-bayes_output_df = pd.Series([t.objective_mean for t in trials], name="frechet").to_frame()
+bayes_output_df = pd.Series(
+    [t.objective_mean for t in trials], name="frechet"
+).to_frame()
 bayes_df = pd.concat([bayes_input_df, bayes_output_df], axis=1)
 bayes_df["best_so_far"] = bayes_df["frechet"].cummin()
 
