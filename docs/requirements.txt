@@ -1,12 +1,31 @@
-click
+ax-platform
 # Requirements file for ReadTheDocs, check .readthedocs.yml.
 # To build the module reference correctly, make sure every external package
 # under `install_requires` in `setup.cfg` is also listed here!
+click
+cython >= 0.29.24
+gpytorch
+importlib-metadata; python_version<"3.8"
 ipykernel
+ipywidgets
+kaleido
 myst-parser[linkify]
+nbformat
 nbsphinx
 nbsphinx-link
+numpy
+paho-mqtt
+pandas
+plotly
+pymongo
+pyserial
+requests
+scikit-learn
+scikit-optimize
+scipy
+similaritymeasures
 sphinx>=3.2.1
 sphinx-gallery
 sphinx_copybutton
 sphinx_rtd_theme
+tqdm
