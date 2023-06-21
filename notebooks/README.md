@@ -17,13 +17,12 @@ notebooks/escience/1.0-traditional-doe-vs-bayesian.ipynb
 notebooks/6.1-multi-objective.ipynb
 notebooks/6.2.1-multi-fidelity-continuous.ipynb
 notebooks/6.2.2-multi-fidelity-discrete.ipynb
-notebooks/escience/2.7.1-multi_task.ipynb
+notebooks/6.2.3-multi-task.ipynb
 notebooks/6.3-batch-optimization.ipynb
 notebooks/escience/2.8.2-ax_service_existing_data_saasbo_multi_objective.ipynb
 notebooks/escience/2.11-predefined-candidates.ipynb
 notebooks/7.3-benchmark-dataset-generation.ipynb
 ```
-
 
 ```{note}
 Tutorials from sections 1, 2, and 3 are deprecated due to changes in hardware and
