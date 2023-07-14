@@ -3,7 +3,7 @@
 This is a collection of tutorial notebooks and demonstrations for the
 self-driving-lab-demo! First, you should get started with the main, public-facing tutorial. Just click
 the following "Open in Colab" badge: [![Open In
-Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sparks-baird/self-driving-lab-demo/blob/main/notebooks/4.1-paho-mqtt-colab-sdl-demo-search.ipynb)
+Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sparks-baird/self-driving-lab-demo/blob/main/notebooks/4.2-paho-mqtt-colab-sdl-demo-test.ipynb)
 
 <!-- Next comes the use of the PicoW-SDL-Demo via hosting a local web server (`Pico W / MicroPython implementation`) and
 then using Internet-of-things-style communication to remotely control the PicoW
