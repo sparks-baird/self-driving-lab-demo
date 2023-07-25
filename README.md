@@ -57,6 +57,9 @@ University instructors utilizing CLSLab-Light during Spring 2023: 4 (~40 kits in
 
 ### CLSLab:Liquid
 
+| [Bill of materials](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/clslab-liquid-bom.xlsx) |
+| --- |
+
 We extend the light-mixing demo to a color-matching materials optimization problem using dilute colored dyes. This optimization task costs less than 300 USD, requires less than three square feet of desk space, and less than three hours of total setup time from the shopping cart to the first “autonomous drive.” The demo is modular and extensible; additional peristaltic pump channels can be added, the dye reservoirs can be increased, and chemically sensitive parts can be replaced with chemically resistant ones.
 
 <!--- <img
