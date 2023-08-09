@@ -2,7 +2,8 @@ name: self-driving-lab-demo
 channels:
   - defaults
   - conda-forge
-  - pytorch
+  # - pytorch
+  # - nvidia
   # - fastai
 dependencies:
   - python>=3.6
@@ -29,6 +30,7 @@ dependencies:
   # - catboost
   # - lightgbm
   # - pytorch
+  # - pytorch-cuda=11.8
   # - fastai  # activate fastai channel above!
   # - tensorflow
   # - keras
