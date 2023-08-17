@@ -5,7 +5,8 @@ Software and instructions for setting up and running an autonomous (self-driving
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sparks-baird/self-driving-lab-demo/blob/main/notebooks/4.2-paho-mqtt-colab-sdl-demo-test.ipynb)
 [![DOI](https://img.shields.io/badge/Matter-10.1016%2Fj.matt.2022.11.007-blue)](https://doi.org/10.1016/j.matt.2022.11.007)
 [![DOI](https://img.shields.io/badge/Postprint-rev1-blue)](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/self_driving_optics_demo-rev1.pdf)
-[![Monthly Downloads](https://pepy.tech/badge/self-driving-lab-demo/month)](https://pepy.tech/project/self-driving-lab-demo)
+[![Downloads](https://static.pepy.tech/badge/self-driving-lab-demo/month)](https://pepy.tech/project/self-driving-lab-demo)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7855492.svg)](https://doi.org/10.5281/zenodo.7855492)
 
 <a class="github-button" href="https://github.com/sparks-baird/self-driving-lab-demo"
 data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star
