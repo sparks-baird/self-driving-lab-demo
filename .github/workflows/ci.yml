@@ -126,17 +126,27 @@ jobs:
         run: pipx run --spec tox==3.27.1 tox -e publish
       - name: Prepare device code zip file
         run: |
-          mkdir release
-          cp -r src/public_mqtt_sdl_demo/lib/ release/
-          cp src/public_mqtt_sdl_demo/main.py release/
-          cp src/public_mqtt_sdl_demo/hivemq-com-chain.der release/
-          cp src/public_mqtt_sdl_demo/sample_secrets.py release/secrets.py
-          cd release
+          mkdir light-release
+          cp -r src/public_mqtt_sdl_demo/lib/ light-release/
+          cp src/public_mqtt_sdl_demo/main.py light-release/
+          cp src/public_mqtt_sdl_demo/hivemq-com-chain.der light-release/
+          cp src/public_mqtt_sdl_demo/sample_secrets.py light-release/secrets.py
+          cd light-release
           zip -r sdl_demo.zip *
+          cd ..
+          mkdir liquid-release
+          cd liquid-release
+          cp -r src/public_mqtt_sdl_demo/lib/ liquid-release/
+          cp src/public_mqtt_sdl_demo/main_liquid.py liquid-release/main.py # rename to main.py
+          cp src/public_mqtt_sdl_demo/hivemq-com-chain.der liquid-release/
+          cp src/public_mqtt_sdl_demo/sample_secrets.py liquid-release/secrets.py
+          cd liquid-release
+          zip -r sdl_demo_liquid.zip *
 
       - name: Create Release # https://github.com/softprops/action-gh-release
         uses: softprops/action-gh-release@v1
         with:
           body: ${{steps.build_changelog.outputs.changelog}}
           files: |
-            release/sdl_demo.zip
+            light-release/sdl_demo.zip
+            liquid-release/sdl_demo_liquid.zip
