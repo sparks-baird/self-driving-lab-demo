@@ -7,7 +7,7 @@ repos:
   - id: trailing-whitespace
   - id: check-added-large-files
     args: ['--maxkb=10000']
-    exclude: ^notebooks/robots-loop.gif
+    exclude: ^(notebooks/robots-loop.gif|reports/low_cost_self_driving_labs.pdf)$
   - id: check-ast
   - id: check-json
   - id: check-merge-conflict
