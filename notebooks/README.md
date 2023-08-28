@@ -12,6 +12,7 @@ the Pico using a nonwireless option (i.e. compatible when WiFi is not available 
 difficult to connect to or when nonwireless Pico is being used). -->
 
 ```{nbgallery}
+:hidden:
 notebooks/4.2-paho-mqtt-colab-sdl-demo-test
 notebooks/escience/1.0-traditional-doe-vs-bayesian.ipynb
 notebooks/6.1-multi-objective.ipynb
