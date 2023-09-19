@@ -135,7 +135,6 @@ jobs:
           zip -r sdl_demo.zip *
           cd ..
           mkdir liquid-release
-          cd liquid-release
           cp -r src/public_mqtt_sdl_demo/lib/ liquid-release/
           cp src/public_mqtt_sdl_demo/main_liquid.py liquid-release/main.py # rename to main.py
           cp src/public_mqtt_sdl_demo/hivemq-com-chain.der liquid-release/
