@@ -1,4 +1,4 @@
-[![Project generated with PyScaffold](https://img.shields.io/badge/-PyScaffold-005CA0?logo=pyscaffold)](https://pyscaffold.org/) [![PyPI-Server](https://img.shields.io/pypi/v/self-driving-lab-demo.svg)](https://pypi.org/project/self-driving-lab-demo/) [![Downloads](https://static.pepy.tech/badge/self-driving-lab-demo/month)](https://pepy.tech/project/self-driving-lab-demo) [![Coveralls](https://img.shields.io/coveralls/github/sparks-baird/self-driving-lab-demo/main.svg)](https://coveralls.io/r/sparks-baird/self-driving-lab-demo) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7855492.svg)](https://doi.org/10.5281/zenodo.7855492)
+[![Project generated with PyScaffold](https://img.shields.io/badge/-PyScaffold-005CA0?logo=pyscaffold)](https://pyscaffold.org/) [![PyPI-Server](https://img.shields.io/pypi/v/self-driving-lab-demo.svg)](https://pypi.org/project/self-driving-lab-demo/) [![Downloads](https://static.pepy.tech/badge/self-driving-lab-demo/month)](https://pepy.tech/project/self-driving-lab-demo) [![Coveralls](https://img.shields.io/coveralls/github/sparks-baird/self-driving-lab-demo/main.svg)](https://coveralls.io/r/sparks-baird/self-driving-lab-demo) [![tests-passing](https://github.com/sparks-baird/self-driving-lab-demo/actions/workflows/ci.yml/badge.svg)](https://github.com/sparks-baird/self-driving-lab-demo/actions/workflows/ci.yml) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7855492.svg)](https://doi.org/10.5281/zenodo.7855492)
 <!-- These are examples of badges you might also want to add to your README. Update the URLs accordingly.
 [![Built Status](https://api.cirrus-ci.com/github/<USER>/self-driving-lab-demo.svg?branch=main)](https://cirrus-ci.com/github/<USER>/self-driving-lab-demo)
 [![ReadTheDocs](https://readthedocs.org/projects/self-driving-lab-demo/badge/?version=latest)](https://self-driving-lab-demo.readthedocs.io/en/stable/)
@@ -52,6 +52,7 @@ University instructors utilizing CLSLab-Light during Spring 2023: 4 (~40 kits in
 #### At-cost Commercialization
 - [GroupGets round 1](https://groupgets.com/campaigns/1112): funded and fulfilled (19 kits)
 - [GroupGets round 2](https://groupgets.com/campaigns/1129): funded and fulfilled (20 kits)
+- [GroupGets round 3](https://groupgets.com/campaigns/1256): In-progress (as of 2023-09-08)
 
 <sup>*CLSLab:Light is <a href="https://store.groupgets.com/products/closed-loop-spectroscopy-lab-light-mixing-demo-kit">stocked in the GroupGets Store</a>. It has a higher GroupGets fee (only GroupGets sees the extra profit). If you don't want to wait for new rounds and you'd rather order a pre-built kit, this is the best option right now. </sup>
 
