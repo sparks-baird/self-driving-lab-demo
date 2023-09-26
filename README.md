@@ -2,8 +2,8 @@
 [![PyPI-Server](https://img.shields.io/pypi/v/self-driving-lab-demo.svg)](https://pypi.org/project/self-driving-lab-demo/)
 [![Downloads](https://static.pepy.tech/badge/self-driving-lab-demo/month)](https://pepy.tech/project/self-driving-lab-demo)
 [![Coveralls](https://img.shields.io/coveralls/github/sparks-baird/self-driving-lab-demo/main.svg)](https://coveralls.io/r/sparks-baird/self-driving-lab-demo)
-[![tests-passing](https://github.com/sparks-baird/self-driving-lab-demo/actions/workflows/ci.yml/badge.svg)](https://github.com/sparks-baird/self-driving-lab-demo/actions/workflows/ci.yml)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7855492.svg)](https://doi.org/10.5281/zenodo.7855492)
+[![tests-passing](https://github.com/sparks-baird/self-driving-lab-demo/actions/workflows/ci.yml/badge.svg)](https://github.com/sparks-baird/self-driving-lab-demo/actions/workflows/ci.yml)
 <!-- These are examples of badges you might also want to add to your README. Update the URLs accordingly.
 [![Built Status](https://api.cirrus-ci.com/github/<USER>/self-driving-lab-demo.svg?branch=main)](https://cirrus-ci.com/github/<USER>/self-driving-lab-demo)
 [![ReadTheDocs](https://readthedocs.org/projects/self-driving-lab-demo/badge/?version=latest)](https://self-driving-lab-demo.readthedocs.io/en/stable/)
