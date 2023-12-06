@@ -13,7 +13,7 @@ difficult to connect to or when nonwireless Pico is being used). -->
 
 ```{nbgallery}
 :hidden:
-notebooks/4.2-paho-mqtt-colab-sdl-demo-test
+notebooks/4.2-paho-mqtt-colab-sdl-demo-test.ipynb
 notebooks/escience/1.0-traditional-doe-vs-bayesian.ipynb
 notebooks/6.1-multi-objective.ipynb
 notebooks/6.2.1-multi-fidelity-continuous.ipynb
