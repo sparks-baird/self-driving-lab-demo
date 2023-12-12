@@ -83,12 +83,20 @@ try:
     sdcard_backup_fpath = "/sd/experiments.txt"
 
     # To validate certificates, a valid time is required
-    ntptime.timeout = 10  # type: ignore
-    ntptime.host = "de.pool.ntp.org"
+    ntptime.timeout = 30  # type: ignore
+    ntptime.host = "pool.ntp.org"
     try:
         ntptime.settime()
     except Exception as e:
-        ntptime.settime()
+        print(get_traceback(e))
+        print("Retrying ntptime.settime(), still with pool.ntp.org")
+        try:
+            ntptime.settime()
+        except Exception as e:
+            print(get_traceback(e))
+            print("Retrying ntptime.settime() with time.google.com")
+            ntptime.host = "time.google.com"
+            ntptime.settime()
 
     print("Obtaining CA Certificate")
     with open("hivemq-com-chain.der", "rb") as f:
