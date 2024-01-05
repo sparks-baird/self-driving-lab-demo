@@ -92,6 +92,7 @@ class SelfDrivingLabDemoLight(SelfDrivingLabDemo):
         self,
         random_rng=np.random.default_rng(42),
         target_seed=604523,
+        target_inputs=None,
         rest_seconds=0.0,
         max_power=0.35,
         autoload=False,
@@ -100,9 +101,57 @@ class SelfDrivingLabDemoLight(SelfDrivingLabDemo):
         observe_sensor_data_fn=mqtt_observe_sensor_data,
         observe_sensor_data_kwargs={},  # dict(PICO_ID="a123b456")
     ):
+        """
+        This class extends the SelfDrivingLabDemo class to simulate a self-driving
+        lab demo with light sensors.
+
+        Parameters
+        ----------
+        random_rng : numpy random generator, optional
+            The random number generator used for generating random inputs, by
+            default np.random.default_rng(42)
+        target_seed : int, optional
+            The seed used for generating target inputs, as long as target_inputs is
+            not set directly using the class attribute, by default 604523
+        target_inputs : dict, optional
+            The target inputs for the demo, by default None
+        rest_seconds : float, optional
+            The rest time in seconds between actions, by default 0.0
+        max_power : float, optional
+            The maximum power for the light from 0.0 to 1.0, by default 0.35
+        autoload : bool, optional
+            Whether to load target data automatically, by default False
+        simulation : bool, optional
+            Whether to run in simulation mode, by default False
+        simulator : SensorSimulatorLight, optional
+            The simulator used for the demo, by default SensorSimulatorLight()
+        observe_sensor_data_fn : function, optional
+            The function used to observe sensor data, by default
+            mqtt_observe_sensor_data
+        observe_sensor_data_kwargs : dict, optional
+            The keyword arguments for the observe_sensor_data function, by default
+            {}
+
+        Examples
+        --------
+        >>> demo = SelfDrivingLabDemoLight(
+        ...     random_rng=np.random.default_rng(42),
+        ...     target_seed=604523,
+        ...     target_inputs=None,
+        ...     rest_seconds=0.0,
+        ...     max_power=0.35,
+        ...     autoload=True,
+        ...     simulation=False,
+        ...     simulator=SensorSimulatorLight(),
+        ...     observe_sensor_data_fn=mqtt_observe_sensor_data,
+        ...     observe_sensor_data_kwargs={},
+        ... )
+        >>> demo.evaluate(dict(R=50, G=150, B=250))
+        """
         super().__init__(
             random_rng=random_rng,
             target_seed=target_seed,
+            target_inputs=target_inputs,
             rest_seconds=rest_seconds,
             max_power=max_power,
             autoload=autoload,
