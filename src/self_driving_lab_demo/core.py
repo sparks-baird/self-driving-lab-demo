@@ -49,6 +49,7 @@ class SelfDrivingLabDemo(object):
         self,
         random_rng=np.random.default_rng(42),
         target_seed=604523,
+        target_inputs=None,
         rest_seconds=0.0,
         max_power=0.35,
         autoload=False,
@@ -59,6 +60,7 @@ class SelfDrivingLabDemo(object):
     ):
         self.random_rng = random_rng
         self.target_seed = target_seed
+        self.target_inputs = target_inputs
         self.rest_seconds = rest_seconds
         self.max_power = max_power
         self.autoload = autoload
@@ -97,7 +99,10 @@ class SelfDrivingLabDemo(object):
         raise NotImplementedError("Must be implemented by subclass")
 
     def get_target_inputs(self):
-        return self.get_random_inputs(np.random.default_rng(self.target_seed))
+        if self.target_inputs is not None:
+            return self.target_inputs
+        else:
+            return self.get_random_inputs(np.random.default_rng(self.target_seed))
 
     def observe_target_results(self):
         self.target_results = self.observe_sensor_data(self.get_target_inputs())
