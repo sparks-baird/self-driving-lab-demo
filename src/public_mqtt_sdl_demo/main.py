@@ -78,7 +78,17 @@ try:
     print(f"Truncated, encrypted PICO ID (OK to share publicly): {trunc_device_id}")
     print(f"MQTT prefix: {prefix}")
 
-    connectWiFi(SSID, PASSWORD, country="US")
+    try:
+        connectWiFi(SSID, PASSWORD, country="US")
+    except RuntimeError as e:
+        print("WiFi connection failed. Retrying in 5 seconds...")
+        sleep(5.0)
+        try:
+            connectWiFi(SSID, PASSWORD, country="US")
+        except RuntimeError as e:
+            raise RuntimeError(
+                "WiFi connection failed. Ensure you are using a 2.4 GHz WiFi network with WPA-2 authentication. See the additional prerequisites section from https://doi.org/10.1016/j.xpro.2023.102329 or the https://github.com/sparks-baird/self-driving-lab-demo/issues/76 for additional troubleshooting help."
+            ) from e
 
     sdcard_backup_fpath = "/sd/experiments.txt"
 
