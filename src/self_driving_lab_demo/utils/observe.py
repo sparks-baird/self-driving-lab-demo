@@ -146,7 +146,7 @@ def get_paho_client(
     if hostname is None:
         hostname = "248cc294c37642359297f75b7b023374.s2.eu.hivemq.cloud"
 
-    client = paho.Client(protocol=paho.MQTTv5)  # create new instance
+    client = paho.Client(paho.CallbackAPIVersion.VERSION1, protocol=paho.MQTTv5)  # create new instance
 
     def on_message(client, userdata, msg):
         sensor_data_queue.put(json.loads(msg.payload))
