@@ -174,7 +174,9 @@ def test_bad_rgb_payload_values():
 
 
 def get_client():
-    client = paho.Client(protocol=paho.MQTTv5)  # create new instance
+    client = paho.Client(
+        paho.CallbackAPIVersion.VERSION1, protocol=paho.MQTTv5
+    )  # create new instance
     client.on_connect = on_connect
     client.on_message = on_message
 
@@ -210,7 +212,9 @@ def assert_error(session_id, experiment_id, client):
 
 
 def test_bad_json_payload():
-    client = paho.Client(protocol=paho.MQTTv5)  # create new instance
+    client = paho.Client(
+        paho.CallbackAPIVersion.VERSION1, protocol=paho.MQTTv5
+    )  # create new instance
     client.on_connect = on_connect
     client.on_message = on_message
 

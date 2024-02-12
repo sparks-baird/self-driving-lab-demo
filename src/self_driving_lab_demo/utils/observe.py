@@ -1,6 +1,7 @@
 """Based on the following resource:
 https://www.steves-internet-guide.com/receiving-messages-mqtt-python-clientq=Queue() # noqa: E501
 """
+
 import ast
 import json
 import logging
