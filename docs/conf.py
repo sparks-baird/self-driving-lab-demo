@@ -84,6 +84,10 @@ extensions = [
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
 
+nbsphinx_thumbnails = {
+    "notebooks/4.2-paho-mqtt-colab-sdl-demo-test": "_static/high-quality-annotated.png"
+}
+
 
 # Enable markdown
 extensions.append("myst_parser")
