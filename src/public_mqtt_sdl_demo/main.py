@@ -108,10 +108,16 @@ try:
             ntptime.host = "time.google.com"
             ntptime.settime()
 
-    print("Obtaining CA Certificate")
-    with open("hivemq-com-chain.der", "rb") as f:
-        cacert = f.read()
-    f.close()
+    der_fname = "hivemq-com-chain.der"
+    try:
+        print("Obtaining CA Certificate")
+        with open(der_fname, "rb") as f:
+            cacert = f.read()
+    except FileNotFoundError as e:
+        print(get_traceback(e))
+        print(
+            f"{der_fname} file not found. For versions 0.4.2+, this file is required. Please upload this to the Pico W directly from the unzipped folder or at https://github.com/sparks-baird/self-driving-lab-demo/blob/main/src/public_mqtt_sdl_demo/hivemq-com-chain.der (permalink: https://github.com/sparks-baird/self-driving-lab-demo/blob/a27ebda49f7307fa17fca9e8b8531c59585b6b98/src/public_mqtt_sdl_demo/hivemq-com-chain.der)"
+        )
 
     logfile.close()
     os.dupterm(None)
