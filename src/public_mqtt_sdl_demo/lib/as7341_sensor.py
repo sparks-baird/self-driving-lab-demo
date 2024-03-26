@@ -116,6 +116,18 @@ class Sensor:
 
         return [f1, f2, f3, f4, f5, f6, f7, f8]
 
+    @property
+    def all_channels_clr_nir(self):
+        self.sensor.start_measure("F1F4CN")
+        f1, f2, f3, f4, clr, nir = self.sensor.get_spectral_data()
+
+        self.sensor.start_measure("F5F8CN")
+        f5, f6, f7, f8, clr, nir = self.sensor.get_spectral_data()
+
+        clr, nir  # to ignore "unused" linting warnings
+
+        return [f1, f2, f3, f4, f5, f6, f7, f8, clr, nir]
+
     def disable(self):
         self.sensor.disable()
 
