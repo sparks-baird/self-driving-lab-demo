@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 from scipy.interpolate import interp1d
 from similaritymeasures import frechet_dist
-from sklearn.metrics import mean_absolute_error, mean_squared_error
+from sklearn.metrics import mean_absolute_error, root_mean_squared_error
 
 from self_driving_lab_demo import data as data_module
 from self_driving_lab_demo.core import SelfDrivingLabDemo, SensorSimulator
@@ -236,7 +236,7 @@ class SelfDrivingLabDemoLight(SelfDrivingLabDemo):
         data = [float(results[ch]) for ch in self.channel_names]
 
         results["mae"] = mean_absolute_error(target_data, data)
-        results["rmse"] = mean_squared_error(target_data, data, squared=False)
+        results["rmse"] = root_mean_squared_error(target_data, data)
 
         target_dist = np.array([self.channel_wavelengths, target_data]).T
         dist = np.array([self.channel_wavelengths, data]).T

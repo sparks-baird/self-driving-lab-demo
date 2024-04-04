@@ -28,7 +28,7 @@ from time import sleep
 import numpy as np
 import pandas as pd
 from scipy.interpolate import interp1d
-from sklearn.metrics import mean_absolute_error, mean_squared_error
+from sklearn.metrics import mean_absolute_error, root_mean_squared_error
 
 from self_driving_lab_demo import data as data_module
 
@@ -240,7 +240,7 @@ class SelfDrivingLabDemo(object):
         results = {name: datum for name, datum in zip(self.channel_names, data)}
 
         results["mae"] = mean_absolute_error(self.target_data, data)
-        results["rmse"] = mean_squared_error(self.target_data, data, squared=False)
+        results["rmse"] = root_mean_squared_error(self.target_data, data)
         return results
 
 
