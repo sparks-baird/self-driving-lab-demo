@@ -6,7 +6,7 @@ channels:
   # - nvidia
   # - fastai
 dependencies:
-  - python>=3.6
+  - python>=3.6,<3.12
   - pip
   # BASICS
   - numpy
@@ -53,13 +53,13 @@ dependencies:
      # - neptune-contrib
 
   # DEVELOPMENT ONLY PACKAGES (could also be kept in a separate environment file)
-  - jupyterlab
+  # - jupyterlab
   - pytest
   - pytest-cov
   - tox
   - pre_commit
-  - nbdime
-  - nbstripout
+  # - nbdime
+  # - nbstripout
   - sphinx
-  - recommonmark
-  - pandoc
+  # - recommonmark
+  # - pandoc
