@@ -19,6 +19,7 @@ References:
     - https://setuptools.pypa.io/en/latest/userguide/entry_point.html
     - https://pip.pypa.io/en/stable/reference/pip_install
 """
+
 import logging
 import sys
 from time import sleep
@@ -47,7 +48,7 @@ class SensorSimulator(object):
 class SelfDrivingLabDemo(object):
     def __init__(
         self,
-        random_rng=np.random.default_rng(42),
+        random_rng=np.random.default_rng(),
         target_seed=604523,
         target_inputs=None,
         rest_seconds=0.0,
