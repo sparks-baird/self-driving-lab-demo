@@ -42,7 +42,7 @@ class SensorSimulatorLiquid(SensorSimulator):
             names=[wavelength_lbl, intensity_lbl],
         )
 
-        df[intensity_lbl].clip(lower=0.0, inplace=True)
+        df["relative_intensity"] = df["relative_intensity"].clip(lower=0.0)
 
         # average y-values for repeat x-values
         # see also https://stackoverflow.com/a/51258988/13697228
@@ -83,7 +83,7 @@ class SensorSimulatorLiquid(SensorSimulator):
 class SelfDrivingLabDemoLiquid(SelfDrivingLabDemo):
     def __init__(
         self,
-        random_rng=np.random.default_rng(42),
+        random_rng=np.random.default_rng(),
         target_seed=604523,
         rest_seconds=0.0,
         max_power=0.35,

@@ -40,7 +40,7 @@ class SensorSimulatorLight(SensorSimulator):
             names=[wavelength_lbl, intensity_lbl],
         )
 
-        df[intensity_lbl].clip(lower=0.0, inplace=True)
+        df["relative_intensity"] = df["relative_intensity"].clip(lower=0.0)
 
         # average y-values for repeat x-values
         # see also https://stackoverflow.com/a/51258988/13697228
@@ -90,7 +90,7 @@ class SensorSimulatorLight(SensorSimulator):
 class SelfDrivingLabDemoLight(SelfDrivingLabDemo):
     def __init__(
         self,
-        random_rng=np.random.default_rng(42),
+        random_rng=np.random.default_rng(),
         target_seed=604523,
         target_inputs=None,
         rest_seconds=0.0,
@@ -109,7 +109,7 @@ class SelfDrivingLabDemoLight(SelfDrivingLabDemo):
         ----------
         random_rng : numpy random generator, optional
             The random number generator used for generating random inputs, by
-            default np.random.default_rng(42)
+            default np.random.default_rng()
         target_seed : int, optional
             The seed used for generating target inputs, as long as target_inputs is
             not set directly using the class attribute, by default 604523
@@ -135,7 +135,7 @@ class SelfDrivingLabDemoLight(SelfDrivingLabDemo):
         Examples
         --------
         >>> demo = SelfDrivingLabDemoLight(
-        ...     random_rng=np.random.default_rng(42),
+        ...     random_rng=np.random.default_rng(),
         ...     target_seed=604523,
         ...     target_inputs=None,
         ...     rest_seconds=0.0,

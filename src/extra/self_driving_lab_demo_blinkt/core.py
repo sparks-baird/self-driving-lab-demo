@@ -99,7 +99,7 @@ class SensorSimulator(object):
             names=["wavelength", "relative_intensity"],
         )
 
-        df["relative_intensity"].clip(lower=0.0, inplace=True)
+        df["relative_intensity"] = df["relative_intensity"].clip(lower=0.0)
 
         # average y-values for repeat x-values
         # see also https://stackoverflow.com/a/51258988/13697228
@@ -162,7 +162,7 @@ def blinkt_observe_sensor_data(self, brightness: float, R: int, G: int, B: int):
 class SelfDrivingLabDemo(object):
     def __init__(
         self,
-        random_rng=np.random.default_rng(42),
+        random_rng=np.random.default_rng(),
         target_seed=604523,
         rest_seconds=0.1,
         max_brightness=0.35,
