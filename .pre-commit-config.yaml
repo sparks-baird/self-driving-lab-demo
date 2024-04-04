@@ -2,7 +2,7 @@ exclude: '^docs/conf.py'
 
 repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v4.4.0
+  rev: v4.5.0
   hooks:
   - id: trailing-whitespace
   - id: check-added-large-files
@@ -21,7 +21,7 @@ repos:
 
 # If you want to avoid flake8 errors due to unused vars or imports:
 - repo: https://github.com/myint/autoflake
-  rev: v2.2.0
+  rev: v2.3.1
   hooks:
   - id: autoflake
     args: [
@@ -31,19 +31,19 @@ repos:
     ]
 
 - repo: https://github.com/pycqa/isort
-  rev: 5.12.0
+  rev: 5.13.2
   hooks:
   - id: isort
 
 - repo: https://github.com/psf/black
-  rev: 23.7.0
+  rev: 24.3.0
   hooks:
   - id: black
     language_version: python3
 
 # If like to embrace black styles even in the docs:
 - repo: https://github.com/asottile/blacken-docs
-  rev: 1.15.0
+  rev: 1.16.0
   hooks:
   - id: blacken-docs
     name: blacken-docs
@@ -56,7 +56,7 @@ repos:
     args: ["--skip-errors"]
 
 - repo: https://github.com/PyCQA/flake8
-  rev: 6.0.0
+  rev: 7.0.0
   hooks:
   - id: flake8
     exclude: (^src/(circuitpython_sdl_demo|micropython_sdl_demo|adafruit_io_sdl_demo|nonwireless|public_mqtt_sdl_demo|circuitpython_mqtt_sdl_demo|extra)/|scripts/sikuli/)
