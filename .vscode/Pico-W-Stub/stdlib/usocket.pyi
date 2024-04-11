@@ -1,6 +1,7 @@
 """
 Module: 'usocket' on micropython-v1.19.1-rp2
 """
+
 # MCU: {'ver': 'v1.19.1', 'build': '', 'sysname': 'rp2', 'platform': 'rp2', 'version': '1.19.1', 'release': '1.19.1', 'port': 'rp2', 'family': 'micropython', 'name': 'micropython', 'machine': 'Raspberry Pi Pico W with RP2040', 'nodename': 'rp2'}
 from typing import Any
 
@@ -45,6 +46,7 @@ class socket:
         socket(AF_INET, SOCK_DGRAM)
         """
         ...
+
     def close(self) -> Any:
         """Mark the socket closed and release
         all resources. Once that happens, all
@@ -58,6 +60,7 @@ class socket:
         finished working with them.
         """
         ...
+
     def read(self, size: int | None = None) -> bytes:
         """Read up to *size* bytes from the socket.
         Return a bytes object. If *size* is not given,
@@ -70,6 +73,7 @@ class socket:
         data will be returned.
         """
         ...
+
     def readinto(self, *args, **kwargs) -> Any: ...
     def readline(self) -> Any:
         """Read a line, ending in a newline character.
@@ -77,6 +81,7 @@ class socket:
         Return value: the line read.
         """
         ...
+
     def send(self, bytes) -> Any:
         """Send data to the socket. The socket
         must be connected to a remote socket.
@@ -85,6 +90,7 @@ class socket:
         data (“short write”).
         """
         ...
+
     def write(self, buf) -> int:
         """Write the buffer of bytes to the socket.
         This function will try to write all data to
@@ -95,6 +101,7 @@ class socket:
 
         Return value: number of bytes written."""
         ...
+
     def accept(self) -> Any:
         """Accept a connection. The socket
         must be bound to an address and
@@ -107,12 +114,15 @@ class socket:
         other end of the connection.
         """
         ...
+
     def bind(self, address) -> Any:
         """Bind the socket to address. The socket must not already be bound."""
         ...
+
     def connect(self, address: tuple | list) -> Any:
         """Connect to a remote socket at address."""
         ...
+
     def listen(self, backlog: int | None = None) -> Any:
         """Enable a server to accept connections. If
         *backlog* is specified, it must be at least 0
@@ -123,6 +133,7 @@ class socket:
         reasonable value is chosen.
         """
         ...
+
     def makefile(self, mode="rb", buffering=0, /) -> Any:
         """Return a file object associated with the socket.
         The exact returned type depends on the arguments
@@ -141,6 +152,7 @@ class socket:
         socket as well.
         """
         ...
+
     def recv(self, bufsize) -> Any:
         """Receive data from the socket.
         The return value is a bytes object
@@ -149,6 +161,7 @@ class socket:
         at once is specified by bufsize.
         """
         ...
+
     def recvfrom(self, bufsize) -> Any:
         """Receive data from the socket. The return
         value is a pair (bytes, address) where bytes
@@ -157,6 +170,7 @@ class socket:
         sending the data.
         """
         ...
+
     def sendall(self, bytes) -> Any:
         """Send all data to the socket. The socket
         must be connected to a remote socket. Unlike
@@ -171,12 +185,14 @@ class socket:
         sent on non-blocking sockets.
         """
         ...
+
     def sendto(self, bytes, address) -> Any:
         """Send data to the socket. The socket should not be
         connected to a remote socket, since the destination
         socket is specified by address.
         """
         ...
+
     def setblocking(self, flag) -> Any:
         """Set blocking or non-blocking mode of the socket:
         if flag is false, the socket is set to non-blocking,
@@ -192,6 +208,7 @@ class socket:
         to ``sock.settimeout(0)``
         """
         ...
+
     def setsockopt(self, level, optname, value) -> Any:
         """Set the value of the given socket option. The
         needed symbolic constants are defined in the socket
@@ -199,6 +216,7 @@ class socket:
         a bytes-like object representing a buffer.
         """
         ...
+
     def settimeout(self, value) -> None:
         """Note: Not every port supports this method, see below.
 

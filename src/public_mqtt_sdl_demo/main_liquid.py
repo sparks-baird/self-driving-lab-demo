@@ -1,4 +1,5 @@
 """Run a materials acceleration platform demo on a Raspberry Pi Pico W."""
+
 import gc
 import json
 import os

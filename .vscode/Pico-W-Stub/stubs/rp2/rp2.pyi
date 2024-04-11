@@ -23,6 +23,7 @@ class Flash:
         Send a command to the Flash storage controller.
         """
         ...
+
     def readblocks(
         self, offsetBlocks: int, buffer: bytearray, offset: int | Any | None = None
     ):
@@ -30,6 +31,7 @@ class Flash:
         Read data from the Flash storage.
         """
         ...
+
     def writeblocks(
         self, offsetBlocks: int, buffer: bytearray, offset: int | Any | None = None
     ):
@@ -71,6 +73,7 @@ class PIO:
 
         Raises a ``ValueError`` if any other argument is provided."""
         ...
+
     def add_program(self, program):
         """
         Add the program to the instruction memory of this PIO instance.
@@ -80,6 +83,7 @@ class PIO:
         memory this method will raise ``OSError(ENOMEM)``.
         """
         ...
+
     def irq(
         self, handler=None, trigger=IRQ_SM0 | IRQ_SM1 | IRQ_SM2 | IRQ_SM3, hard=False
     ):
@@ -91,6 +95,7 @@ class PIO:
         Optionally configure it.
         """
         ...
+
     def remove_program(self, prog=None):
         """
         Remove program from the instruction memory of this PIO instance.
@@ -100,6 +105,7 @@ class PIO:
         It is not an error to remove a program which has already been removed.
         """
         ...
+
     def state_machine(
         self,
         id: int,
@@ -132,6 +138,7 @@ class PIOASMEmit:
         if side-set pins are used)
         """
         ...
+
     def side(self, value: Any) -> Any:
         """This is a modifier which can be applied to any instruction,
         and is used to control side-set pin values.
@@ -139,12 +146,14 @@ class PIOASMEmit:
         - *value*: the value (bits) to output on the side-set pins
         """
         ...
+
     def wrap_target(self) -> None:
         """Specify the location where execution
         continues after program wrapping. By
         default this is the start of the PIO routine.
         """
         ...
+
     def wrap(self) -> None:
         """Specify the location where the program finishes
         and wraps around. If this directive is not used then
@@ -152,11 +161,13 @@ class PIOASMEmit:
         Wrapping does not cost any execution cycles.
         """
         ...
+
     def label(self, label: Any) -> None:
         """Define a label called label at the current location.
         label can be a string or integer.
         """
         ...
+
     def word(self, instr: Any, label: Any = None) -> Any:
         """Insert an arbitrary 16-bit word in the assembled
         output.
@@ -167,11 +178,13 @@ class PIOASMEmit:
         the label's value with *instr*
         """
         ...
+
     def nop(self) -> Any:
         """This is a pseudoinstruction that assembles
         to ``mov(y, y)`` and has no side effect.
         """
         ...
+
     def jmp(self, cond: Any, label: Any = None) -> Any:
         """This instruction takes two forms:
         jmp(label)
@@ -193,6 +206,7 @@ class PIOASMEmit:
         - *label*: label to jump to if condition is true
         """
         ...
+
     def wait(self, polarity: int, src: Any, index: int) -> Any:
         """Block, waiting for high/low on a pin or IRQ line.
 
@@ -202,18 +216,21 @@ class PIOASMEmit:
 
         - *index*: 0-31, the index for src"""
         ...
+
     def in_(self, src: Any, data: Any) -> Any:
         """Shift data in from src to ISR.
 
         - *src*: one of: ``pins``, ``x``, ``y``, ``null``, ``isr``, ``osr``
         - *bit_count*: number of bits to shift in (1-32)"""
         ...
+
     def out(self, dest: Any, bit_count: int) -> Any:
         """Shift data out from OSR to dest.
 
         - *dest*: one of: ``pins``, ``x``, ``y``, ``pindirs``, ``pc``, ``isr``, ``exec``
         - *bit_count*: number of bits to shift out (1-32)"""
         ...
+
     def push(self, value: Any = 0, value2: Any = 0) -> Any:
         """Push ISR to the RX FIFO, then clear ISR to zero.
         This instruction takes the following forms:
@@ -231,6 +248,7 @@ class PIOASMEmit:
         has reached its threshold.
         """
         ...
+
     def pull(self, value: Any = 0, value2: Any = 0) -> Any:
         """Pull from the TX FIFO into OSR. This instruction
         takes the following forms:
@@ -248,6 +266,7 @@ class PIOASMEmit:
         has reached its threshold.
         """
         ...
+
     def mov(self, dest: Any, src: Any) -> Any:
         """Move into dest the value from src.
 
@@ -257,6 +276,7 @@ class PIOASMEmit:
         or ``reverse()`` (but not both together)
         """
         ...
+
     @overload
     def irq(self, mode: str, index: Any) -> Any: ...
     def irq(self, index: Any) -> Any:
@@ -280,6 +300,7 @@ class PIOASMEmit:
         machines.
         """
         ...
+
     def set(self, dest: Any, data: int) -> Any:
         """Set dest with the value data.
 
@@ -328,6 +349,7 @@ class StateMachine:
             - *freq* is the frequency at which the code should be executed (in milliseconds).
         """
         ...
+
     def init(
         self,
         id,
@@ -365,16 +387,19 @@ class StateMachine:
             - *freq* is the frequency at which the code should be executed (in milliseconds).
         """
         ...
+
     def exec(self, instr: str):
         """
         Run an execution instruction.
         """
         ...
+
     def irq(self, handler=None, trigger=0 | 1, hard=False):
         """
         Set an IRQ handler.
         """
         ...
+
     def active(self, value: int):
         """
         Set the ``StateMachine`` to be active.
@@ -382,6 +407,7 @@ class StateMachine:
             - *value* should be 1 for active.
         """
         ...
+
     def get(self, buf: bytes | None = None, shift: int = 0):
         """
         Get data from the ``StateMachine``.
@@ -390,6 +416,7 @@ class StateMachine:
             - *shift* is an optional number of places to shift.
         """
         ...
+
     def put(self, value: bytes | int | array[int], shift: int = 0):
         """
         Sets data within the ``StateMachine``.
@@ -398,6 +425,7 @@ class StateMachine:
             - *shift* is an optional number of places to shift.
         """
         ...
+
     def restart(self):
         """
         ``Restarts`` the state machine.
@@ -406,6 +434,7 @@ class StateMachine:
             - It also makes PIO code easier, because then stalling as error state can be unlocked.
         """
         ...
+
     def rx_fifo(self) -> int:
         """
         Return the number of ``RX FIFO`` items. 0 if empty
@@ -413,6 +442,7 @@ class StateMachine:
             - rx_fifo() is also useful, for MP code to check for data & timeout if no data arrived.
         """
         ...
+
     def tx_fifo(self) -> int:
         """
         Return the number of ``TX FIFO`` items. 0 if empty

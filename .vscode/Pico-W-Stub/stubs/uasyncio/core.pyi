@@ -9,6 +9,7 @@ class TimeoutError(Exception):
 class SingletonGenerator:
     def __init__(self) -> None:
         pass
+
     def __iter__(self) -> Any:
         pass
     #   0: return self
@@ -29,16 +30,22 @@ def sleep(t: Any) -> Any:
 class IOQueue:
     def __init__(self) -> None:
         pass
+
     def _enqueue(self, s: Any, idx: Any) -> None:
         pass
+
     def _dequeue(self, s: Any) -> None:
         pass
+
     def queue_read(self, s: Any) -> None:
         pass
+
     def queue_write(self, s: Any) -> None:
         pass
+
     def remove(self, task: Any) -> None:
         pass
+
     def wait_io_event(self, dt: Any) -> None:
         pass
 
@@ -67,24 +74,32 @@ class Loop:
         #   0: return create_task(coro)
         # ? 0: return create_task(coro)
         pass
+
     def run_forever(self) -> None:
         pass
+
     def run_until_complete(self, aw: Any) -> Any:
         #   0: return run_until_complete(_promote_to_task(aw))
         # ? 0: return run_until_complete(_promote_to_task(aw))
         pass
+
     def stop(self) -> None:
         pass
+
     def close(self) -> None:
         pass
+
     def set_exception_handler(self, handler: Any) -> None:
         pass
+
     def get_exception_handler(self) -> Any:
         #   0: return Loop._exc_handler
         # ? 0: return Loop._exc_handler
         pass
+
     def default_exception_handler(self, loop: Any, context: Any) -> None:
         pass
+
     def call_exception_handler(self, context: Any) -> None:
         pass
 
@@ -104,14 +119,19 @@ class TaskQueue:
 
     def __init__(self):
         pass
+
     def peek(self) -> Any:
         pass
+
     def push_sorted(self, v, key):
         pass
+
     def push_head(self, v):
         pass
+
     def pop_head(self) -> Any:
         pass
+
     def remove(self, v):
         pass
 

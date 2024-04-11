@@ -28,6 +28,7 @@ Descriptions taken from
    top of real hardware and real hardware interrupts). See :ref:`isr_rules`.
 
 """
+
 from collections.abc import Callable, Sequence
 from typing import Any, ClassVar, NoReturn, overload
 
@@ -53,6 +54,7 @@ class ADC:
         underlying machine.
         """
         ...
+
     def read_u16(self) -> int:
         """
         Take an analog reading and return an integer in the range 0-65535.
@@ -85,16 +87,19 @@ class Pin:
         they are used to initialise the pin.  See :meth:`pin.init`.
         """
         ...
+
     def high(self):
         """
         Sets the pin to high.
         """
         ...
+
     def init(self):
         """
         Initialises the pin.
         """
         ...
+
     def irq(self, handler: Callable, trigger: int, hard: bool = False) -> Callable:
         """
         Sets an interrupt for when the pin is rising or falling.
@@ -104,26 +109,31 @@ class Pin:
             - ``hard`` if true a hardware interrupt is used. This reduces the delay between the pin change and the handler being called.
         """
         ...
+
     def low(self):
         """
         Sets the pin to low.
         """
         ...
+
     def off(self):
         """
         Sets the pin to be off.
         """
         ...
+
     def on(self):
         """
         Sets the pin to be on.
         """
         ...
+
     def toggle(self):
         """
         Sets the pin to high if it's currently low, and vice versa.
         """
         ...
+
     def value(self, value: Any = ..., /) -> None:
         """
         Get or set the digital logic level of the pin:
@@ -196,6 +206,7 @@ class SPI:
         See ``init`` for parameters of initialisation.
         """
         ...
+
     @overload
     def __init__(
         self,
@@ -222,6 +233,7 @@ class SPI:
         See ``init`` for parameters of initialisation.
         """
         ...
+
     @overload
     def __init__(
         self,
@@ -246,6 +258,7 @@ class SPI:
         See ``init`` for parameters of initialisation.
         """
         ...
+
     @overload
     def init(
         self,
@@ -281,6 +294,7 @@ class SPI:
         rate may be determined by printing the SPI object.
         """
         ...
+
     @overload
     def init(
         self,
@@ -314,11 +328,13 @@ class SPI:
         rate may be determined by printing the SPI object.
         """
         ...
+
     def deinit(self) -> None:
         """
         Turn off the SPI bus.
         """
         ...
+
     def read(self, nbytes: int, write: int = 0x00, /) -> bytes:
         """
         Read a number of bytes specified by ``nbytes`` while continuously writing
@@ -326,6 +342,7 @@ class SPI:
         Returns a ``bytes`` object with the data that was read.
         """
         ...
+
     def readinto(self, buf: bytes, write: int = 0x00, /) -> int | None:
         """
         Read into the buffer specified by ``buf`` while continuously writing the
@@ -335,6 +352,7 @@ class SPI:
         Note: on WiPy this function returns the number of bytes read.
         """
         ...
+
     def write(self, buf: bytes, /) -> int | None:
         """
         Write the bytes contained in ``buf``.
@@ -343,6 +361,7 @@ class SPI:
         Note: on WiPy this function returns the number of bytes written.
         """
         ...
+
     def write_readinto(self, write_buf: bytes, read_buf: bytes, /) -> int | None:
         """
         Write the bytes from ``write_buf`` while reading into ``read_buf``.  The
@@ -407,6 +426,7 @@ class SoftSPI:
         See ``init`` for parameters of initialisation.
         """
         ...
+
     @overload
     def __init__(
         self,
@@ -431,6 +451,7 @@ class SoftSPI:
         See ``init`` for parameters of initialisation.
         """
         ...
+
     @overload
     def init(
         self,
@@ -466,6 +487,7 @@ class SoftSPI:
         rate may be determined by printing the SPI object.
         """
         ...
+
     @overload
     def init(
         self,
@@ -499,11 +521,13 @@ class SoftSPI:
         rate may be determined by printing the SPI object.
         """
         ...
+
     def deinit(self) -> None:
         """
         Turn off the SPI bus.
         """
         ...
+
     def read(self, nbytes: int, write: int = 0x00, /) -> bytes:
         """
         Read a number of bytes specified by ``nbytes`` while continuously writing
@@ -511,6 +535,7 @@ class SoftSPI:
         Returns a ``bytes`` object with the data that was read.
         """
         ...
+
     def readinto(self, buf: bytes, write: int = 0x00, /) -> int | None:
         """
         Read into the buffer specified by ``buf`` while continuously writing the
@@ -520,6 +545,7 @@ class SoftSPI:
         Note: on WiPy this function returns the number of bytes read.
         """
         ...
+
     def write(self, buf: bytes, /) -> int | None:
         """
         Write the bytes contained in ``buf``.
@@ -528,6 +554,7 @@ class SoftSPI:
         Note: on WiPy this function returns the number of bytes written.
         """
         ...
+
     def write_readinto(self, write_buf: bytes, read_buf: bytes, /) -> int | None:
         """
         Write the bytes from ``write_buf`` while reading into ``read_buf``.  The
@@ -596,6 +623,7 @@ class I2C:
         of *scl* and *sda* that cannot be changed.
         """
         ...
+
     @overload
     def __init__(self, id: int, /, *, scl: Pin, sda: Pin, freq: int = 400_000):
         """
@@ -613,6 +641,7 @@ class I2C:
         of *scl* and *sda* that cannot be changed.
         """
         ...
+
     def init(self, *, scl: Pin, sda: Pin, freq: int = 400_000) -> None:
         """
         Initialise the I2C bus with the given arguments:
@@ -622,6 +651,7 @@ class I2C:
            - *freq* is the SCL clock rate
         """
         ...
+
     def scan(self) -> list[int]:
         """
         Scan all I2C addresses between 0x08 and 0x77 inclusive and return a list of
@@ -629,6 +659,7 @@ class I2C:
         its address (including a write bit) is sent on the bus.
         """
         ...
+
     def start(self) -> None:
         """
         Generate a START condition on the bus (SDA transitions to low while SCL is high).
@@ -644,6 +675,7 @@ class I2C:
         These methods are only available on the `machine.SoftI2C` class.
         """
         ...
+
     def stop(self) -> None:
         """
         Generate a STOP condition on the bus (SDA transitions to high while SCL is high).
@@ -659,6 +691,7 @@ class I2C:
         These methods are only available on the `machine.SoftI2C` class.
         """
         ...
+
     def readinto(self, buf: bytes, nack: bool = True, /) -> None:
         """
         Reads bytes from the bus and stores them into *buf*.  The number of bytes
@@ -678,6 +711,7 @@ class I2C:
         These methods are only available on the `machine.SoftI2C` class.
         """
         ...
+
     def write(self, buf: bytes, /) -> int:
         """
         Write the bytes from *buf* to the bus.  Checks that an ACK is received
@@ -695,6 +729,7 @@ class I2C:
         These methods are only available on the `machine.SoftI2C` class.
         """
         ...
+
     def readfrom(self, addr: int, nbytes: int, stop: bool = True, /) -> bytes:
         """
         Read *nbytes* from the slave specified by *addr*.
@@ -709,6 +744,7 @@ class I2C:
         operations that target a given slave device.
         """
         ...
+
     def readfrom_into(self, addr: int, buf: bytes, stop: bool = True, /) -> None:
         """
         Read into *buf* from the slave specified by *addr*.
@@ -725,6 +761,7 @@ class I2C:
         operations that target a given slave device.
         """
         ...
+
     def writeto(self, addr: int, buf: bytes, stop: bool = True, /) -> int:
         """
         Write the bytes from *buf* to the slave specified by *addr*.  If a
@@ -741,6 +778,7 @@ class I2C:
         operations that target a given slave device.
         """
         ...
+
     def writevto(self, addr: int, vector: Sequence[bytes], stop: bool = True, /) -> int:
         """
         Write the bytes contained in *vector* to the slave specified by *addr*.
@@ -763,6 +801,7 @@ class I2C:
         operations that target a given slave device.
         """
         ...
+
     def readfrom_mem(
         self, addr: int, memaddr: int, nbytes: int, /, *, addrsize: int = 8
     ) -> bytes:
@@ -782,6 +821,7 @@ class I2C:
         methods are convenience functions to communicate with such devices.
         """
         ...
+
     def readfrom_mem_into(
         self, addr: int, memaddr: int, buf: bytes, /, *, addrsize: int = 8
     ) -> None:
@@ -804,6 +844,7 @@ class I2C:
         methods are convenience functions to communicate with such devices.
         """
         ...
+
     def writeto_mem(
         self, addr: int, memaddr: int, buf: bytes, /, *, addrsize: int = 8
     ) -> None:
@@ -863,6 +904,7 @@ class I2S:
         - `ibuf` specifies internal buffer length (bytes)
         """
         ...
+
     def readinto(self, buf) -> int:
         """
         Read audio samples into the buffer specified by `buf`. `buf` must
@@ -872,6 +914,7 @@ class I2S:
         channel sample data is used. Returns number of bytes read
         """
         ...
+
     def write(self, buf) -> int:
         """
         Write audio samples contained in `buf`. `buf` must support the buffer protocol,
@@ -889,6 +932,7 @@ class I2S:
     def deinit(self, *args, **kwargs) -> Any:
         """Deinitialize the I2S bus"""
         ...
+
     def init(self, *args, **kwargs) -> Any: ...
     def irq(self, handler) -> Any:
         """
@@ -900,6 +944,7 @@ class I2S:
         of the MicroPython scheduler.
         """
         ...
+
     def shift(self, buf, bits, shift: int) -> Any:
         """
         bitwise shift of all samples contained in `buf`. `bits`
@@ -938,11 +983,13 @@ class PWM:
            - *pin* should be the pin to use.
         """
         ...
+
     def deinit(self) -> None:
         """
         Disable the PWM output.
         """
         ...
+
     def freq(self, frequency: int | None = ...):
         """
         With no arguments the frequency in Hz is returned.
@@ -950,6 +997,7 @@ class PWM:
         With a single *value* argument the frequency is set to that value in Hz.  The method may raise a ``ValueError`` if the frequency is outside the valid range.
         """
         ...
+
     def duty_u16(self, duration: int | None = ...):
         """
         Get or Set the current duty cycle of the PWM output, as an unsigned 16-bit value in the range 0 to 65535 inclusive.
@@ -959,6 +1007,7 @@ class PWM:
         With a single *value* argument the duty cycle is set to that value, measured as the ratio ``value / 65535``.
         """
         ...
+
     def duty_ns(self, duration: int | None = ...):
         """
         Get or Set the current pulse width of the PWM output, as a value in nanoseconds.
@@ -993,6 +1042,7 @@ class Signal:
         Create a ``Signal`` object by wrapping existing ``Pin`` object.
         """
         ...
+
     @overload
     def __init__(
         self,
@@ -1008,16 +1058,19 @@ class Signal:
         to ``Signal`` constructor, skipping the need to create intermediate ``Pin`` object.
         """
         ...
+
     def off(self):
         """
         Deactivate signal.
         """
         ...
+
     def on(self):
         """
         Activate signal.
         """
         ...
+
     def value(self, x: Any):
         """
         This method allows to set and get the value of the signal, depending on whether
@@ -1094,6 +1147,7 @@ class SoftI2C:
         of *scl* and *sda* that cannot be changed.
         """
         ...
+
     def init(self, *, scl: Pin, sda: Pin, freq: int = 400_000) -> None:
         """
         Initialise the I2C bus with the given arguments:
@@ -1103,6 +1157,7 @@ class SoftI2C:
            - *freq* is the SCL clock rate
         """
         ...
+
     def scan(self) -> list[int]:
         """
         Scan all I2C addresses between 0x08 and 0x77 inclusive and return a list of
@@ -1110,6 +1165,7 @@ class SoftI2C:
         its address (including a write bit) is sent on the bus.
         """
         ...
+
     def start(self) -> None:
         """
         Generate a START condition on the bus (SDA transitions to low while SCL is high).
@@ -1125,6 +1181,7 @@ class SoftI2C:
         These methods are only available on the `machine.SoftI2C` class.
         """
         ...
+
     def stop(self) -> None:
         """
         Generate a STOP condition on the bus (SDA transitions to high while SCL is high).
@@ -1140,6 +1197,7 @@ class SoftI2C:
         These methods are only available on the `machine.SoftI2C` class.
         """
         ...
+
     def readinto(self, buf: bytes, nack: bool = True, /) -> None:
         """
         Reads bytes from the bus and stores them into *buf*.  The number of bytes
@@ -1159,6 +1217,7 @@ class SoftI2C:
         These methods are only available on the `machine.SoftI2C` class.
         """
         ...
+
     def write(self, buf: bytes, /) -> int:
         """
         Write the bytes from *buf* to the bus.  Checks that an ACK is received
@@ -1176,6 +1235,7 @@ class SoftI2C:
         These methods are only available on the `machine.SoftI2C` class.
         """
         ...
+
     def readfrom(self, addr: int, nbytes: int, stop: bool = True, /) -> bytes:
         """
         Read *nbytes* from the slave specified by *addr*.
@@ -1190,6 +1250,7 @@ class SoftI2C:
         operations that target a given slave device.
         """
         ...
+
     def readfrom_into(self, addr: int, buf: bytes, stop: bool = True, /) -> None:
         """
         Read into *buf* from the slave specified by *addr*.
@@ -1206,6 +1267,7 @@ class SoftI2C:
         operations that target a given slave device.
         """
         ...
+
     def writeto(self, addr: int, buf: bytes, stop: bool = True, /) -> int:
         """
         Write the bytes from *buf* to the slave specified by *addr*.  If a
@@ -1222,6 +1284,7 @@ class SoftI2C:
         operations that target a given slave device.
         """
         ...
+
     def writevto(self, addr: int, vector: Sequence[bytes], stop: bool = True, /) -> int:
         """
         Write the bytes contained in *vector* to the slave specified by *addr*.
@@ -1244,6 +1307,7 @@ class SoftI2C:
         operations that target a given slave device.
         """
         ...
+
     def readfrom_mem(
         self, addr: int, memaddr: int, nbytes: int, /, *, addrsize: int = 8
     ) -> bytes:
@@ -1263,6 +1327,7 @@ class SoftI2C:
         methods are convenience functions to communicate with such devices.
         """
         ...
+
     def readfrom_mem_into(
         self, addr: int, memaddr: int, buf: bytes, /, *, addrsize: int = 8
     ) -> None:
@@ -1285,6 +1350,7 @@ class SoftI2C:
         methods are convenience functions to communicate with such devices.
         """
         ...
+
     def writeto_mem(
         self, addr: int, memaddr: int, buf: bytes, /, *, addrsize: int = 8
     ) -> None:
@@ -1355,6 +1421,7 @@ class Timer:
         See ``init`` for parameters of initialisation.
         """
         ...
+
     def init(
         self,
         *,
@@ -1381,6 +1448,7 @@ class Timer:
               frequency of the channel.
         """
         ...
+
     def deinit(self) -> None:
         """
         Deinitialises the timer. Stops the timer, and disables the timer peripheral.
@@ -1422,6 +1490,7 @@ class UART:
         - *rx* specifies the RX pin to use.
         """
         ...
+
     def deinit(self) -> None:
         """
         Turn off the UART bus.
@@ -1432,6 +1501,7 @@ class UART:
         in that case.
         """
         ...
+
     def init(
         self,
         baudrate: int = 9600,
@@ -1445,6 +1515,7 @@ class UART:
         Returns the number of bytes waiting (may be 0).
         """
         ...
+
     def read(self, nbytes: int | None = None) -> bytes | None:
         """
         Read characters.  If ``nbytes`` is specified then read at most that many bytes.
@@ -1461,6 +1532,7 @@ class UART:
         on timeout.
         """
         ...
+
     def readinto(self, buf: bytes, nbytes: int | None = None, /) -> int | None:
         """
         Read bytes into the ``buf``.  If ``nbytes`` is specified then read at most
@@ -1470,6 +1542,7 @@ class UART:
         timeout.
         """
         ...
+
     def readline(self) -> str | None:
         """
         Read a line, ending in a newline character. If such a line exists, return is
@@ -1479,6 +1552,7 @@ class UART:
         Return value: the line read or ``None`` on timeout if no data is available.
         """
         ...
+
     def write(self, buf: bytes, /) -> int | None:
         """
         Write the buffer of bytes to the bus.  If characters are 7 or 8 bits wide
@@ -1490,6 +1564,7 @@ class UART:
         were written returns ``None``.
         """
         ...
+
     def sendbreak(self) -> None:
         """
         Send a break condition on the bus.  This drives the bus low for a duration
@@ -1497,6 +1572,7 @@ class UART:
         Return value: ``None``.
         """
         ...
+
     def flush(self) -> Any:
         """
         Waits until all data has been sent. In case of a
@@ -1511,6 +1587,7 @@ class UART:
         wait time has to be added in the calling script.
         """
         ...
+
     def txdone(self) -> bool:
         """
         Tells whether all data has been sent or no data transfer
@@ -1547,6 +1624,7 @@ class WDT:
         Once it is running the timeout cannot be changed and the WDT cannot be stopped either.
         """
         ...
+
     def feed(self) -> None:
         """
         Feed the WDT to prevent it from resetting the system. The application

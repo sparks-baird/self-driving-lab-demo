@@ -10,11 +10,13 @@ class DS18X20:
         Convert the raw temperature data into degrees celsius and return as a fixed point with 2 decimal places.
         """
         ...
+
     def read_scratch(self, rom: bytearray) -> bytearray:
         """
         Read the scratchpad memory of the addressed device. 9 bytes of data will be returned
         """
         ...
+
     def read_temp(self, rom: bytearray) -> int:
         """
         Get the temperature reading of the addressed device as degree Celsuis. In
@@ -26,12 +28,14 @@ class DS18X20:
         in the given context.
         """
         ...
+
     def scan(self) -> list:
         """
         Return the list of DS18x2x devices on the bus. Only devices with
         rom type 0x10, 0x22 and 0x22 are selected.
         """
         ...
+
     def write_scratch(self, rom: bytearray, buf: bytearray) -> None:
         """
         Write to the scratchpad of the addressed devices. data shall be three bytes.

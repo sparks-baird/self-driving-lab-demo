@@ -1619,15 +1619,19 @@ def iter(__function: Callable[[], _T], __sentinel: object) -> Iterator[_T]: ...
 if sys.version_info >= (3, 10):
     def isinstance(
         __obj: object,
-        __class_or_tuple: type
-        | types.UnionType
-        | tuple[type | types.UnionType | tuple[Any, ...], ...],
+        __class_or_tuple: (
+            type
+            | types.UnionType
+            | tuple[type | types.UnionType | tuple[Any, ...], ...]
+        ),
     ) -> bool: ...
     def issubclass(
         __cls: type,
-        __class_or_tuple: type
-        | types.UnionType
-        | tuple[type | types.UnionType | tuple[Any, ...], ...],
+        __class_or_tuple: (
+            type
+            | types.UnionType
+            | tuple[type | types.UnionType | tuple[Any, ...], ...]
+        ),
     ) -> bool: ...
 
 else:

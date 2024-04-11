@@ -257,6 +257,7 @@ if sys.version_info >= (3, 10):
 
         def __or__(self, right: Any) -> _SpecialForm: ...
         def __ror__(self, left: Any) -> _SpecialForm: ...
+
     Concatenate: _SpecialForm
     TypeAlias: _SpecialForm
     TypeGuard: _SpecialForm
@@ -850,6 +851,7 @@ class _TypedDict(Mapping[str, object], metaclass=ABCMeta):
     if sys.version_info >= (3, 9):
         __required_keys__: ClassVar[frozenset[str]]
         __optional_keys__: ClassVar[frozenset[str]]
+
     def copy(self: _typeshed.Self) -> _typeshed.Self: ...
     # Using Never so that only calls using mypy plugin hook that specialize the signature
     # can go through.

@@ -1,6 +1,7 @@
 """
 Module: 'ucollections' on micropython-v1.19.1-rp2
 """
+
 # MCU: {'ver': 'v1.19.1', 'build': '', 'sysname': 'rp2', 'platform': 'rp2', 'version': '1.19.1', 'release': '1.19.1', 'port': 'rp2', 'family': 'micropython', 'name': 'micropython', 'machine': 'Raspberry Pi Pico W with RP2040', 'nodename': 'rp2'}
 from typing import Any
 
@@ -30,12 +31,14 @@ class deque:
         As well as supporting ``bool`` and ``len``, deque objects have the following methods
         """
         ...
+
     def append(self, x: Any) -> Any:
         """Add x to the right side of the deque. Raises
         IndexError if overflow checking is enabled
         and there is no more room left.
         """
         ...
+
     def popleft(self) -> Any: ...
     def __len__(self) -> int: ...
     def __bool__(self) -> bool: ...

@@ -1,6 +1,7 @@
 """
 Module: 'network' on micropython-v1.19.1-rp2
 """
+
 # MCU: {'ver': 'v1.19.1', 'build': '', 'sysname': 'rp2', 'platform': 'rp2', 'version': '1.19.1', 'release': '1.19.1', 'port': 'rp2', 'family': 'micropython', 'name': 'micropython', 'machine': 'Raspberry Pi Pico W with RP2040', 'nodename': 'rp2'}
 
 AP_IF: int = 1  # type: int
@@ -22,12 +23,14 @@ class WLAN:
         to an access point.
         """
         ...
+
     def active(self, is_active: bool = ...) -> bool:
         """Activate (“up”) or deactivate (“down”) network interface, if boolean
         argument is passed. Otherwise, query current state if no argument is provided.
         Most other methods require active interface.
         """
         ...
+
     def config(
         self,
         parameter: str = "config('ssid') for example",
@@ -76,6 +79,7 @@ class WLAN:
         txpower         | Maximum transmit power in dBm (integer or float)
         """
         ...
+
     def connect(
         self, ssid: str | None = None, key: str | None = None, *, bssid: ... = None
     ) -> ...:
@@ -84,10 +88,12 @@ class WLAN:
         with that MAC address (the ssid must also be specified in this case).
         """
         ...
+
     def deinit(self, *args, **kwargs) -> ...: ...
     def disconnect(self) -> None:
         """Disconnect from the currently connected wireless network."""
         ...
+
     def ifconfig(
         self, arg: tuple[str, str, str, str] = ...
     ) -> tuple[str, str, str, str]:
@@ -101,6 +107,7 @@ class WLAN:
         nic.ifconfig(('192.168.0.4', '255.255.255.0', '192.168.0.1', '1.1.1.1'))
         """
         ...
+
     def ioctl(self, *args, **kwargs) -> ...: ...
     def isconnected(self) -> bool:
         """In case of STA mode, returns ``True`` if connected to a
@@ -109,6 +116,7 @@ class WLAN:
         otherwise.
         """
         ...
+
     def scan(self) -> list[tuple[bytes, bytes, int, int, int, int]]:
         """Scan for the available wireless networks. Hidden networks – where the SSID is
         not broadcast – will also be scanned if the WLAN interface allows it.
@@ -140,6 +148,7 @@ class WLAN:
         1 – hidden
         """
         ...
+
     def send_ethernet(self, *args, **kwargs) -> ...: ...
     def status(self, param: str = ...) -> int:
         """Return the current status of the wireless connection.

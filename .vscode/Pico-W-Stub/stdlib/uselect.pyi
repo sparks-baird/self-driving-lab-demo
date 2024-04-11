@@ -1,6 +1,7 @@
 """
 Module: 'uselect' on micropython-v1.19.1-rp2
 """
+
 # MCU: {'ver': 'v1.19.1', 'build': '', 'sysname': 'rp2', 'platform': 'rp2', 'version': '1.19.1', 'release': '1.19.1', 'port': 'rp2', 'family': 'micropython', 'name': 'micropython', 'machine': 'Raspberry Pi Pico W with RP2040', 'nodename': 'rp2'}
 from collections.abc import Iterator
 from typing import Any
@@ -24,11 +25,13 @@ class _poll:
         efficient, allocation-free way to poll on streams.
         """
         ...
+
     def modify(self, obj: Any, eventmask: Any) -> Any:
         """Modify the eventmask for obj. If obj is not registered,
         ``OSError`` is raised with error of ENOENT.
         """
         ...
+
     def poll(self, timeout: int = -1, /) -> Any:
         """Wait for at least one of the registered objects to become
         ready or have an exceptional condition, with optional timeout
@@ -36,6 +39,7 @@ class _poll:
         there is no timeout).
         """
         ...
+
     def register(self, obj: Any, eventmask: int = POLLIN | POLLOUT) -> Any:
         """Register stream obj for polling. eventmask is logical OR of:
 
@@ -43,6 +47,7 @@ class _poll:
         - ``select.POLLOUT`` - more data can be written
         """
         ...
+
     def unregister(self, obj: Any) -> None:
         """Unregister obj from polling."""
         ...

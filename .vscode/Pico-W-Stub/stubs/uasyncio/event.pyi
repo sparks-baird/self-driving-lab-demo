@@ -16,6 +16,7 @@ class ThreadSafeFlag:
         Set the flag. If there is a task waiting on the event, it will be scheduled to run.
         """
         ...
+
     def ioctl(self): ...
 
     wait: Any  ## <class 'generator'> = <generator>

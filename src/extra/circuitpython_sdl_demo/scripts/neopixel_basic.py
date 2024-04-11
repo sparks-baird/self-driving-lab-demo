@@ -8,6 +8,7 @@ https://docs.circuitpython.org/projects/neopixel/en/latest/api.html
 https://stackoverflow.com/questions/67363258/configure-mypy-in-vscode-to-enforce-type-hinting,
 to deal with OOM
 """
+
 import time
 
 import board

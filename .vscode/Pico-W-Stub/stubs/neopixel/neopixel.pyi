@@ -1,6 +1,7 @@
 """
 Module: 'neopixel' on micropython-v1.19.1-rp2
 """
+
 # MCU: {'ver': 'v1.19.1', 'build': '', 'sysname': 'rp2', 'platform': 'rp2', 'version': '1.19.1', 'release': '1.19.1', 'port': 'rp2', 'family': 'micropython', 'name': 'micropython', 'machine': 'Raspberry Pi Pico W with RP2040', 'nodename': 'rp2'}
 from typing import Any
 
@@ -21,9 +22,11 @@ class NeoPixel:
         ``timing`` is 0 for 400KHz, and 1 for 800kHz LEDs (most are 800kHz).
         """
         ...
+
     def write(self) -> Any:
         """Writes the current pixel data to the strip."""
         ...
+
     def fill(self, pixel) -> Any:
         """Sets the value of all pixels to the
         specified pixel value (i.e. an RGB/RGBW tuple)."""
@@ -33,9 +36,11 @@ class NeoPixel:
     def __len__(self) -> int:
         """Returns the number of LEDs in the strip."""
         ...
+
     def __setitem__(self, index, val) -> Any:
         """Set the pixel at index to the value, which is an RGB/RGBW tuple."""
         ...
+
     def __getitem__(self, index) -> Any:
         """Returns the pixel at index as an RGB/RGBW tuple."""
         ...

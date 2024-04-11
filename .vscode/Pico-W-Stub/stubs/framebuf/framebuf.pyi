@@ -3,6 +3,7 @@
 This module provides a general frame buffer which can be used to create
 bitmap images, which can then be sent to a display.
 """
+
 # MCU: {'ver': 'v1.19.1', 'build': '', 'sysname': 'rp2', 'platform': 'rp2', 'version': '1.19.1', 'release': '1.19.1', 'port': 'rp2', 'family': 'micropython', 'name': 'micropython', 'machine': 'Raspberry Pi Pico W with RP2040', 'nodename': 'rp2'}
 
 class FrameBuffer:
@@ -51,36 +52,44 @@ class FrameBuffer:
         unexpected errors.
         """
         ...
+
     def fill(self, c: int) -> None:
         """Fill the entire FrameBuffer with the specified color."""
         ...
+
     def pixel(self, x: int, y: int, c: int = ...) -> None:
         """Set the specified pixel to the given color."""
         ...
+
     def hline(self, x: int, y: int, w: int, c: int) -> None:
         """
         Draw a horizontal line from a set of coordinates using the given color and
         a thickness of 1 pixel.
         """
         ...
+
     def vline(self, x: int, y: int, h: int, c: int) -> None:
         """
         Draw a vertical line from a set of coordinates using the given color and
         a thickness of 1 pixel.
         """
         ...
+
     def line(self, x1: int, y1: int, x2: int, y2: int, c: int) -> None:
         """
         Draw a line from a set of coordinates using the given color and
         a thickness of 1 pixel.
         """
         ...
+
     def rect(self, x: int, y: int, w: int, h: int, c: int) -> None:
         """Draw a rectangle at the given location, size and color."""
         ...
+
     def fill_rect(self, x: int, y: int, w: int, h: int, c: int) -> None:
         """Fill a rectangle at the given location, size and color."""
         ...
+
     def text(self, s: str, x: int, y: int, c: int = 1) -> None:
         """
         Write text to the FrameBuffer using the the coordinates as the upper-left
@@ -89,12 +98,14 @@ class FrameBuffer:
         dimensions of 8x8 pixels and there is currently no way to change the font.
         """
         ...
+
     def scroll(self, xstep: int, ystep: int) -> None:
         """
         Shift the contents of the FrameBuffer by the given vector. This may
         leave a footprint of the previous colors in the FrameBuffer.
         """
         ...
+
     def blit(self, fbuf: FrameBuffer, x: int, y: int, key: int | None = None) -> None:
         """
         Draw another FrameBuffer on top of the current one at the given coordinates.
@@ -108,6 +119,7 @@ class FrameBuffer:
         formats.
         """
         ...
+
     def ellipse(self, *args, **kwargs) -> Any: ...
     def poly(self, *args, **kwargs) -> Any: ...
 

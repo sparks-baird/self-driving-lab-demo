@@ -2,6 +2,7 @@
 Based on https://gist.github.com/sammachin/b67cc4f395265bccd9b2da5972663e6d
 http://www.steves-internet-guide.com/into-mqtt-python-client/
 """
+
 import json
 from binascii import hexlify
 from secrets import secrets

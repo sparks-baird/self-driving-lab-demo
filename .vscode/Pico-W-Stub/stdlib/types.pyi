@@ -640,6 +640,7 @@ if sys.version_info >= (3, 10):
     @final
     class NoneType:
         def __bool__(self) -> Literal[False]: ...
+
     EllipsisType = ellipsis  # noqa: F821 from builtins
     from builtins import _NotImplementedType
 

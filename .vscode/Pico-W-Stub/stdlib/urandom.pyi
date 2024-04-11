@@ -1,6 +1,7 @@
 """
 Generate pseudo-random numbers.
 """
+
 from collections.abc import Sequence
 from typing import TypeVar, overload
 
