@@ -4,7 +4,16 @@ import numpy as np
 import pandas as pd
 from scipy.interpolate import interp1d
 from similaritymeasures import frechet_dist
-from sklearn.metrics import mean_absolute_error, root_mean_squared_error
+from sklearn.metrics import mean_absolute_error
+
+try:
+    from sklearn.metrics import root_mean_squared_error
+except ImportError:
+    from sklearn.metrics import mean_squared_error
+
+    def root_mean_squared_error(y_true, y_pred):
+        return np.sqrt(mean_squared_error(y_true, y_pred))
+
 
 from self_driving_lab_demo import data as data_module
 from self_driving_lab_demo.core import SelfDrivingLabDemo, SensorSimulator
