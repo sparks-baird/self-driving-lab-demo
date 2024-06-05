@@ -1,4 +1,5 @@
 import json
+import ssl
 from secrets import (
     HIVEMQ_HOST,
     HIVEMQ_PASSWORD,
@@ -13,7 +14,6 @@ from secrets import (
 from time import sleep
 
 import ntptime
-import ussl
 from data_logging import get_traceback, log_to_mongodb
 from netman import connectWiFi
 from sdl_demo_utils import get_onboard_led, heartbeat, sign_of_life
@@ -89,7 +89,7 @@ client = MQTTClient(
         "server_side": False,
         "key": None,
         "cert": None,
-        "cert_reqs": ussl.CERT_REQUIRED,
+        "cert_reqs": ssl.CERT_REQUIRED,
         "cadata": cacert,
         "server_hostname": HIVEMQ_HOST,
     },
