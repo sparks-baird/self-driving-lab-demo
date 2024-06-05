@@ -66,9 +66,12 @@ class MQTTClient:
         addr = socket.getaddrinfo(self.server, self.port)[0][-1]
         self.sock.connect(addr)
         if self.ssl:
-            import ussl
+            # replaced ussl with ssl due to deprecation in MicroPython 1.23.0
+            # (not PR'd on source repo, but I'm using mqtt_as in my workflows
+            # instead, anyway)
+            import ssl
 
-            self.sock = ussl.wrap_socket(self.sock, **self.ssl_params)
+            self.sock = ssl.wrap_socket(self.sock, **self.ssl_params)
         premsg = bytearray(b"\x10\0\0\0\0\0")
         msg = bytearray(b"\x04MQTT\x04\x02\0\0")
 

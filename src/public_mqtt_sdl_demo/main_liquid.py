@@ -3,11 +3,11 @@
 import gc
 import json
 import os
+import ssl
 from secrets import HIVEMQ_HOST, HIVEMQ_PASSWORD, HIVEMQ_USERNAME, PASSWORD, SSID
 from time import sleep
 
 import ntptime
-import ussl
 from as7341_sensor import Sensor
 from data_logging import initialize_sdcard, log_to_mongodb
 from machine import PWM, Pin, reset, unique_id
@@ -345,7 +345,7 @@ try:
             "server_side": False,
             "key": None,
             "cert": None,
-            "cert_reqs": ussl.CERT_REQUIRED,
+            "cert_reqs": ssl.CERT_REQUIRED,
             "cadata": cacert,
             "server_hostname": HIVEMQ_HOST,
         },
