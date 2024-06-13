@@ -273,6 +273,7 @@ try:
         password=HIVEMQ_PASSWORD,
         keepalive=30,
         ssl=True,
+        port=port,
         ssl_params={
             "server_side": False,
             "key": None,
