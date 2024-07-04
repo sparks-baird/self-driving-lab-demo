@@ -26,6 +26,8 @@ This repository covers three teaching and prototyping demos for self-driving lab
 
 ### CLSLab:Light
 
+NOTE: Some updates have occurred since the creation of the video tutorial and the publication of the manuscript. Please read the description section of the YouTube video and see https://github.com/sparks-baird/self-driving-lab-demo/issues/245.
+
 | [White paper](https://doi.org/10.1016/j.matt.2022.11.007) [[postprint](https://github.com/sparks-baird/self-driving-lab-demo/blob/main/reports/self_driving_optics_demo-rev1.pdf)] | [Build instructions manuscript](https://doi.org/10.1016/j.xpro.2023.102329) | [YouTube build instructions](https://youtu.be/GVdfJCsQ8vk) | [Purchase](https://store.groupgets.com/products/closed-loop-spectroscopy-lab-light-mixing-demo-kit)* |
 | --- | --- | --- | --- |
 
