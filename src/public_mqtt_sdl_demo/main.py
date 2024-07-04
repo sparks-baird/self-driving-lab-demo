@@ -294,7 +294,9 @@ try:
             client.connect()
         except OSError as e:
             print(get_traceback(e))
-            print("Failed to connect on second attempt. Ensure you have the correct 'hivemq-com-chain.der' file *specific* to your HiveMQ Cloud broker instance (now required as of June 2024). The default file works for the self-driving-lab-demo, but for your own instance, generate and upload the correct CA file to your microcontroller. Your certificate can be generated via https://colab.research.google.com/github/sparks-baird/self-driving-lab-demo/blob/main/notebooks/7.2.1-hivemq-openssl-certificate.ipynb. See also https://github.com/sparks-baird/self-driving-lab-demo/issues/245") # noqa: E501
+            print(
+                "Failed to connect on second attempt. Ensure you have the correct 'hivemq-com-chain.der' file *specific* to your HiveMQ Cloud broker instance (now required as of June 2024). The default file works for the self-driving-lab-demo, but for your own instance, generate and upload the correct CA file to your microcontroller. Your certificate can be generated via https://colab.research.google.com/github/sparks-baird/self-driving-lab-demo/blob/main/notebooks/7.2.1-hivemq-openssl-certificate.ipynb. See also https://github.com/sparks-baird/self-driving-lab-demo/issues/245"
+            )  # noqa: E501
 
     client.set_callback(callback)
     client.subscribe(prefix + "GPIO/#")
