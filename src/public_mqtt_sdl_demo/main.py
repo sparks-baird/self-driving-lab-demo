@@ -10,7 +10,7 @@ from time import sleep
 import ntptime
 from as7341_sensor import Sensor
 from data_logging import initialize_sdcard, log_to_mongodb
-from machine import PWM, Pin, reset, unique_id
+from machine import PWM, WDT, Pin, unique_id  # Removed reset, added WDT
 from netman import connectWiFi
 from sdl_demo_utils import (
     Experiment,
@@ -52,6 +52,10 @@ try:
     os.dupterm(logfile)
 
     # https://medium.com/@johnlpage/introduction-to-microcontrollers-and-the-pi-pico-w-f7a2d9ad1394
+
+    # Setup watchdog timer with a timeout of 8 seconds (max for rp2040)
+    wdt = WDT(timeout=8000)
+
     # you can request a MongoDB collection specific to you by emailing
     # sterling.baird@utah.edu
     mongodb_url = f"https://data.mongodb-api.com/app/{MONGODB_APP_NAME}/endpoint/data/v1/action/insertOne"  # noqa: E501
@@ -313,6 +317,7 @@ try:
             client.check_msg()
             heartbeat(client, False)
             sign_of_life(onboard_led, False)
+            wdt.feed()  # Feed the watchdog timer to prevent reset
         except Exception as e:
             print(get_traceback(e))
             print("Reconnecting to WiFi...")
@@ -320,13 +325,13 @@ try:
             client.connect(clean_session=False)
             client.set_callback(callback)
             client.subscribe(prefix + "GPIO/#")
+            wdt.feed()  # Ensure watchdog is fed even after reconnecting
 except Exception as e:
     print(get_traceback(e))
     fname = "error.txt"
     logfile = open(fname, "w")
     logfile.write(get_traceback(e))
     logfile.close()
-    reset()
 
 # %% Code Graveyard
 
