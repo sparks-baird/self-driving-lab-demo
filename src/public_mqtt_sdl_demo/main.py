@@ -9,7 +9,7 @@ from time import sleep
 
 import ntptime
 from as7341_sensor import Sensor
-from data_logging import initialize_sdcard, log_to_mongodb
+from data_logging import log_to_mongodb
 from machine import PWM, WDT, Pin, unique_id  # Removed reset, added WDT
 from netman import connectWiFi
 from sdl_demo_utils import (
@@ -85,9 +85,11 @@ try:
     try:
         connectWiFi(SSID, PASSWORD, country="US")
     except RuntimeError as e:
+        wdt.feed()
         print("WiFi connection failed. Retrying in 5 seconds...")
         sleep(5.0)
         try:
+            wdt.feed()
             connectWiFi(SSID, PASSWORD, country="US")
         except RuntimeError as e:
             raise RuntimeError(
@@ -100,11 +102,13 @@ try:
     ntptime.timeout = 30  # type: ignore
     ntptime.host = "pool.ntp.org"
     try:
+        wdt.feed()
         ntptime.settime()
     except Exception as e:
         print(get_traceback(e))
         print("Retrying ntptime.settime(), still with pool.ntp.org")
         try:
+            wdt.feed()
             ntptime.settime()
         except Exception as e:
             print(get_traceback(e))
@@ -214,12 +218,13 @@ try:
 
     onboard_led = get_onboard_led()
     buzzer = PWM(Pin(18))
-    sdcard_ready = initialize_sdcard()
 
     # MQTT Resources:
     # https://gist.github.com/sammachin/b67cc4f395265bccd9b2da5972663e6d
     # http://www.steves-internet-guide.com/into-mqtt-python-client/
 
+    # sdcard_ready = initialize_sdcard()
+    sdcard_ready = False  # deprecating sdcard functionality to avoid confusion
     experiment = Experiment(
         run_experiment_fn=run_experiment,
         reset_experiment_fn=reset_experiment,
@@ -247,7 +252,7 @@ try:
             payload_data["encrypted_device_id_truncated"] = trunc_device_id
             try:
                 parameters = json.loads(msg)
-                if parameters.get("mongodb", True):
+                if parameters.get("mongodb") is True:
                     log_to_mongodb(
                         payload_data,
                         url=mongodb_url,
@@ -275,7 +280,7 @@ try:
         HIVEMQ_HOST,
         user=HIVEMQ_USERNAME,
         password=HIVEMQ_PASSWORD,
-        keepalive=30,
+        keepalive=3600,
         ssl=True,
         port=port,
         ssl_params={
@@ -289,12 +294,14 @@ try:
     )
     del cacert
     try:
+        wdt.feed()
         client.connect()
     except OSError as e:
         print(get_traceback(e))
         print("Retrying client.connect() in 2 seconds...")
         sleep(2.0)
         try:
+            wdt.feed()
             client.connect()
         except OSError as e:
             print(get_traceback(e))
