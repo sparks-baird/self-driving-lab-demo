@@ -109,7 +109,9 @@ def test_public_demo():
             pico_id="test", session_id=f"pytest-{str(uuid4())}"
         ),
     )
+    sleep(10.0) # hack for troubleshooting stochastic failures
     results = sdl.evaluate(dict(R=10, G=11, B=12))
+    sleep(10.0) # hack for troubleshooting stochastic failures
     fidelity_results = sdl.evaluate(
         dict(R=10, G=11, B=12, atime=100 * 2, astep=999 * 2, gain=128 * 2)
     )
@@ -155,6 +157,7 @@ def test_bad_rgb_payload_values():
     session_id = str(uuid4())
     experiment_id = str(uuid4())
 
+    sleep(5.0) # hack for troubleshooting stochastic failures
     client = get_client()
 
     # ensures double quotes for JSON compatiblity
