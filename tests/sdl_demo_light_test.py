@@ -111,13 +111,14 @@ def test_public_demo():
     )
     # sleep(10.0)  # hack for troubleshooting stochastic failures
     results = sdl.evaluate(dict(R=10, G=11, B=12))
+    print(results)
     # sleep(10.0)  # hack for troubleshooting stochastic failures
-    # FIXME: check fidelity implementation against microcontroller code and MicroPython output
+    # FIXME: check fidelity implementation against microcontroller code
+    # and MicroPython output
     # fidelity_results = sdl.evaluate(
     #     dict(R=10, G=11, B=12, atime=100 * 2, astep=999 * 2, gain=128 * 2)
     # )
-    print(results)
-    print(fidelity_results)
+    # print(fidelity_results)
 
 
 def test_bad_payload_values():
