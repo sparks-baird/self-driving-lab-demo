@@ -49,6 +49,7 @@ MANIFEST
 
 # Per-project virtualenvs
 .venv*/
+venv*/
 .conda*/
 .python-version
 reports/figures/adafruit/README.txt
