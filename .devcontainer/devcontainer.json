@@ -1,0 +1,21 @@
+{
+	"image": "mcr.microsoft.com/devcontainers/universal:2",
+	"features": {
+		"ghcr.io/rocker-org/devcontainer-features/miniforge:2": {}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"GitHub.vscode-github-actions",
+				"GitHub.copilot",
+				"GitHub.copilot-chat"
+			]
+		},
+		"settings": {
+			"extensions.autoCheckUpdates": false,
+			"extensions.autoUpdate": false
+		}
+	}
+}
