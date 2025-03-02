@@ -2,7 +2,7 @@ from time import sleep
 
 from machine import PWM, Pin
 
-pump = PWM(Pin(0))
+pump = PWM(Pin(3))
 
 
 def run(pump, power):

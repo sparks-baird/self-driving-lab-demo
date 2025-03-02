@@ -131,6 +131,23 @@ class Sensor:
     def disable(self):
         self.sensor.disable()
 
+        # LED control
+
+    @property
+    def LED(self):
+        """Get the current state of the onboard LED."""
+        return self._led_state
+
+    @LED.setter
+    def LED(self, state):
+        """Set the LED state."""
+        if state:
+            self.sensor.set_led_current(4)  # Use the imported set_led_current method
+            self._led_state = True
+        else:
+            self.sensor.set_led_current(0)
+            self._led_state = False
+
 
 # %% Code Graveyard
 # gain_to_code_lookup = {

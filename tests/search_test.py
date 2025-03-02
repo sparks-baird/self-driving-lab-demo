@@ -23,14 +23,19 @@ sdl = SelfDrivingLabDemoLight(
 
 def test_grid_search():
     grid, grid_data = grid_search(sdl, num_iter)
-    return grid, grid_data
+    assert grid is not None and grid_data is not None
 
 
 def test_random_search():
     random_inputs, random_data = random_search(sdl, num_iter)
-    return random_inputs, random_data
+    assert random_inputs is not None and random_data is not None
 
 
 def test_ax_bayesian_optimization():
     best_parameters, values, experiment, model = ax_bayesian_optimization(sdl, num_iter)
-    return best_parameters, values, experiment, model
+    assert (
+        best_parameters is not None
+        and values is not None
+        and experiment is not None
+        and model is not None
+    )

@@ -57,9 +57,8 @@ width=750> --->
 University instructors utilizing CLSLab-Light during Spring 2023: 4 (~40 kits in total)
 
 #### At-cost Commercialization
-- [GroupGets round 1](https://groupgets.com/campaigns/1112): funded and fulfilled (19 kits)
-- [GroupGets round 2](https://groupgets.com/campaigns/1129): funded and fulfilled (20 kits)
-- [GroupGets round 3](https://groupgets.com/campaigns/1256): In-progress (as of 2023-09-08)
+- GroupGets round 1: funded and fulfilled (19 kits)
+- GroupGets round 2: funded and fulfilled (20 kits)
 
 <sup>*CLSLab:Light is <a href="https://store.groupgets.com/products/closed-loop-spectroscopy-lab-light-mixing-demo-kit">stocked in the GroupGets Store</a>. It has a higher GroupGets fee (only GroupGets sees the extra profit). If you don't want to wait for new rounds and you'd rather order a pre-built kit, this is the best option right now. </sup>
 
