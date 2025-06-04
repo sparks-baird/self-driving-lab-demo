@@ -148,7 +148,6 @@ df.loc[:, sdl.channel_names]  # sort columns by wavelength
 
 # %%
 import numpy as np
-from ax import optimize
 from sklearn.model_selection import ParameterGrid
 from tqdm.notebook import tqdm
 
@@ -239,6 +238,8 @@ bo_results = []
 objective_name = "frechet"
 
 for sdl in tqdm(sdls):
+    # Import ax only when needed to avoid top-level import issues  
+    from ax.service.ax_client import AxClient
 
     def evaluation_function(parameters):
         data = sdl.evaluate(
@@ -248,14 +249,30 @@ for sdl in tqdm(sdls):
         )
         return data[objective_name]
 
-    bo_results.append(
-        optimize(
-            parameters=sdl.parameters,
-            evaluation_function=evaluation_function,
-            minimize=True,
-            total_trials=num_iter,
-        )
+    # Initialize AxClient with the experiment configuration
+    ax_client = AxClient()
+    ax_client.create_experiment(
+        parameters=sdl.parameters,
+        objective_name=objective_name,
+        minimize=True,
     )
+
+    # Run optimization loop
+    for i in range(num_iter):
+        trial_parameters, trial_index = ax_client.get_next_trial()
+        # Evaluate the trial
+        raw_data = evaluation_function(trial_parameters)
+        # Complete the trial with the results
+        ax_client.complete_trial(trial_index=trial_index, raw_data=raw_data)
+
+    # Get the best parameters
+    best_parameters, values = ax_client.get_best_parameters()
+    
+    # Get experiment and model for compatibility
+    experiment = ax_client.experiment
+    model = ax_client.generation_strategy.model
+
+    bo_results.append((best_parameters, values, experiment, model))
 
 best_parameters, values, experiment, model = zip(*bo_results)
 sdls[0].clear()
