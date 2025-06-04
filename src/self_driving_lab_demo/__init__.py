@@ -31,7 +31,6 @@ from self_driving_lab_demo.utils.observe import (
     pico_server_observe_sensor_data,
 )
 from self_driving_lab_demo.utils.search import (
-    ax_bayesian_optimization,
     grid_search,
     random_search,
 )
@@ -48,6 +47,5 @@ __all__ = [
     "pico_server_observe_sensor_data",
     "grid_search",
     "random_search",
-    "ax_bayesian_optimization",
     "get_paho_client",
 ]
