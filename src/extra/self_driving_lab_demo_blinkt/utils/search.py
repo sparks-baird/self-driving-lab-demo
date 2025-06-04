@@ -30,7 +30,7 @@ def random_search(sdl, num_iter):
 
 def ax_bayesian_optimization(sdl, num_iter):
     # Import ax only when needed to avoid top-level import issues
-    from ax.service.ax_client import AxClient
+    from ax.service.managed_loop import optimize
     
     def evaluation_function(parameters):
         return sdl.evaluate(
@@ -40,28 +40,13 @@ def ax_bayesian_optimization(sdl, num_iter):
             B=parameters["B"],
         )
 
-    # Initialize AxClient with the experiment configuration
-    ax_client = AxClient()
-    ax_client.create_experiment(
+    best_parameters, values, experiment, model = optimize(
         parameters=sdl.parameters,
+        evaluation_function=evaluation_function,
         objective_name="mae",
         minimize=True,
+        total_trials=num_iter,
     )
-
-    # Run optimization loop
-    for i in range(num_iter):
-        trial_parameters, trial_index = ax_client.get_next_trial()
-        # Evaluate the trial
-        raw_data = evaluation_function(trial_parameters)
-        # Complete the trial with the results
-        ax_client.complete_trial(trial_index=trial_index, raw_data=raw_data)
-
-    # Get the best parameters
-    best_parameters, values = ax_client.get_best_parameters()
-    
-    # Get experiment and model for compatibility
-    experiment = ax_client.experiment
-    model = ax_client.generation_strategy.model
 
     return best_parameters, values, experiment, model
 
