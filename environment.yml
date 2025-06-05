@@ -44,6 +44,7 @@ dependencies:
      # add here only pip-packages that are not available in conda/conda-forge! E.g.:
      # - blinkt
      # - adafruit-circuitpython-as7341
+     - ax-platform < 1
      - acrylic
      # - icecream
      # - jax
