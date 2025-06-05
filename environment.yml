@@ -45,6 +45,7 @@ dependencies:
      # - blinkt
      # - adafruit-circuitpython-as7341
      - acrylic
+     - ax-platform
      # - icecream
      # - jax
      # - numpyro
