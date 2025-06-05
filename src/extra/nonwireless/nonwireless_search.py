@@ -148,7 +148,6 @@ df.loc[:, sdl.channel_names]  # sort columns by wavelength
 
 # %%
 import numpy as np
-from ax import optimize
 from sklearn.model_selection import ParameterGrid
 from tqdm.notebook import tqdm
 
@@ -239,6 +238,8 @@ bo_results = []
 objective_name = "frechet"
 
 for sdl in tqdm(sdls):
+    # Import ax only when needed to avoid top-level import issues
+    from ax.service.managed_loop import optimize
 
     def evaluation_function(parameters):
         data = sdl.evaluate(
@@ -248,14 +249,15 @@ for sdl in tqdm(sdls):
         )
         return data[objective_name]
 
-    bo_results.append(
-        optimize(
-            parameters=sdl.parameters,
-            evaluation_function=evaluation_function,
-            minimize=True,
-            total_trials=num_iter,
-        )
+    best_parameters, values, experiment, model = optimize(
+        parameters=sdl.parameters,
+        evaluation_function=evaluation_function,
+        objective_name=objective_name,
+        minimize=True,
+        total_trials=num_iter,
     )
+
+    bo_results.append((best_parameters, values, experiment, model))
 
 best_parameters, values, experiment, model = zip(*bo_results)
 sdls[0].clear()
