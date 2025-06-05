@@ -31,7 +31,7 @@ def random_search(sdl, num_iter):
 def ax_bayesian_optimization(sdl, num_iter):
     # Import ax only when needed to avoid top-level import issues
     from ax.service.managed_loop import optimize
-    
+
     def evaluation_function(parameters):
         return sdl.evaluate(
             brightness=parameters["brightness"],

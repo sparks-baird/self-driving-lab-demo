@@ -39,7 +39,7 @@ def random_search(sdl, num_iter):
 def ax_bayesian_optimization(sdl, num_iter, objective_name="frechet"):
     # Import ax only when needed to avoid top-level import issues
     from ax.service.managed_loop import optimize
-    
+
     def evaluation_function(parameters):
         results = sdl.evaluate(
             dict(R=parameters["R"], G=parameters["G"], B=parameters["B"])

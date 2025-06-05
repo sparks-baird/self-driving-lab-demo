@@ -238,7 +238,7 @@ bo_results = []
 objective_name = "frechet"
 
 for sdl in tqdm(sdls):
-    # Import ax only when needed to avoid top-level import issues  
+    # Import ax only when needed to avoid top-level import issues
     from ax.service.managed_loop import optimize
 
     def evaluation_function(parameters):

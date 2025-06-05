@@ -30,10 +30,7 @@ from self_driving_lab_demo.utils.observe import (
     mqtt_observe_sensor_data,
     pico_server_observe_sensor_data,
 )
-from self_driving_lab_demo.utils.search import (
-    grid_search,
-    random_search,
-)
+from self_driving_lab_demo.utils.search import grid_search, random_search
 
 __all__ = [
     "SelfDrivingLabDemo",
