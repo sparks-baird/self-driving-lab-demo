@@ -109,7 +109,7 @@ jobs:
       - name: Ensure main Jupyter notebook runs without error
         run: |
           pip install nbconvert
-          pip install -e .
+          pip install -e .[ax-platform]
           jupyter nbconvert --to notebook --execute notebooks/4.2-paho-mqtt-colab-sdl-demo-test.ipynb
         env:
           HIVEMQ_USERNAME: ${{ secrets.HIVEMQ_USERNAME }}
