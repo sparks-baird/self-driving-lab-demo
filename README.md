@@ -180,6 +180,12 @@ I recommend going through [the introductory Colab notebook](https://colab.resear
 pip install self-driving-lab-demo
 ```
 
+### With Bayesian Optimization Support
+If you want to use Bayesian optimization features (e.g., `ax_bayesian_optimization`), install with the optional dependency:
+```python
+pip install self-driving-lab-demo[ax-platform]
+```
+
 ### Client Setup for Public Test Demo
 ```python
 from self_driving_lab_demo import (
@@ -268,6 +274,11 @@ px.line(df, x=df.index, y="best_so_far", color="type").update_layout(
 conda create -n self-driving-lab-demo python=3.10.*
 conda activate self-driving-lab-demo
 pip install self-driving-lab-demo
+```
+
+For Bayesian optimization features:
+```python
+pip install self-driving-lab-demo[ax-platform]
 ```
 
 ### Local

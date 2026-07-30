@@ -16,5 +16,5 @@ jobs:
           cache: "pip"
       - name: Install package and dev dependencies
         run: |
-          pip install -e .
+          pip install -e .[ax-platform]
           pip install tox
